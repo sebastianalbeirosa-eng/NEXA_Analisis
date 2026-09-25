@@ -10423,21 +10423,32 @@ function ejecutarAnalisisCompletoTurnos(paradas = [], acciones = [], catalogo = 
         }
     }
 
+    const kpisObj = {
+        granTotalParadas,
+        granTotalVacios,
+        granTotalPerdidas,
+        granTotalEventos,
+        disponibilidadGlobal,
+        metaPlanta: META_DISPONIBILIDAD_PLANTA,
+        cumpleMetaGlobal,
+        totalAcciones: accionesValidas.length,
+        accionesCerradas,
+        accionesEnProceso,
+        accionesPendientes,
+        porcentajeCerradas: accionesValidas.length > 0 ? (accionesCerradas / accionesValidas.length) * 100 : 0
+    };
+
+    const directivasSupervisores = generarDirectivasSupervisores({
+        kpis: kpisObj,
+        rankingParadas: paretoParadas,
+        rankingVacios: paretoVacios,
+        turnoMayorParadas,
+        turnoMayorVacios,
+        mejorTurno
+    });
+
     return {
-        kpis: {
-            granTotalParadas,
-            granTotalVacios,
-            granTotalPerdidas,
-            granTotalEventos,
-            disponibilidadGlobal,
-            metaPlanta: META_DISPONIBILIDAD_PLANTA,
-            cumpleMetaGlobal,
-            totalAcciones: accionesValidas.length,
-            accionesCerradas,
-            accionesEnProceso,
-            accionesPendientes,
-            porcentajeCerradas: accionesValidas.length > 0 ? (accionesCerradas / accionesValidas.length) * 100 : 0
-        },
+        kpis: kpisObj,
         turnos: resumenTurnos,
         turnoMayorParadas,
         turnoMayorVacios,
@@ -10451,8 +10462,49 @@ function ejecutarAnalisisCompletoTurnos(paradas = [], acciones = [], catalogo = 
         rankingVacios: paretoVacios,
         rankingTotalPerdidas,
         conclusiones,
+        directivasSupervisores,
         catalogo
     };
+}
+
+/**
+ * Genera las directivas inmediatas para supervisores de forma 100% dinamica
+ * segun los eventos, paradas, vacios y turnos del dataset evaluado.
+ *
+ * @param {object} params
+ * @returns {Array<string>} Lista de directivas.
+ */
+function generarDirectivasSupervisores({ kpis, rankingParadas, rankingVacios, turnoMayorParadas, turnoMayorVacios, mejorTurno }) {
+    const directivas = [];
+
+    // 1. Causa principal de parada de máquina
+    if (kpis.granTotalParadas > 0 && rankingParadas && rankingParadas.length > 0) {
+        const causa = rankingParadas[0].motivo || 'parada no programada';
+        directivas.push(`Atender con prioridad el sistema de "${causa}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas.nombre}.`);
+    } else {
+        directivas.push('Mantener rutinas de lubricación y chequeo preventivo para sostener la marcha continua sin paradas de equipos.');
+    }
+
+    // 2. Pérdidas por vacíos de horno
+    if (kpis.granTotalVacios > 0 && turnoMayorVacios && turnoMayorVacios.minutos > 0) {
+        directivas.push(`Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios.nombre}.`);
+    } else {
+        directivas.push('Preservar la alimentación continua del horno para mantener la estabilidad térmica y evitar consumo energético innecesario.');
+    }
+
+    // 3. Estandarización de procedimientos del turno líder
+    if (mejorTurno && mejorTurno.nombre) {
+        directivas.push(`Estandarizar procedimientos del Turno ${mejorTurno.nombre} como referencia de planta.`);
+    } else {
+        directivas.push(`Sostener la estandarización operativa entre turnos para alcanzar la meta de planta (> ${formatearPorcentaje(kpis.metaPlanta)}).`);
+    }
+
+    // 4. Medidas pendientes si existen
+    if (kpis.accionesPendientes > 0 || kpis.accionesEnProceso > 0) {
+        directivas.push(`Realizar seguimiento prioritario en el próximo turno de las ${kpis.accionesPendientes + kpis.accionesEnProceso} acciones correctivas en proceso o pendientes de cierre.`);
+    }
+
+    return directivas;
 }
 
 // ===========================================================================
@@ -10609,11 +10661,17 @@ function generarTextoInformeTurnos(at, estado = {}) {
     at.conclusiones.forEach((c) => {
         md += `* ${c}\n`;
     });
-    md += `\n`;
     md += `### Directivas Inmediatas para Supervisores y Jefatura de Turno:\n`;
-    md += `1. Atender con prioridad el sistema de "${rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas.nombre}.\n`;
-    md += `2. Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios.nombre}.\n`;
-    md += `3. Estandarizar procedimientos del Turno ${mejorTurno.nombre} como referencia de planta.\n\n`;
+    if (at.directivasSupervisores && at.directivasSupervisores.length > 0) {
+        at.directivasSupervisores.forEach((d, i) => {
+            md += `${i + 1}. ${d}\n`;
+        });
+        md += `\n`;
+    } else {
+        md += `1. Atender con prioridad el sistema de "${rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas?.nombre || 'Mañana'}.\n`;
+        md += `2. Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios?.nombre || 'Noche'}.\n`;
+        md += `3. Estandarizar procedimientos del Turno ${mejorTurno?.nombre || 'Tarde'} como referencia de planta.\n\n`;
+    }
 
     md += `---\n\n`;
     md += `© DMBE Systems by Sebastian Albeiro.\n`;
@@ -26834,7 +26892,9 @@ function construirHojaTurnos({ estado, alcance, datos, reporteTurnos }) {
             crearElemento('strong', { texto: 'Directivas Inmediatas para Supervisores y Jefatura de Turno:' }),
             crearElemento('div', {
                 style: 'font-size:12px; color:#1e3a8a; margin-top:4px; line-height:1.5;',
-                texto: `1) Atender con prioridad el sistema de "${at.rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas.nombre}. 2) Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${at.turnoMayorVacios.nombre}. 3) Estandarizar procedimientos del Turno ${at.mejorTurno.nombre} como referencia de planta.`
+                texto: at.directivasSupervisores && at.directivasSupervisores.length > 0
+                    ? at.directivasSupervisores.map((d, i) => `${i + 1}) ${d}`).join(' ')
+                    : `1) Atender con prioridad la causa principal para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas?.nombre || 'afectado'}. 2) Mejorar sincronismo de transferencia para eliminar los vacíos. 3) Estandarizar procedimientos del Turno ${at.mejorTurno?.nombre || 'líder'} como referencia de planta.`
             })
         ])
     ]);
@@ -29654,7 +29714,9 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         }),
                         crearElemento('div', {
                             style: 'font-size:0.875rem; color:var(--texto-normal); line-height:1.5;',
-                            texto: `1) Atender con prioridad el sistema de "${at.rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas.nombre}. 2) Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${at.turnoMayorVacios.nombre}. 3) Estandarizar procedimientos del Turno ${at.mejorTurno.nombre} como referencia de planta.`
+                            texto: at.directivasSupervisores && at.directivasSupervisores.length > 0
+                                ? at.directivasSupervisores.map((d, i) => `${i + 1}) ${d}`).join(' ')
+                                : `1) Atender con prioridad la causa principal para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas?.nombre || 'afectado'}. 2) Mejorar sincronismo de transferencia para eliminar los vacíos. 3) Estandarizar procedimientos del Turno ${at.mejorTurno?.nombre || 'líder'} como referencia de planta.`
                         })
                     ]
                 }),
