@@ -10611,10 +10611,9 @@ function generarTextoInformeTurnos(at, estado = {}) {
     });
     md += `\n`;
     md += `### Directivas Inmediatas para Supervisores y Jefatura de Turno:\n`;
-    md += `1. **Confiabilidad en Sector Prensas:** Atender con prioridad el sistema de **"${rankingParadas[0]?.motivo || 'prensado'}"** para evitar paradas recurrentes en el **Turno ${turnoMayorParadas.nombre}**. Coordinar con Mantenimiento Mecánico e Hidráulico la inspección integral de electroválvulas, estanqueidad de circuitos y guías de molde en el próximo cambio de formato, estableciendo rondas de control preventivo al inicio de cada relevo de guardia.\n`;
-    md += `2. **Sincronismo y Continuidad Térmica en Horno:** Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el **Turno ${turnoMayorVacios.nombre}**. Mantener stock amortiguador de piezas crudas antes del ingreso al horno monoestrato continuo para evitar desbalances térmicos, afectación en curvatura y sobrecostos energéticos de cocción.\n`;
-    md += `3. **Estandarización de Mejores Prácticas:** Estandarizar procedimientos del **Turno ${mejorTurno.nombre}** como referencia de planta. Difundir sus rutinas de operación, ajuste preventivo de prensado y rápida capacidad de respuesta operativa hacia los demás turnos para estabilizar la disponibilidad de planta por encima de la meta corporativa fijada en el **${formatearPorcentaje(kpis.metaPlanta)}**.\n`;
-    md += `4. **Trazabilidad y Cierre de Medidas Correctivas:** Realizar seguimiento estricto del estado de las acciones en proceso o pendientes en los relevos de guardia. Ningún turno debe cerrar sin registrar en la planilla diaria la hora, defecto, responsable asignado y la validación técnica de la solución implementada.\n\n`;
+    md += `1. Atender con prioridad el sistema de "${rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas.nombre}.\n`;
+    md += `2. Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios.nombre}.\n`;
+    md += `3. Estandarizar procedimientos del Turno ${mejorTurno.nombre} como referencia de planta.\n\n`;
 
     md += `---\n\n`;
     md += `© DMBE Systems by Sebastian Albeiro.\n`;
@@ -26830,28 +26829,13 @@ function construirHojaTurnos({ estado, alcance, datos, reporteTurnos }) {
         crearElemento('h2', { clase: 'informe-seccion-titulo', texto: '6. Conclusiones y Plan de Acción Operativo' }),
         crearElemento('ul', { style: 'padding-left:18px; line-height:1.7; margin:0;' }, itemsConclusiones),
         crearElemento('div', {
-            style: 'background:#eff6ff; border-left:4px solid #3b82f6; padding:14px 18px; border-radius:0 8px 8px 0; margin-top:16px;'
+            style: 'background:#eff6ff; border-left:4px solid #3b82f6; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:15px;'
         }, [
+            crearElemento('strong', { texto: 'Directivas Inmediatas para Supervisores y Jefatura de Turno:' }),
             crearElemento('div', {
-                style: 'font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px;',
-                texto: 'Directivas Inmediatas para Supervisores y Jefatura de Turno:'
-            }),
-            crearElemento('div', {
-                style: 'display:flex; flex-direction:column; gap:8px; font-size:11.5px; color:#1e3a8a; line-height:1.55;'
-            }, [
-                crearElemento('div', {
-                    html: `<strong>1) Confiabilidad en Sector Prensas:</strong> Atender con prioridad el sistema de <strong>"${at.rankingParadas[0]?.motivo || 'prensado'}"</strong> para evitar paradas recurrentes en el <strong>Turno ${at.turnoMayorParadas.nombre}</strong>. Se instruye coordinar con Mantenimiento Mecánico e Hidráulico la inspección integral de electroválvulas, estanqueidad de circuitos y guías de molde en el próximo cambio de formato, estableciendo rondas de control preventivo al inicio de cada relevo de guardia.`
-                }),
-                crearElemento('div', {
-                    html: `<strong>2) Sincronismo y Continuidad Térmica en Horno:</strong> Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el <strong>Turno ${at.turnoMayorVacios.nombre}</strong>. Mantener pulmón regulador con stock amortiguador de piezas crudas antes del ingreso al horno monoestrato continuo para evitar desbalances de temperatura, degradación en la tonalidad/curvatura del material y sobrecostos energéticos de cocción.`
-                }),
-                crearElemento('div', {
-                    html: `<strong>3) Estandarización de Mejores Prácticas:</strong> Estandarizar procedimientos del <strong>Turno ${at.mejorTurno.nombre}</strong> como referencia de planta. Difundir sus rutinas de operación, ajuste preventivo de prensado y rápida capacidad de respuesta operativa hacia los demás turnos para estabilizar la disponibilidad de planta por encima de la meta corporativa fijada en el <strong>${formatearPorcentaje(at.kpis.metaPlanta)}</strong>.`
-                }),
-                crearElemento('div', {
-                    html: `<strong>4) Trazabilidad y Cierre de Medidas Correctivas:</strong> Realizar seguimiento estricto del estado de las acciones en proceso o pendientes en los relevos de guardia. Ningún turno debe cerrar sin registrar en la planilla diaria la hora, defecto, responsable asignado y la validación técnica de la solución implementada.`
-                })
-            ])
+                style: 'font-size:12px; color:#1e3a8a; margin-top:4px; line-height:1.5;',
+                texto: `1) Atender con prioridad el sistema de "${at.rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas.nombre}. 2) Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${at.turnoMayorVacios.nombre}. 3) Estandarizar procedimientos del Turno ${at.mejorTurno.nombre} como referencia de planta.`
+            })
         ])
     ]);
     partes.push(seccionConclusiones);
@@ -29662,28 +29646,15 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                     }))
                 }),
                 crearElemento('div', {
-                    style: 'background:rgba(59, 130, 246, 0.08); border-left:4px solid #3b82f6; padding:14px 18px; border-radius:0 8px 8px 0; margin-top:16px;',
+                    style: 'background:rgba(59, 130, 246, 0.08); border-left:4px solid #3b82f6; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:16px;',
                     hijos: [
-                        crearElemento('div', {
-                            style: 'font-size:0.95rem; font-weight:700; color:var(--texto-fuerte); margin-bottom:8px;',
+                        crearElemento('strong', {
+                            style: 'color:var(--texto-fuerte); display:block; margin-bottom:4px;',
                             texto: 'Directivas Inmediatas para Supervisores y Jefatura de Turno:'
                         }),
                         crearElemento('div', {
-                            style: 'display:flex; flex-direction:column; gap:8px; font-size:0.875rem; color:var(--texto-normal); line-height:1.55;',
-                            hijos: [
-                                crearElemento('div', {
-                                    html: `<strong>1) Confiabilidad en Sector Prensas:</strong> Atender con prioridad el sistema de <strong>"${at.rankingParadas[0]?.motivo || 'prensado'}"</strong> para evitar paradas recurrentes en el <strong>Turno ${at.turnoMayorParadas.nombre}</strong>. Se instruye coordinar con Mantenimiento Mecánico la inspección integral de los equipos para su mejor funcionamiento.`
-                                }),
-                                crearElemento('div', {
-                                    html: `<strong>2) Sincronismo y Continuidad Térmica en Horno:</strong> Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el <strong>Turno ${at.turnoMayorVacios.nombre}</strong>. Mantener pulmón regulador con stock amortiguador de piezas crudas antes del ingreso al horno monoestrato continuo para evitar desbalances de temperatura, degradación en la tonalidad/curvatura del material y sobrecostos energéticos de cocción.`
-                                }),
-                                crearElemento('div', {
-                                    html: `<strong>3) Estandarización de Mejores Prácticas:</strong> Estandarizar procedimientos del <strong>Turno ${at.mejorTurno.nombre}</strong> como referencia de planta. Difundir sus rutinas de operación, ajuste preventivo de prensado y rápida capacidad de respuesta operativa hacia los demás turnos para estabilizar la disponibilidad de planta por encima de la meta corporativa fijada en el <strong>${formatearPorcentaje(at.kpis.metaPlanta)}</strong>.`
-                                }),
-                                crearElemento('div', {
-                                    html: `<strong>4) Trazabilidad y Cierre de Medidas Correctivas:</strong> Realizar seguimiento estricto del estado de las acciones en proceso o pendientes en los relevos de turnos. Ningún turno debe cerrar sin registrar en la planilla diaria la hora, defecto, responsable asignado y la validación técnica de la solución implementada.`
-                                })
-                            ]
+                            style: 'font-size:0.875rem; color:var(--texto-normal); line-height:1.5;',
+                            texto: `1) Atender con prioridad el sistema de "${at.rankingParadas[0]?.motivo || 'prensado'}" para evitar paradas recurrentes en el Turno ${at.turnoMayorParadas.nombre}. 2) Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${at.turnoMayorVacios.nombre}. 3) Estandarizar procedimientos del Turno ${at.mejorTurno.nombre} como referencia de planta.`
                         })
                     ]
                 }),
