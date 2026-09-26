@@ -10566,10 +10566,13 @@ function generarTextoInformeTurnos(at, estado = {}) {
 
     let md = '';
     md += `# INFORME EJECUTIVO DE REPORTE DE TURNOS\n`;
-    md += `**Industria de Pisos y Revestimientos Cerámicos | Operación 24 Horas**\n\n`;
-    md += `*Fecha de Evaluación:* ${fechaInforme}  \n`;
-    md += `*Archivo Origen:* ${estado.nombreArchivo || 'Reporte de Planta'}  \n`;
-    md += `*Sistema:* SYNOPTIK Manufacturing Intelligence  \n\n`;
+    md += `**Evaluación de Disponibilidad, Paradas de Equipos, Vacíos de Horno y Acciones Correctivas en Planta de Pisos y Revestimientos Cerámicos (24 Horas)**\n\n`;
+    md += `* **Fecha de Evaluación:** ${fechaInforme}\n`;
+    md += `* **Archivo Analizado:** ${estado.nombreArchivo || 'Reporte_Septiembre_23-09-2026.xlsx'}\n`;
+    md += `* **Ciclo Operativo:** 24 Horas (3 Turnos: Mañana, Tarde y Noche)\n`;
+    md += `* **Meta de Planta:** > ${formatearPorcentaje(kpis.metaPlanta)} Disponibilidad\n`;
+    md += `* **Total Eventos Registrados:** ${kpis.granTotalEventos} incidencias (${kpis.granTotalParadas} min paradas, ${kpis.granTotalVacios} min vacíos)\n`;
+    md += `* **Total Acciones Tratadas:** ${kpis.totalAcciones} medidas (${kpis.accionesCerradas} cerradas${kpis.accionesEnProceso > 0 ? `, ${kpis.accionesEnProceso} en proceso` : ''}${kpis.accionesPendientes > 0 ? `, ${kpis.accionesPendientes} ${kpis.accionesPendientes === 1 ? 'pendiente' : 'pendientes'}` : ''})\n\n`;
     md += `---\n\n`;
 
     // 1. Resumen Ejecutivo
@@ -26635,16 +26638,22 @@ function construirHojaTurnos({ estado, alcance, datos, reporteTurnos }) {
             clase: 'informe-portada-bajada',
             texto: 'Evaluación de Disponibilidad, Paradas de Equipos, Vacíos de Horno y Acciones Correctivas en Planta de Pisos y Revestimientos Cerámicos (24 Horas).'
         }),
-        crearElemento('div', { clase: 'informe-ficha' }, [
+        crearElemento('div', {
+            clase: 'informe-ficha',
+            style: 'display:grid; grid-template-columns: repeat(2, 1fr); gap: 2.5mm 8mm; font-size: 9.5pt; margin-top: 3mm; border-top: 1px solid #cbd5e1; padding-top: 3mm;'
+        }, [
             { etiqueta: 'Fecha de Evaluación:', valor: formatearFecha(momento, 'largo') },
-            { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre.xlsx' },
+            { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_23-09-2026.xlsx' },
             { etiqueta: 'Ciclo Operativo:', valor: '24 Horas (3 Turnos: Mañana, Tarde y Noche)' },
             { etiqueta: 'Meta de Planta:', valor: `> ${formatearPorcentaje(at.kpis.metaPlanta)} Disponibilidad` },
             { etiqueta: 'Total Eventos Registrados:', valor: `${at.kpis.granTotalEventos} incidencias (${at.kpis.granTotalParadas} min paradas, ${at.kpis.granTotalVacios} min vacíos)` },
-            { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} pendientes` : ''})` }
-        ].map((f) => crearElemento('div', { clase: 'informe-ficha-fila' }, [
-            crearElemento('span', { clase: 'informe-ficha-etiqueta', texto: f.etiqueta }),
-            crearElemento('span', { clase: 'informe-ficha-valor', texto: f.valor })
+            { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} ${at.kpis.accionesPendientes === 1 ? 'pendiente' : 'pendientes'}` : ''})` }
+        ].map((f) => crearElemento('div', {
+            clase: 'informe-ficha-fila',
+            style: 'display:flex; justify-content:space-between; gap:4mm; padding-bottom:1.5mm; border-bottom:0.5pt dotted #c8cedb;'
+        }, [
+            crearElemento('span', { clase: 'informe-ficha-etiqueta', style: 'color:#6b7688; font-weight:600; white-space:nowrap;', texto: f.etiqueta }),
+            crearElemento('strong', { clase: 'informe-ficha-valor', style: 'color:#0d1526; font-weight:700; text-align:right;', texto: f.valor })
         ])))
     ]);
     partes.push(portada);
@@ -27846,10 +27855,10 @@ function exportarInformeHTML(estado) {
         .informe-portada { border-bottom: 2.5pt solid #0d1526; padding-bottom: 6mm; margin-bottom: 7mm; }
         .informe-portada-marca { display: flex; justify-content: space-between; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7688; font-weight: 700; margin-bottom: 5mm; }
         .informe-portada-bajada { font-size: 11pt; color: #3d4759; margin-bottom: 5mm; }
-        .informe-portada-ficha { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2mm 8mm; font-size: 9pt; }
-        .informe-portada-fila { display: flex; justify-content: space-between; gap: 4mm; padding-bottom: 1mm; border-bottom: 0.5pt dotted #c8cedb; }
-        .informe-portada-etiqueta { color: #6b7688; }
-        .informe-portada-valor { font-weight: 600; color: #0d1526; }
+        .informe-ficha, .informe-portada-ficha { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5mm 8mm; font-size: 9.5pt; margin-top: 3mm; border-top: 1px solid #cbd5e1; padding-top: 3mm; }
+        .informe-ficha-fila, .informe-portada-fila { display: flex; justify-content: space-between; gap: 4mm; padding-bottom: 1.5mm; border-bottom: 0.5pt dotted #c8cedb; }
+        .informe-ficha-etiqueta, .informe-portada-etiqueta { color: #6b7688; font-weight: 600; white-space: nowrap; }
+        .informe-ficha-valor, .informe-portada-valor { font-weight: 700; color: #0d1526; text-align: right; }
         .informe-seccion { margin-bottom: 8mm; }
         .informe-seccion-nueva-pagina { page-break-before: always; }
         .informe-seccion-titulo { font-size: 13pt; margin-bottom: 3mm; padding-bottom: 1.5mm; border-bottom: 1.5pt solid #0d1526; display: flex; align-items: baseline; gap: 3mm; }
@@ -28945,11 +28954,11 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:8px 30px; font-size:0.9rem; padding:1rem 0; border-top:2px solid var(--borde-marcado); border-bottom:1px solid var(--borde-suave);'
             }, [
                 { etiqueta: 'Fecha de Evaluación:', valor: formatearFecha(momento, 'largo') },
-                { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_25-09-2026.xlsx' },
+                { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_23-09-2026.xlsx' },
                 { etiqueta: 'Ciclo Operativo:', valor: '24 Horas (3 Turnos: Mañana, Tarde y Noche)' },
                 { etiqueta: 'Meta de Planta:', valor: `> ${formatearPorcentaje(at.kpis.metaPlanta)} Disponibilidad` },
                 { etiqueta: 'Total Eventos Registrados:', valor: `${at.kpis.granTotalEventos} incidencias (${at.kpis.granTotalParadas} min paradas, ${at.kpis.granTotalVacios} min vacíos)` },
-                { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} pendientes` : ''})` }
+                { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} ${at.kpis.accionesPendientes === 1 ? 'pendiente' : 'pendientes'}` : ''})` }
             ].map(f => crearElemento('div', {
                 style: 'display:flex; justify-content:space-between; gap:12px; padding-bottom:5px; border-bottom:1px dotted var(--borde-suave);'
             }, [
