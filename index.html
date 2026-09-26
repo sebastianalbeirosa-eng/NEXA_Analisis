@@ -19,7 +19,7 @@
     -->
     
 
-    <title>synoptiK - Intelligent Data Analytics</title>
+    <title>SynoptiK - Intelligent Data Analytics</title>
 
 
 
@@ -69,70 +69,61 @@
 
        El blanco puro queda para una sola cosa: la hoja del informe, que es
        papel y se va a imprimir. Ahi si corresponde. */
-    --fondo-general: #e1e6ee;
-    --fondo-panel: #f1f4f9;
-    --fondo-hundido: #e7ebf3;
+    --fondo-general: #f8fafc;
+    --fondo-panel: #ffffff;
+    --fondo-hundido: #f1f5f9;
 
     /* Para lo que flota sobre todo lo demas: modales y desplegables. */
-    --fondo-elevado: #f8fafd;
+    --fondo-elevado: #ffffff;
 
     /* --- El marco de la aplicacion ---
-       Encabezado, barra lateral y pie. Usaban el mismo fondo que los paneles, y
-       como son las superficies mas grandes de la pantalla, alcanzaba para que
-       todo se viera blanco aunque la pagina fuera gris.
+       Encabezado, barra lateral y pie. Fondo Slate Neutral refinado. */
+    --fondo-marco: #f1f5f9;
+    --borde-marco: #e2e8f0;
 
-       Ahora son mas oscuros que el contenido, no mas claros. Es la logica de
-       cualquier herramienta de escritorio: el marco es el mueble y el contenido
-       es lo que se apoya encima. De paso, la vista va sola a los datos. */
-    --fondo-marco: #d7dde8;
-    --borde-marco: #c6cede;
+    /* Los bordes en Slate suave y marcado */
+    --borde-suave: #e2e8f0;
+    --borde-marcado: #cbd5e1;
 
-    /* Los bordes suben un poco de contraste: con paneles menos blancos, el
-       borde es lo que sostiene la separacion entre uno y otro. */
-    --borde-suave: #d2d9e5;
-    --borde-marcado: #bdc6d6;
+    --texto-fuerte: #0f172a;
+    --texto-normal: #334155;
+    --texto-suave: #64748b;
+    --texto-tenue: #94a3b8;
 
-    --texto-fuerte: #141a2a;
-    --texto-normal: #3d4759;
-    --texto-suave: #6b7688;
-    --texto-tenue: #97a0b1;
+    /* --- Color Primario de Marca: Teal / Petróleo Esmeralda (idéntico a la K del logo) --- */
+    --acento: #0d9488;
+    --acento-oscuro: #0f766e;
+    --acento-claro: #f0fdfa;
+    --acento-borde: #99f6e4;
+    --acento-texto: #0f766e;
 
-    /* --- Acento de marca (lo unico interactivo con color) --- */
-    --acento: #3d5afe;
-    --acento-oscuro: #2f46d4;
-    --acento-claro: #edf1ff;
-    --acento-borde: #c3cffe;
-    --acento-texto: #2438b8;
+    /* --- Acentos Semánticos de Alto Contraste --- */
+    --correcto: #16a34a;
+    --correcto-fondo: #f0fdf4;
+    --correcto-borde: #bbf7d0;
 
-    /* --- Colores de estado --- */
-    --correcto: #12855f;
-    --correcto-fondo: #e7f7f1;
-    --correcto-borde: #a8e0cc;
+    --aviso: #d97706;
+    --aviso-fondo: #fffbeb;
+    --aviso-borde: #fde68a;
 
-    --aviso: #a8620a;
-    --aviso-fondo: #fdf3e3;
-    --aviso-borde: #f0d3a0;
+    --critico: #dc2626;
+    --critico-fondo: #fef2f2;
+    --critico-borde: #fecaca;
 
-    --critico: #c02736;
-    --critico-fondo: #fdeced;
-    --critico-borde: #f5bfc4;
-
-    --informativo: #14607f;
-    --informativo-fondo: #e6f4f9;
-    --informativo-borde: #a9d6e6;
+    --informativo: #0284c7;
+    --informativo-fondo: #f0f9ff;
+    --informativo-borde: #bae6fd;
 
     /* --- Paleta categorica para graficos ---
-       Ocho tonos elegidos para distinguirse bien entre si, tambien para
-       personas con deuteranopia (la forma mas comun de daltonismo).
-       Se recorre en orden y se repite si hay mas de ocho categorias. */
-    --dato-1: #3d5afe;
-    --dato-2: #e8710a;
-    --dato-3: #0f9d76;
-    --dato-4: #c2255c;
-    --dato-5: #7048e8;
-    --dato-6: #0b7285;
-    --dato-7: #b88304;
-    --dato-8: #4c6ef5;
+       Alineada al tono industrial teal y acentos de alto contraste */
+    --dato-1: #0d9488;
+    --dato-2: #d97706;
+    --dato-3: #16a34a;
+    --dato-4: #dc2626;
+    --dato-5: #6366f1;
+    --dato-6: #0284c7;
+    --dato-7: #ca8a04;
+    --dato-8: #8b5cf6;
 
     /* --- Escala secuencial para mapas de calor (poca -> mucha intensidad) --- */
     --calor-0: #f0f4fb;
@@ -198,54 +189,55 @@
    Se activa agregando la clase "tema-oscuro" al elemento <html>.
    Solo redefinimos las variables: ni una regla de layout se duplica. */
 html.tema-oscuro {
-    --fondo-general: #0b1020;
-    --fondo-panel: #131a2e;
-    --fondo-hundido: #0e1424;
-    --fondo-elevado: #1a2238;
-    --borde-suave: #253050;
-    --borde-marcado: #364460;
+    --fondo-general: #0b1120;
+    --fondo-panel: #111827;
+    --fondo-hundido: #0a0f1d;
+    --fondo-elevado: #1e293b;
+    --borde-suave: #1e293b;
+    --borde-marcado: #334155;
 
-    /* En oscuro el marco tambien va mas oscuro que el contenido, con la misma
-       logica: el mueble atras, los datos adelante. */
-    --fondo-marco: #0d1322;
-    --borde-marco: #1e2842;
+    /* En oscuro el marco en Obsidian Slate */
+    --fondo-marco: #0e1526;
+    --borde-marco: #1e293b;
 
-    --texto-fuerte: #eef1f8;
-    --texto-normal: #c2cad9;
-    --texto-suave: #8d98ad;
-    --texto-tenue: #667287;
+    --texto-fuerte: #f8fafc;
+    --texto-normal: #cbd5e1;
+    --texto-suave: #94a3b8;
+    --texto-tenue: #64748b;
 
-    --acento: #6b83ff;
-    --acento-oscuro: #8798ff;
-    --acento-claro: #1a2547;
-    --acento-borde: #2f3f70;
-    --acento-texto: #a7b6ff;
+    /* --- Color Primario de Marca en Oscuro: Teal / Petróleo Esmeralda --- */
+    --acento: #14b8a6;
+    --acento-oscuro: #0d9488;
+    --acento-claro: #042f2e;
+    --acento-borde: #134e4a;
+    --acento-texto: #5eead4;
 
-    --correcto: #3fd6a0;
-    --correcto-fondo: #102b23;
-    --correcto-borde: #1f5442;
+    /* --- Acentos Semánticos de Alto Contraste en Oscuro --- */
+    --correcto: #22c55e;
+    --correcto-fondo: #052e16;
+    --correcto-borde: #14532d;
 
-    --aviso: #f0b355;
-    --aviso-fondo: #2d2213;
-    --aviso-borde: #56411f;
+    --aviso: #f59e0b;
+    --aviso-fondo: #451a03;
+    --aviso-borde: #78350f;
 
-    --critico: #ff8089;
-    --critico-fondo: #2e1519;
-    --critico-borde: #5c262d;
+    --critico: #ef4444;
+    --critico-fondo: #450a0a;
+    --critico-borde: #7f1d1d;
 
-    --informativo: #62c4e8;
-    --informativo-fondo: #10242e;
-    --informativo-borde: #1f4557;
+    --informativo: #38bdf8;
+    --informativo-fondo: #082f49;
+    --informativo-borde: #075985;
 
     /* Los datos se aclaran para mantener contraste sobre fondo oscuro */
-    --dato-1: #7d91ff;
-    --dato-2: #ff9a4d;
-    --dato-3: #35c9a0;
-    --dato-4: #ff6f9c;
-    --dato-5: #a98bff;
-    --dato-6: #45b8d4;
-    --dato-7: #e5bb4a;
-    --dato-8: #8fa4ff;
+    --dato-1: #14b8a6;
+    --dato-2: #f59e0b;
+    --dato-3: #22c55e;
+    --dato-4: #ef4444;
+    --dato-5: #818cf8;
+    --dato-6: #38bdf8;
+    --dato-7: #facc15;
+    --dato-8: #a78bfa;
 
     --calor-0: #151d33;
     --calor-1: #1d2b4d;
@@ -404,19 +396,20 @@ td.numero,
     height: 44px;
     flex-shrink: 0;
     border-radius: var(--redondeo-medio);
-    background: var(--fondo-elevado);
-    border: 1px solid var(--borde);
+    background: var(--fondo-panel);
+    border: 1px solid var(--borde-suave);
     color: var(--texto-fuerte);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--sombra-chica);
-    transition: transform var(--transicion), box-shadow var(--transicion);
+    box-shadow: var(--sombra-suave);
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
 }
 
 .marca-logo:hover {
     transform: translateY(-1px);
     box-shadow: var(--sombra-media);
+    border-color: var(--acento);
 }
 
 .icono-synoptik {
@@ -426,7 +419,7 @@ td.numero,
 }
 
 .tema-oscuro .icono-synoptik path {
-    stroke: #14b8a6;
+    stroke: var(--acento);
 }
 
 .marca-texto {
@@ -460,23 +453,24 @@ td.numero,
 
 .syn-k {
     font-family: var(--letra-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-    color: #0d9488;
+    color: var(--acento);
     font-weight: 800;
     font-size: 1.95rem;
     margin-left: 0.5px;
 }
 
 .tema-oscuro .syn-k {
-    color: #14b8a6;
+    color: var(--acento);
 }
 
 /* Línea divisoria vertical fina */
 .marca-separador {
     width: 1px;
     height: 28px;
-    background: var(--borde-marcado, rgba(255, 255, 255, 0.2));
+    background: var(--borde-marcado);
     display: inline-block;
     flex-shrink: 0;
+    opacity: 0.85;
 }
 
 /* Tagline en dos líneas: Intelligent Data / Analytics */
@@ -863,16 +857,30 @@ td.numero,
     transform: none;
 }
 
-.boton-principal {
+.boton-principal,
+.boton-primario {
     background: var(--acento);
     border-color: var(--acento);
     color: #ffffff;
 }
 
-.boton-principal:hover {
+.boton-principal:hover,
+.boton-primario:hover {
     background: var(--acento-oscuro);
     border-color: var(--acento-oscuro);
     color: #ffffff;
+}
+
+.boton-secundario {
+    background: var(--fondo-panel);
+    border-color: var(--borde-suave);
+    color: var(--texto-normal);
+}
+
+.boton-secundario:hover {
+    background: var(--fondo-hundido);
+    border-color: var(--borde-marcado);
+    color: var(--texto-fuerte);
 }
 
 .boton-peligro {
@@ -1368,40 +1376,60 @@ td.numero,
     background: var(--fondo-panel);
     border: 1px solid var(--borde-suave);
     border-radius: var(--redondeo-grande);
-    padding: var(--espacio-4);
+    padding: 1.15rem 1.25rem;
     box-shadow: var(--sombra-suave);
     display: flex;
     flex-direction: column;
-    gap: var(--espacio-1);
+    justify-content: space-between;
     min-width: 0;
+    position: relative;
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+}
+
+.tarjeta-indicador:hover {
+    border-color: var(--borde-marcado);
+    box-shadow: var(--sombra-media);
+    transform: translateY(-1px);
+}
+
+.tarjeta-indicador-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espacio-2);
+    min-width: 0;
+    margin-bottom: 4px;
 }
 
 .tarjeta-indicador-etiqueta {
-    font-size: var(--tamano-diminuto);
+    font-size: 0.72rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--texto-tenue);
-    display: flex;
-    align-items: center;
-    gap: var(--espacio-2);
+    letter-spacing: 0.06em;
+    color: var(--texto-suave);
+    line-height: 1.25;
+    flex: 1;
+    min-width: 0;
 }
 
 .tarjeta-indicador-valor {
-    font-size: var(--tamano-enorme);
+    font-family: var(--letra-numeros);
+    font-size: 2rem;
     font-weight: 700;
     color: var(--texto-fuerte);
     font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    /* Valores largos (ej: sumas de millones) no deben romper la tarjeta */
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 4px 0 6px 0;
+    /* Valores largos no deben romper la tarjeta */
     overflow-wrap: anywhere;
 }
 
 .tarjeta-indicador-valor small {
-    font-size: var(--tamano-comodo);
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--texto-suave);
-    margin-left: 2px;
+    margin-left: 3px;
 }
 
 .tarjeta-indicador-detalle {
@@ -1410,27 +1438,142 @@ td.numero,
     display: flex;
     align-items: center;
     gap: var(--espacio-1);
+    line-height: 1.35;
+    border-top: 1px dashed var(--borde-suave);
+    padding-top: 6px;
+    margin-top: 2px;
 }
 
-/* Barra fina inferior que refuerza el estado del indicador */
-.tarjeta-indicador[data-estado] {
-    position: relative;
+/* Micro-badges de estado para Hero KPIs */
+.micro-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4.5px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: var(--redondeo-circular);
+    white-space: nowrap;
+    line-height: 1.2;
+    flex-shrink: 0;
 }
 
-.tarjeta-indicador[data-estado]::before {
+.micro-badge::before {
     content: "";
-    position: absolute;
-    left: 0;
-    top: var(--espacio-4);
-    bottom: var(--espacio-4);
-    width: 3px;
-    border-radius: 0 3px 3px 0;
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
 }
 
-.tarjeta-indicador[data-estado="correcto"]::before { background: var(--correcto); }
-.tarjeta-indicador[data-estado="aviso"]::before    { background: var(--aviso); }
-.tarjeta-indicador[data-estado="critico"]::before  { background: var(--critico); }
-.tarjeta-indicador[data-estado="neutro"]::before   { background: var(--borde-marcado); }
+.micro-badge-correcto {
+    background: var(--correcto-fondo);
+    color: var(--correcto);
+    border: 1px solid var(--correcto-borde);
+}
+
+.micro-badge-aviso {
+    background: var(--aviso-fondo);
+    color: var(--aviso);
+    border: 1px solid var(--aviso-borde);
+}
+
+.micro-badge-critico {
+    background: var(--critico-fondo);
+    color: var(--critico);
+    border: 1px solid var(--critico-borde);
+}
+
+.micro-badge-neutro {
+    background: var(--fondo-hundido);
+    color: var(--texto-suave);
+    border: 1px solid var(--borde-suave);
+}
+
+/* --- Navegación tipo Pill Tabs Ejecutivas --- */
+.nav-pill-tabs-contenedor {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.nav-pill-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background: var(--fondo-hundido);
+    border: 1px solid var(--borde-suave);
+    border-radius: var(--redondeo-circular);
+    flex-wrap: wrap;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.pill-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: var(--redondeo-circular);
+    font-size: var(--tamano-normal);
+    font-weight: 500;
+    color: var(--texto-suave);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--transicion);
+    white-space: nowrap;
+    user-select: none;
+    line-height: 1.4;
+}
+
+.pill-tab:hover {
+    color: var(--texto-fuerte);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.tema-oscuro .pill-tab:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.pill-tab.activa,
+.pill-tab[aria-selected="true"] {
+    background: var(--fondo-panel);
+    color: var(--acento-texto);
+    font-weight: 700;
+    border-color: var(--borde-suave);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.tema-oscuro .pill-tab.activa,
+.tema-oscuro .pill-tab[aria-selected="true"] {
+    background: var(--fondo-elevado);
+    color: var(--acento-texto);
+    border-color: var(--borde-marcado);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.pill-tab-conteo {
+    font-size: var(--tamano-diminuto);
+    font-family: var(--letra-numeros);
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--redondeo-circular);
+    background: var(--fondo-panel);
+    border: 1px solid var(--borde-suave);
+    color: var(--texto-suave);
+}
+
+.pill-tab.activa .pill-tab-conteo {
+    background: var(--acento-claro);
+    border-color: var(--acento-borde);
+    color: var(--acento-texto);
+}
 
 /* --------------------------------------------------------------------------
    5. INSIGNIAS
@@ -20489,28 +20632,49 @@ function crearTituloSeccion({ titulo, descripcion = null, icono = null, controle
  * @returns {HTMLElement} Tarjeta.
  */
 function crearTarjetaIndicador(indicador) {
+    let microBadge = null;
+    if (indicador.estado) {
+        let badgeTexto = indicador.badge;
+        if (!badgeTexto) {
+            if (indicador.estado === 'correcto') badgeTexto = 'EN META';
+            else if (indicador.estado === 'aviso') badgeTexto = 'ALERTA';
+            else if (indicador.estado === 'critico') badgeTexto = 'DESVÍO';
+            else if (indicador.estado === 'neutro') badgeTexto = 'ESTABLE';
+            else badgeTexto = String(indicador.estado).toUpperCase();
+        }
+        microBadge = crearElemento('span', {
+            clase: `micro-badge micro-badge-${indicador.estado}`,
+            texto: badgeTexto
+        });
+    }
+
+    const cabecera = crearElemento('div', { clase: 'tarjeta-indicador-cabecera' }, [
+        crearElemento('div', { clase: 'tarjeta-indicador-etiqueta', texto: indicador.etiqueta }),
+        microBadge
+    ].filter(Boolean));
+
+    const valorContenedor = crearElemento('div', {
+        clase: 'tarjeta-indicador-valor',
+        title: String(indicador.valorMostrado)
+    }, [
+        recortarTexto(indicador.valorMostrado, 26),
+        indicador.sufijo
+            ? crearElemento('small', { texto: indicador.sufijo })
+            : null
+    ]);
+
+    const detalleContenedor = indicador.detalle
+        ? crearElemento('div', { clase: 'tarjeta-indicador-detalle', texto: indicador.detalle })
+        : null;
+
     return crearElemento('div', {
         clase: 'tarjeta-indicador',
         datos: { estado: indicador.estado }
     }, [
-        crearElemento('div', { clase: 'tarjeta-indicador-etiqueta' }, [
-            indicador.icono ? crearIcono(indicador.icono) : null,
-            indicador.etiqueta
-        ]),
-        crearElemento('div', {
-            clase: 'tarjeta-indicador-valor',
-            // El title permite ver el valor completo cuando el recorte lo acorta
-            title: String(indicador.valorMostrado)
-        }, [
-            recortarTexto(indicador.valorMostrado, 22),
-            indicador.sufijo
-                ? crearElemento('small', { texto: indicador.sufijo })
-                : null
-        ]),
-        indicador.detalle
-            ? crearElemento('div', { clase: 'tarjeta-indicador-detalle', texto: indicador.detalle })
-            : null
-    ]);
+        cabecera,
+        valorContenedor,
+        detalleContenedor
+    ].filter(Boolean));
 }
 
 /**
@@ -28774,10 +28938,10 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
     const esMasAfectado = at.turnoMayorParadas.nombre === nombreTurno;
 
     const bordeColor = turnoObj.nivelColor === 'verde'
-        ? 'var(--color-exito, #10b981)'
+        ? 'var(--correcto, #16a34a)'
         : turnoObj.nivelColor === 'amarillo'
-            ? 'var(--color-aviso, #f59e0b)'
-            : 'var(--color-critico, #ef4444)';
+            ? 'var(--aviso, #d97706)'
+            : 'var(--critico, #dc2626)';
 
     const contenedor = crearElemento('div', {
         style: 'display:flex; flex-direction:column; gap:1.25rem; margin-top:1.5rem;'
@@ -28839,25 +29003,29 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
             etiqueta: 'Disponibilidad Turno',
             valorMostrado: formatearPorcentaje(turnoObj.disponibilidad),
             detalle: `Meta de planta: > ${formatearPorcentaje(at.kpis.metaPlanta)}`,
-            estado: turnoObj.disponibilidad >= at.kpis.metaPlanta ? 'correcto' : 'critico'
+            estado: turnoObj.disponibilidad >= at.kpis.metaPlanta ? 'correcto' : 'critico',
+            badge: turnoObj.disponibilidad >= at.kpis.metaPlanta ? 'EN META' : 'DESVÍO'
         },
         {
             etiqueta: 'Paradas de Máquina',
             valorMostrado: `${turnoObj.minutosParada} min`,
             detalle: `${turnoObj.eventos.filter(e => e.minutosParada > 0).length} interrupciones`,
-            estado: turnoObj.minutosParada <= 40 ? 'correcto' : 'critico'
+            estado: turnoObj.minutosParada <= 40 ? 'correcto' : 'critico',
+            badge: turnoObj.minutosParada <= 40 ? 'ÓPTIMO' : 'CRÍTICO'
         },
         {
             etiqueta: 'Vacíos de Horno',
             valorMostrado: `${turnoObj.minutosVacios} min`,
             detalle: 'Impacto térmico en rodillos',
-            estado: turnoObj.minutosVacios <= 20 ? 'correcto' : 'aviso'
+            estado: turnoObj.minutosVacios <= 20 ? 'correcto' : 'aviso',
+            badge: turnoObj.minutosVacios <= 20 ? 'NORMAL' : 'ATENCIÓN'
         },
         {
             etiqueta: 'Pérdida Total Turno',
             valorMostrado: `${turnoObj.perdidaTotal} min`,
             detalle: `De 480 min totales de guardia`,
-            estado: turnoObj.perdidaTotal <= 60 ? 'correcto' : 'critico'
+            estado: turnoObj.perdidaTotal <= 60 ? 'correcto' : 'critico',
+            badge: turnoObj.perdidaTotal <= 60 ? 'CONTROLADO' : 'EXCESO'
         },
         {
             etiqueta: 'Acciones Correctivas',
@@ -28865,7 +29033,8 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
             detalle: turnoObj.acciones.length > 0
                 ? `${Math.round((turnoObj.acciones.filter(a => a.estado === 'Cerrado').length / turnoObj.acciones.length) * 100)}% de resolución`
                 : 'Sin acciones requeridas',
-            estado: turnoObj.acciones.every(a => a.estado === 'Cerrado') ? 'correcto' : 'aviso'
+            estado: turnoObj.acciones.every(a => a.estado === 'Cerrado') ? 'correcto' : 'aviso',
+            badge: turnoObj.acciones.every(a => a.estado === 'Cerrado') ? 'CERRADAS' : 'EN CURSO'
         }
     ]);
     contenedor.appendChild(kpisTurno);
@@ -29002,35 +29171,43 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
     fragmentos.push(cabecera);
 
     // =======================================================================
-    // 2. SELECTOR DE VISTAS Y PESTAÑAS (Consolidado 24 hs vs Turno Mañana / Tarde / Noche)
+    // 2. SELECTOR DE VISTAS Y PESTAÑAS (Pill Tabs Ejecutivas de Alta Densidad)
     // =======================================================================
     const pestañas = [
-        { id: 'consolidado', etiqueta: 'Vista Consolidada (24 Horas)' },
-        { id: 'Mañana', etiqueta: `Turno Mañana (${at.turnos['Mañana'].eventos.length} paradas · ${at.turnos['Mañana'].acciones.length} acc.)` },
-        { id: 'Tarde', etiqueta: `Turno Tarde (${at.turnos['Tarde'].eventos.length} paradas · ${at.turnos['Tarde'].acciones.length} acc.)` },
-        { id: 'Noche', etiqueta: `Turno Noche (${at.turnos['Noche'].eventos.length} paradas · ${at.turnos['Noche'].acciones.length} acc.)` },
-        { id: 'secuencial', etiqueta: 'Planillas de Turnos (Vista Completa)' }
+        { id: 'consolidado', titulo: 'Consolidado 24h', badge: '24 HORAS' },
+        { id: 'Mañana', titulo: 'Turno Mañana', badge: `${at.turnos['Mañana'].eventos.length}P · ${at.turnos['Mañana'].acciones.length}A` },
+        { id: 'Tarde', titulo: 'Turno Tarde', badge: `${at.turnos['Tarde'].eventos.length}P · ${at.turnos['Tarde'].acciones.length}A` },
+        { id: 'Noche', titulo: 'Turno Noche', badge: `${at.turnos['Noche'].eventos.length}P · ${at.turnos['Noche'].acciones.length}A` },
+        { id: 'secuencial', titulo: 'Planillas Completas', badge: 'CRONOLÓGICO' }
     ];
 
     const barraPestañas = crearElemento('div', {
-        style: 'display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1.25rem; padding-bottom:0.75rem; border-bottom:1px solid var(--borde-suave);',
-        hijos: pestañas.map((p) => {
-            const estaActiva = pestañaActiva === p.id;
-            return crearElemento('button', {
-                tipo: 'button',
-                clase: `boton ${estaActiva ? 'boton-primario' : 'boton-secundario'}`,
-                style: `border-radius:20px; padding:0.45rem 1rem; font-weight:${estaActiva ? '700' : '500'};`,
-                hijos: [
-                    crearElemento('span', { texto: p.etiqueta })
-                ],
-                eventos: {
-                    click: () => {
-                        pestañaActiva = p.id;
-                        dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos });
-                    }
-                }
-            });
-        })
+        clase: 'nav-pill-tabs-contenedor',
+        hijos: [
+            crearElemento('div', {
+                clase: 'nav-pill-tabs',
+                role: 'tablist',
+                hijos: pestañas.map((p) => {
+                    const estaActiva = pestañaActiva === p.id;
+                    return crearElemento('button', {
+                        tipo: 'button',
+                        role: 'tab',
+                        ariaSelected: estaActiva ? 'true' : 'false',
+                        clase: `pill-tab ${estaActiva ? 'activa' : ''}`,
+                        hijos: [
+                            crearElemento('span', { texto: p.titulo }),
+                            p.badge ? crearElemento('span', { clase: 'pill-tab-conteo', texto: p.badge }) : null
+                        ].filter(Boolean),
+                        eventos: {
+                            click: () => {
+                                pestañaActiva = p.id;
+                                dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos });
+                            }
+                        }
+                    });
+                })
+            })
+        ]
     });
     fragmentos.push(barraPestañas);
 
@@ -29077,37 +29254,43 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 etiqueta: 'Disponibilidad Global Planta',
                 valorMostrado: formatearPorcentaje(at.kpis.disponibilidadGlobal),
                 detalle: textoDifMeta,
-                estado: at.kpis.cumpleMetaGlobal ? 'correcto' : 'critico'
+                estado: at.kpis.cumpleMetaGlobal ? 'correcto' : 'critico',
+                badge: at.kpis.cumpleMetaGlobal ? 'EN META' : 'DESVÍO'
             },
             {
                 etiqueta: 'Paradas de Equipos',
                 valorMostrado: `${formatearNumero(at.kpis.granTotalParadas)} min`,
                 detalle: `${at.kpis.granTotalEventos} paradas registradas`,
-                estado: at.kpis.granTotalParadas <= 120 ? 'correcto' : 'critico'
+                estado: at.kpis.granTotalParadas <= 120 ? 'correcto' : 'critico',
+                badge: at.kpis.granTotalParadas <= 120 ? 'CONTROLADO' : 'CRÍTICO'
             },
             {
                 etiqueta: 'Vacíos de Horno',
                 valorMostrado: `${formatearNumero(at.kpis.granTotalVacios)} min`,
-                detalle: 'Pérdida cocción',
-                estado: at.kpis.granTotalVacios <= 60 ? 'correcto' : 'aviso'
+                detalle: 'Pérdida cocción / choque térmico',
+                estado: at.kpis.granTotalVacios <= 60 ? 'correcto' : 'aviso',
+                badge: at.kpis.granTotalVacios <= 60 ? 'NORMAL' : 'ATENCIÓN'
             },
             {
                 etiqueta: 'Mejor Turno',
                 valorMostrado: `Turno ${at.mejorTurno.nombre}`,
                 detalle: `${formatearPorcentaje(at.mejorTurno.disponibilidad)} Disp. operativa`,
-                estado: 'correcto'
+                estado: 'correcto',
+                badge: 'LÍDER'
             },
             {
                 etiqueta: 'Turno Más Afectado',
                 valorMostrado: `Turno ${at.turnoMayorParadas.nombre}`,
                 detalle: `${formatearNumero(at.turnoMayorParadas.minutos)} min parados acumulados`,
-                estado: 'critico'
+                estado: 'critico',
+                badge: 'AFECTADO'
             },
             {
                 etiqueta: 'Eficacia Acciones',
                 valorMostrado: `${at.kpis.accionesCerradas} / ${at.kpis.totalAcciones}`,
                 detalle: `${formatearPorcentaje(at.kpis.porcentajeCerradas)} cerradas`,
-                estado: at.kpis.porcentajeCerradas >= 80 ? 'correcto' : 'aviso'
+                estado: at.kpis.porcentajeCerradas >= 80 ? 'correcto' : 'aviso',
+                badge: at.kpis.porcentajeCerradas >= 80 ? 'EFICAZ' : 'PENDIENTES'
             }
         ];
 
@@ -29134,10 +29317,10 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             const esMasAfectado = at.turnoMayorParadas.nombre === nombreT;
 
             const bordeColor = t.nivelColor === 'verde'
-                ? 'var(--color-exito, #10b981)'
+                ? 'var(--correcto, #16a34a)'
                 : t.nivelColor === 'amarillo'
-                    ? 'var(--color-aviso, #f59e0b)'
-                    : 'var(--color-critico, #ef4444)';
+                    ? 'var(--aviso, #d97706)'
+                    : 'var(--critico, #dc2626)';
 
             return crearElemento('div', {
                 clase: 'panel',
