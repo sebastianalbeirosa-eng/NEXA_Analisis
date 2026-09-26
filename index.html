@@ -90,14 +90,14 @@
     --texto-suave: #64748b;
     --texto-tenue: #94a3b8;
 
-    /* --- Color Primario de Marca: Teal / Petróleo Esmeralda (idéntico a la K del logo) --- */
-    --acento: #0d9488;
-    --acento-oscuro: #0f766e;
-    --acento-claro: #f0fdfa;
-    --acento-borde: #99f6e4;
-    --acento-texto: #0f766e;
+    /* --- Color Primario de Marca: Celeste / Azul Ejecutivo --- */
+    --acento: #0284c7;
+    --acento-oscuro: #0369a1;
+    --acento-claro: #f0f9ff;
+    --acento-borde: #bae6fd;
+    --acento-texto: #0369a1;
 
-    /* --- Acentos Semánticos de Alto Contraste --- */
+    /* --- Acentos Semánticos de Alto Contraste (Semáforo de Estados) --- */
     --correcto: #16a34a;
     --correcto-fondo: #f0fdf4;
     --correcto-borde: #bbf7d0;
@@ -114,16 +114,17 @@
     --informativo-fondo: #f0f9ff;
     --informativo-borde: #bae6fd;
 
-    /* --- Paleta categorica para graficos ---
-       Alineada al tono industrial teal y acentos de alto contraste */
-    --dato-1: #0d9488;
-    --dato-2: #d97706;
-    --dato-3: #16a34a;
-    --dato-4: #dc2626;
-    --dato-5: #6366f1;
-    --dato-6: #0284c7;
-    --dato-7: #ca8a04;
-    --dato-8: #8b5cf6;
+    /* --- Paleta categorica para graficos y anillos ---
+       Usa gamas diferenciadas (celeste, azul, índigo, púrpura, cian, rosa, pizarra)
+       para NO confundirse con el semáforo verde/rojo/ámbar de los KPIs */
+    --dato-1: #0284c7;
+    --dato-2: #2563eb;
+    --dato-3: #6366f1;
+    --dato-4: #8b5cf6;
+    --dato-5: #06b6d4;
+    --dato-6: #ec4899;
+    --dato-7: #f97316;
+    --dato-8: #64748b;
 
     /* --- Escala secuencial para mapas de calor (poca -> mucha intensidad) --- */
     --calor-0: #f0f4fb;
@@ -205,12 +206,12 @@ html.tema-oscuro {
     --texto-suave: #94a3b8;
     --texto-tenue: #64748b;
 
-    /* --- Color Primario de Marca en Oscuro: Teal / Petróleo Esmeralda --- */
-    --acento: #14b8a6;
-    --acento-oscuro: #0d9488;
-    --acento-claro: #042f2e;
-    --acento-borde: #134e4a;
-    --acento-texto: #5eead4;
+    /* --- Color Primario de Marca en Oscuro: Celeste / Azul Ejecutivo --- */
+    --acento: #38bdf8;
+    --acento-oscuro: #0284c7;
+    --acento-claro: #0c2d48;
+    --acento-borde: #0369a1;
+    --acento-texto: #7dd3fc;
 
     /* --- Acentos Semánticos de Alto Contraste en Oscuro --- */
     --correcto: #22c55e;
@@ -229,15 +230,16 @@ html.tema-oscuro {
     --informativo-fondo: #082f49;
     --informativo-borde: #075985;
 
-    /* Los datos se aclaran para mantener contraste sobre fondo oscuro */
-    --dato-1: #14b8a6;
-    --dato-2: #f59e0b;
-    --dato-3: #22c55e;
-    --dato-4: #ef4444;
-    --dato-5: #818cf8;
-    --dato-6: #38bdf8;
-    --dato-7: #facc15;
-    --dato-8: #a78bfa;
+    /* Los datos se aclaran para mantener contraste sobre fondo oscuro,
+       usando gama celeste/azul/violeta/rosa sin colisionar con el semáforo */
+    --dato-1: #38bdf8;
+    --dato-2: #60a5fa;
+    --dato-3: #818cf8;
+    --dato-4: #a78bfa;
+    --dato-5: #22d3ee;
+    --dato-6: #f472b6;
+    --dato-7: #fb923c;
+    --dato-8: #94a3b8;
 
     --calor-0: #151d33;
     --calor-1: #1d2b4d;
@@ -391,51 +393,13 @@ td.numero,
     min-width: 0;
 }
 
-.marca-logo {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
-    border-radius: var(--redondeo-medio);
-    background: var(--fondo-panel);
-    border: 1px solid var(--borde-suave);
-    color: var(--texto-fuerte);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--sombra-suave);
-    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
-}
-
-.marca-logo:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--sombra-media);
-    border-color: var(--acento);
-}
-
-.icono-synoptik {
-    width: 32px;
-    height: 32px;
-    display: block;
-}
-
-.tema-oscuro .icono-synoptik path {
-    stroke: var(--acento);
-}
-
-.marca-texto {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-}
-
 .marca-fila-nombre {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
-/* Tipografía de synoptiK: cuerpo en serif clásico y la 'K' final en palo seco teal */
+/* Tipografía de SynoptiK: cuerpo en serif clásico con 'S' normal y la 'K' final en cuadro */
 .marca-nombre {
     font-family: 'Georgia', 'Merriweather', 'Baskerville', 'Times New Roman', serif;
     font-size: 1.85rem;
@@ -443,7 +407,8 @@ td.numero,
     line-height: 1;
     letter-spacing: -0.01em;
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
+    gap: 6px;
     user-select: none;
 }
 
@@ -451,16 +416,48 @@ td.numero,
     color: var(--texto-fuerte);
 }
 
-.syn-k {
-    font-family: var(--letra-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-    color: var(--acento);
-    font-weight: 800;
-    font-size: 1.95rem;
-    margin-left: 0.5px;
+/* Cuadro de la letra 'K' al final del nombre, realzado con acento celeste */
+.syn-k-caja {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: var(--fondo-panel);
+    border: 1.5px solid var(--acento-borde);
+    color: var(--texto-fuerte);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.12), var(--sombra-suave);
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    cursor: default;
 }
 
-.tema-oscuro .syn-k {
-    color: var(--acento);
+.syn-k-caja:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    border-color: var(--acento);
+}
+
+.icono-synoptik {
+    width: 27px;
+    height: 27px;
+    display: block;
+}
+
+.tema-oscuro .syn-k-caja {
+    background: var(--fondo-elevado);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.18), var(--sombra-suave);
+}
+
+.tema-oscuro .syn-k-caja:hover {
+    border-color: var(--acento);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.tema-oscuro .icono-synoptik path {
+    stroke: var(--acento);
 }
 
 /* Línea divisoria vertical fina */
@@ -6238,21 +6235,14 @@ html.tema-oscuro .barra-lateral {
     -->
     <header class="encabezado no-imprimir">
         <div class="marca">
-            <div class="marca-logo" aria-hidden="true" title="synoptiK">
-                <svg class="icono-synoptik" viewBox="0 0 38 38" width="36" height="36" fill="none">
-                    <line x1="7" y1="5" x2="7" y2="33" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
-                    <line x1="7" y1="21" x2="22" y2="33" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
-                    <path d="M7 21 H13 V15 H19 V9 H26" stroke="#0d9488" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="miter"/>
-                </svg>
-            </div>
-            <div class="marca-texto">
-                <div class="marca-fila-nombre">
-                    <span class="marca-nombre"><span class="syn-base">synopti</span><span class="syn-k">K</span></span>
-                    <span class="marca-separador" aria-hidden="true"></span>
-                    <div class="marca-tagline">
-                        <span>Intelligent Data</span>
-                        <span>Analytics</span>
-                    </div>
+            <div class="marca-fila-nombre">
+                <div class="marca-nombre" title="SynoptiK">
+                    <span class="syn-base">Synopti</span><span class="syn-k-caja" aria-label="K"><svg class="icono-synoptik" viewBox="0 0 38 38" width="27" height="27" fill="none"><line x1="7" y1="5" x2="7" y2="33" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="7" y1="21" x2="22" y2="33" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M7 21 H13 V15 H19 V9 H26" stroke="var(--acento)" stroke-width="4" stroke-linecap="round" stroke-linejoin="miter"/></svg></span>
+                </div>
+                <span class="marca-separador" aria-hidden="true"></span>
+                <div class="marca-tagline">
+                    <span>Intelligent Data</span>
+                    <span>Analytics</span>
                 </div>
             </div>
         </div>
@@ -29102,7 +29092,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
     const momento = estado.cargadoEn || new Date();
     const cabecera = crearElemento('div', {
         clase: 'panel',
-        style: 'padding: 1.5rem 2rem; border-top: 4px solid #0d9488; margin-bottom: 1.5rem; background: var(--fondo-panel);',
+        style: 'padding: 1.5rem 2rem; border-top: 4px solid var(--acento); margin-bottom: 1.5rem; background: var(--fondo-panel);',
         hijos: [
             crearElemento('div', {
                 style: 'display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--texto-tenue); font-weight:700; margin-bottom:0.75rem;',
