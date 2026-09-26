@@ -2228,13 +2228,13 @@ td.numero,
 
 .grafico-etiqueta {
     fill: var(--texto-suave);
-    font-size: 10px;
+    font-size: 12px;
     font-family: var(--letra-base);
 }
 
 .grafico-etiqueta-valor {
     fill: var(--texto-fuerte);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     font-family: var(--letra-numeros);
 }
@@ -2244,13 +2244,13 @@ td.numero,
    lee primero: es el numero que el usuario fue a buscar. */
 .grafico-etiqueta-parte {
     fill: var(--texto-tenue);
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 500;
 }
 
 .grafico-titulo-eje {
     fill: var(--texto-tenue);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -3987,7 +3987,7 @@ body.redimensionando-columna {
    ancho maximo, queda del tamano que necesita para leerse. */
 .grafico-anillo {
     display: block;
-    max-width: 240px;
+    max-width: 280px;
     margin: 0 auto;
 }
 
@@ -4011,7 +4011,7 @@ body.redimensionando-columna {
 
 .panel-cuerpo:has(> .grafico-anillo) .grafico-anillo {
     flex: 0 0 auto;
-    max-width: 168px;
+    max-width: 220px;
     margin: 0;
 }
 
@@ -9935,6 +9935,24 @@ function capitalizarNombre(nombre) {
         .join(' ');
 }
 
+/**
+ * Extrae nombres individuales de operarios/responsables si aparecen combinados
+ * (por ejemplo 'Salinas / Molina', 'Salinas, Molina y Castro', 'Albeiro S. / Echegaray G.').
+ * Permite computar los méritos y rankings de forma individual sin penalizar el trabajo en equipo.
+ *
+ * @param {string} texto - Cadena original de responsables.
+ * @returns {Array<string>} Lista de nombres de operarios individuales.
+ */
+function extraerOperadoresIndividuales(texto) {
+    if (!texto) return ['Operador'];
+    const partes = String(texto)
+        .split(/[\/,;]|\s+y\s+|\s+e\s+|\s+-\s+/i)
+        .map((p) => p.trim())
+        .filter((p) => p.length > 1);
+
+    return partes.length > 0 ? partes : [String(texto).trim()];
+}
+
 // ===========================================================================
 // 3. ANALISIS COMPLETO DE TURNOS
 // ===========================================================================
@@ -10142,43 +10160,47 @@ function ejecutarAnalisisCompletoTurnos(paradas = [], acciones = [], catalogo = 
         else if (estado === 'En Proceso') accionesEnProceso += 1;
         else accionesPendientes += 1;
 
-        // Conteo por responsable
+        // Conteo por responsable individual (reconoce méritos individuales aunque operen en equipo)
         const probTexto = problema || 'Sin defecto especificado';
-        const nombreFormateado = capitalizarNombre(responsable);
-        const claveResp = normalizarTexto(responsable);
-        const actualResp = responsablesMap.get(claveResp) || {
-            nombre: nombreFormateado,
-            total: 0,
-            cerradas: 0,
-            enProceso: 0,
-            pendientes: 0,
-            problemas: [],
-            acciones: [],
-            detalles: [],
-            turnos: []
-        };
-        actualResp.total += 1;
-        if (estado === 'Cerrado') actualResp.cerradas += 1;
-        else if (estado === 'En Proceso') actualResp.enProceso += 1;
-        else actualResp.pendientes += 1;
-        if (problema && !actualResp.problemas.includes(problema)) {
-            actualResp.problemas.push(problema);
-        }
-        if (accion && !actualResp.acciones.includes(accion)) {
-            actualResp.acciones.push(accion);
-        }
-        actualResp.detalles.push({
-            hora,
-            turno,
-            problema: probTexto,
-            accion: accion || 'Acción operativa',
-            estado,
-            observaciones: obs
+        const operadores = extraerOperadoresIndividuales(responsable);
+
+        operadores.forEach((op) => {
+            const nombreFormateado = capitalizarNombre(op);
+            const claveResp = normalizarTexto(nombreFormateado);
+            const actualResp = responsablesMap.get(claveResp) || {
+                nombre: nombreFormateado,
+                total: 0,
+                cerradas: 0,
+                enProceso: 0,
+                pendientes: 0,
+                problemas: [],
+                acciones: [],
+                detalles: [],
+                turnos: []
+            };
+            actualResp.total += 1;
+            if (estado === 'Cerrado') actualResp.cerradas += 1;
+            else if (estado === 'En Proceso') actualResp.enProceso += 1;
+            else actualResp.pendientes += 1;
+            if (problema && !actualResp.problemas.includes(problema)) {
+                actualResp.problemas.push(problema);
+            }
+            if (accion && !actualResp.acciones.includes(accion)) {
+                actualResp.acciones.push(accion);
+            }
+            actualResp.detalles.push({
+                hora,
+                turno,
+                problema: probTexto,
+                accion: accion || 'Acción operativa',
+                estado,
+                observaciones: obs
+            });
+            if (turno && !actualResp.turnos.includes(turno)) {
+                actualResp.turnos.push(turno);
+            }
+            responsablesMap.set(claveResp, actualResp);
         });
-        if (turno && !actualResp.turnos.includes(turno)) {
-            actualResp.turnos.push(turno);
-        }
-        responsablesMap.set(claveResp, actualResp);
 
         // Conteo por problema / defecto de calidad y proceso
         const claveProb = normalizarTexto(probTexto);
@@ -10196,7 +10218,9 @@ function ejecutarAnalisisCompletoTurnos(paradas = [], acciones = [], catalogo = 
         if (estado === 'Cerrado') actualProb.cerradas += 1;
         else if (estado === 'En Proceso') actualProb.enProceso += 1;
         else actualProb.pendientes += 1;
-        if (responsable) actualProb.responsables.add(nombreFormateado);
+        operadores.forEach((op) => {
+            actualProb.responsables.add(capitalizarNombre(op));
+        });
         if (accion) actualProb.acciones.add(accion);
         if (turno) actualProb.turnos.add(turno);
         problemasMap.set(claveProb, actualProb);
@@ -10480,14 +10504,20 @@ function generarDirectivasSupervisores({ kpis, rankingParadas, rankingVacios, tu
     // 1. Causa principal de parada de máquina
     if (kpis.granTotalParadas > 0 && rankingParadas && rankingParadas.length > 0) {
         const causa = rankingParadas[0].motivo || 'parada no programada';
-        directivas.push(`Atender con prioridad el sistema de "${causa}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas.nombre}.`);
+        const obsParada = (rankingParadas[0].observaciones && rankingParadas[0].observaciones.length > 0 && rankingParadas[0].observaciones[0])
+            ? ` (${rankingParadas[0].observaciones[0].trim()})`
+            : '';
+        directivas.push(`Atender con prioridad el sistema de "${causa}" para evitar paradas recurrentes en el Turno ${turnoMayorParadas.nombre}${obsParada}.`);
     } else {
         directivas.push('Mantener rutinas de lubricación y chequeo preventivo para sostener la marcha continua sin paradas de equipos.');
     }
 
     // 2. Pérdidas por vacíos de horno
     if (kpis.granTotalVacios > 0 && turnoMayorVacios && turnoMayorVacios.minutos > 0) {
-        directivas.push(`Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios.nombre}.`);
+        const obsVacio = (rankingVacios && rankingVacios[0] && rankingVacios[0].observaciones && rankingVacios[0].observaciones.length > 0 && rankingVacios[0].observaciones[0])
+            ? ` (${rankingVacios[0].observaciones[0].trim()})`
+            : '';
+        directivas.push(`Mejorar sincronismo en pulmón de transferencia de horno para eliminar los vacíos en el Turno ${turnoMayorVacios.nombre}${obsVacio}.`);
     } else {
         directivas.push('Preservar la alimentación continua del horno para mantener la estabilidad térmica y evitar consumo energético innecesario.');
     }
@@ -21592,8 +21622,8 @@ function dibujarBarrasHorizontales(datos, opciones = {}) {
         ...datos.map((elemento) => String(elemento.etiqueta ?? '').length)
     );
 
-    // A 10 pixeles de tamano de letra, cada caracter ocupa unas 5,4 unidades
-    const anchoPorCaracter = 5.4;
+    // A 11-12 pixeles de tamano de letra, cada caracter ocupa unas 5,8 unidades
+    const anchoPorCaracter = 5.8;
 
     /**
      * El ancho se calcula para DOS renglones, no para uno.
@@ -21608,7 +21638,7 @@ function dibujarBarrasHorizontales(datos, opciones = {}) {
     const caracteresPorRenglon = Math.ceil(largoMaximoDeEtiqueta / RENGLONES_DE_ETIQUETA);
 
     /**
-     * Se suman dos caracteres de holgura.
+     * Se suman tres caracteres de holgura.
      *
      * El reparto en renglones nunca sale exacto: se corta entre palabras, asi
      * que un renglon queda un poco mas corto que el otro. Sin holgura, una
@@ -21616,10 +21646,10 @@ function dibujarBarrasHorizontales(datos, opciones = {}) {
      * aparece un "..." que no hace falta.
      */
     const anchoEtiqueta = opciones.anchoEtiqueta
-        ?? Math.min(300, Math.max(110, (caracteresPorRenglon + 2) * anchoPorCaracter + 14));
+        ?? Math.min(340, Math.max(125, (caracteresPorRenglon + 3) * anchoPorCaracter + 18));
 
     // Cantidad de caracteres que entran de verdad en un renglon
-    const caracteresQueEntran = Math.max(8, Math.floor((anchoEtiqueta - 14) / anchoPorCaracter));
+    const caracteresQueEntran = Math.max(8, Math.floor((anchoEtiqueta - 16) / anchoPorCaracter));
 
     /**
      * ESPACIO PARA EL VALOR, MEDIDO SOBRE EL TEXTO REAL
@@ -21672,8 +21702,8 @@ function dibujarBarrasHorizontales(datos, opciones = {}) {
      */
     const hayEtiquetasPartidas = largoMaximoDeEtiqueta > caracteresQueEntran;
     const altoEfectivoDeBarra = hayEtiquetasPartidas
-        ? Math.max(altoDeBarra, 28)
-        : altoDeBarra;
+        ? Math.max(altoDeBarra, 30)
+        : Math.max(altoDeBarra, 24);
 
     const alto = margenSuperior + margenInferior
         + datos.length * altoEfectivoDeBarra + (datos.length - 1) * separacion;
@@ -21710,7 +21740,7 @@ function dibujarBarrasHorizontales(datos, opciones = {}) {
             RENGLONES_DE_ETIQUETA
         );
 
-        const altoDeRenglon = 10.5;
+        const altoDeRenglon = 12;
         const yPrimerRenglon = centroDeLaBarra
             - ((renglones.length - 1) * altoDeRenglon) / 2;
 
@@ -21967,12 +21997,13 @@ function dibujarBarrasVerticales(datos, opciones = {}) {
     const debeRotar = rotarEtiquetas === true
         || (rotarEtiquetas === 'auto' && (datos.length > 12 || largoMaximoEtiqueta > 8));
 
-    const margenInferior = debeRotar ? 64 : 30;
+    const margenInferior = debeRotar ? Math.min(110, Math.max(68, Math.round(largoMaximoEtiqueta * 4.2))) : 32;
 
     const anchoDeGrafico = ANCHO_BASE - margenIzquierdo - margenDerecho;
-    const altoDeGrafico = alto - margenSuperior - margenInferior;
+    const altoDeGrafico = Math.max(80, alto - margenSuperior - margenInferior);
+    const altoLienzo = margenSuperior + altoDeGrafico + margenInferior;
 
-    const svg = crearLienzo(ANCHO_BASE, alto, descripcion);
+    const svg = crearLienzo(ANCHO_BASE, altoLienzo, descripcion);
 
     const valorMaximo = Math.max(...datos.map((elemento) => elemento.valor || 0));
     const escala = calcularEscalaAgradable(0, valorMaximo, 5);
@@ -22094,7 +22125,7 @@ function dibujarBarrasVerticales(datos, opciones = {}) {
         if (debeRotar) {
             // Las etiquetas giradas 45 grados tienen bastante mas espacio
             // disponible que las horizontales, asi que se recortan menos.
-            const etiqueta = crearTexto(recortarTexto(elemento.etiqueta, 24), {
+            const etiqueta = crearTexto(recortarTexto(elemento.etiqueta, 30), {
                 x: centroX,
                 y: posicionEtiquetaY,
                 'text-anchor': 'end',
@@ -23035,11 +23066,16 @@ function trazoDeAnillo(cx, cy, radioInterno, radioExterno, desde, hasta) {
         (cy + radio * Math.sin(angulo)).toFixed(2)
     ];
 
-    const arcoGrande = (hasta - desde) > Math.PI ? 1 : 0;
+    // Si la porción cubre la vuelta entera (ej. 100% de una categoría como Cerradas),
+    // en SVG un arco cuyos extremos coinciden (x1==x2 && y1==y2) colapsa a longitud cero.
+    // Ajustamos levemente el ángulo final (0.0001 rad) para que el trazador dibuje el anillo continuo completo.
+    const delta = hasta - desde;
+    const finEfectivo = delta >= Math.PI * 1.999 ? desde + Math.PI * 1.9999 : hasta;
+    const arcoGrande = (finEfectivo - desde) > Math.PI ? 1 : 0;
 
     const [x1, y1] = punto(radioExterno, desde);
-    const [x2, y2] = punto(radioExterno, hasta);
-    const [x3, y3] = punto(radioInterno, hasta);
+    const [x2, y2] = punto(radioExterno, finEfectivo);
+    const [x3, y3] = punto(radioInterno, finEfectivo);
     const [x4, y4] = punto(radioInterno, desde);
 
     return [
@@ -23674,7 +23710,7 @@ function crearPanelDeRanking(analisis, configuracion) {
                  * Se prefiere desplazarse y leer bien. Un grafico que no se lee no
                  * ocupa poco lugar: ocupa lugar y no sirve.
                  */
-                altoDeBarra: 26,
+                altoDeBarra: 28,
                 separacion: 10,
                 serieDeColor: 1
             })
@@ -23838,23 +23874,24 @@ function crearPanelDeDimension({ columna, configuracion, datos, serieDeColor = 1
     const lider = ordenados[0];
 
     /**
-     * Con pocas categorias, barras VERTICALES.
-     *
-     * Con tres o cuatro valores (turnos, grupos, procesos) las barras
-     * horizontales desperdician todo el ancho: quedan tres rayas largas y mucho
-     * blanco. Verticales usan el ancho para separar las columnas y el alto para
-     * comparar, que es lo que se quiere ver, y las etiquetas cortas entran
-     * perfectamente abajo.
-     *
-     * Pasando ese numero se invierte: las etiquetas largas no entran abajo y hay
-     * que rotarlas, y ahi lo horizontal vuelve a ganar porque la etiqueta se lee
-     * derecha y en su renglon.
+     * Con pocas categorias y etiquetas CORTAS, barras VERTICALES.
+     * Si las categorias son motivos, causas o descripciones (o tienen textos largos),
+     * las barras horizontales son indispensables para que los textos no se recorten ni roten.
      */
-    const pocasCategorias = ordenados.length <= 5;
+    const colNorm = columna.toLowerCase();
+    const esColumnaDescriptiva = colNorm.includes('motivo') ||
+        colNorm.includes('causa') ||
+        colNorm.includes('descrip') ||
+        colNorm.includes('problema') ||
+        colNorm.includes('falla') ||
+        colNorm.includes('observac');
+
+    const tieneEtiquetasLargas = datosDelGrafico.some((d) => String(d.etiqueta ?? '').length > 12);
+    const pocasCategorias = ordenados.length <= 5 && !esColumnaDescriptiva && !tieneEtiquetasLargas;
 
     const grafico = pocasCategorias
         ? dibujarBarrasVerticales(datosDelGrafico, {
-            alto: 260,
+            alto: 280,
             columnaParaFiltrar: columna,
             formatearValor: esConteo ? formatearNumero : formatearNumeroInteligente,
             descripcion: `Ranking por ${columna}`,
@@ -23866,7 +23903,7 @@ function crearPanelDeDimension({ columna, configuracion, datos, serieDeColor = 1
             columnaParaFiltrar: columna,
             formatearValor: esConteo ? formatearNumero : formatearNumeroInteligente,
             descripcion: `Ranking por ${columna}`,
-            altoDeBarra: 26,
+            altoDeBarra: 28,
             separacion: 10,
             serieDeColor
         });
@@ -28587,10 +28624,21 @@ function crearTablaParadasTurno(eventos, nombreTurno, disponibilidad) {
                             }),
                             crearElemento('td', { style: 'text-align:right;', texto: `${sumParada} min` }),
                             crearElemento('td', { style: 'text-align:right;', texto: `${sumVacios} min` }),
-                            crearElemento('td', { style: 'text-align:right; color:var(--texto-fuerte); font-size:1.05rem;', texto: `${sumTotal} min` }),
                             crearElemento('td', {
-                                style: 'font-weight:700; color:var(--color-primario, #3b82f6);',
-                                texto: `Disponibilidad Turno: ${formatearPorcentaje(disponibilidad)} (Meta: > 88%)`
+                                style: 'text-align:right; color:var(--texto-fuerte); font-size:1.05rem; padding-right:2rem; white-space:nowrap;',
+                                texto: `${sumTotal} min`
+                            }),
+                            crearElemento('td', {
+                                style: 'padding-left:1.5rem; text-align:left; vertical-align:middle;',
+                                hijos: [
+                                    crearElemento('span', {
+                                        style: 'display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:20px; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.28); color:var(--color-primario, #2563eb); font-weight:700; font-size:0.9rem; white-space:nowrap;',
+                                        hijos: [
+                                            crearElemento('span', { texto: `Disponibilidad Turno: ${formatearPorcentaje(disponibilidad)}` }),
+                                            crearElemento('span', { style: 'font-weight:500; font-size:0.8rem; opacity:0.85;', texto: '(Meta: > 88%)' })
+                                        ]
+                                    })
+                                ]
                             })
                         ]
                     })
@@ -29211,7 +29259,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         }));
 
         const filaGraficosParadas = crearElemento('div', {
-            style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:1rem; margin-top:1.5rem;',
+            style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:1.25rem; margin-top:1.5rem;',
             hijos: [
                 crearPanel({
                     titulo: 'Pérdidas Operativas por Turno',
@@ -29220,7 +29268,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                     cuerpo: [
                         dibujarBarrasVerticales(datosBarrasTurnos, {
                             formatearValor: (v) => `${formatearNumero(v)} min`,
-                            alto: 230
+                            alto: 280
                         })
                     ]
                 }),
@@ -29232,7 +29280,10 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         datosParetoParadas.length > 0
                             ? dibujarBarrasHorizontales(datosParetoParadas, {
                                 formatearValor: (v) => `${formatearNumero(v)} min`,
-                                destacarPrimero: true
+                                destacarPrimero: true,
+                                altoDeBarra: 28,
+                                separacion: 10,
+                                anchoEtiqueta: 230
                             })
                             : crearElemento('p', { clase: 'texto-tenue', texto: 'Sin datos de paradas suficientes.' }),
                         at.rankingParadas.some(c => c.observaciones && c.observaciones.length > 0)
@@ -29256,7 +29307,10 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         datosVaciosHorno.length > 0
                             ? dibujarBarrasHorizontales(datosVaciosHorno, {
                                 formatearValor: (v) => `${formatearNumero(v)} min`,
-                                destacarPrimero: true
+                                destacarPrimero: true,
+                                altoDeBarra: 28,
+                                separacion: 10,
+                                anchoEtiqueta: 230
                             })
                             : crearElemento('p', { clase: 'texto-tenue', texto: 'Sin vacíos de horno registrados.' }),
                         at.rankingVacios.some(v => v.observaciones && v.observaciones.length > 0)
@@ -29427,12 +29481,20 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                                     }),
                                     crearElemento('td', { style: 'text-align:right;', texto: `${sumParada}` }),
                                     crearElemento('td', { style: 'text-align:right;', texto: `${sumVacios}` }),
-                                    crearElemento('td', { style: 'text-align:right; color:var(--texto-fuerte);', texto: `${sumTotal}` }),
                                     crearElemento('td', {
-                                        style: 'font-weight:700; color:var(--color-primario, #3b82f6);',
-                                        texto: filtroTurnoParadas !== 'todos'
-                                            ? `Disponibilidad Turno: ${Math.max(0, Math.round(((480 - sumTotal) / 480) * 100))}%`
-                                            : `Disponibilidad Global: ${formatearPorcentaje(at.kpis.disponibilidadGlobal)}`
+                                        style: 'text-align:right; color:var(--texto-fuerte); font-size:1.05rem; padding-right:2rem; white-space:nowrap;',
+                                        texto: `${sumTotal} min`
+                                    }),
+                                    crearElemento('td', {
+                                        style: 'padding-left:1.5rem; text-align:left; vertical-align:middle;',
+                                        hijos: [
+                                            crearElemento('span', {
+                                                style: 'display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:20px; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.28); color:var(--color-primario, #2563eb); font-weight:700; font-size:0.9rem; white-space:nowrap;',
+                                                texto: filtroTurnoParadas !== 'todos'
+                                                    ? `Disponibilidad Turno: ${Math.max(0, Math.round(((480 - sumTotal) / 480) * 100))}% (Meta: > 88%)`
+                                                    : `Disponibilidad Global: ${formatearPorcentaje(at.kpis.disponibilidadGlobal)} (Meta: > 88%)`
+                                            })
+                                        ]
                                     })
                                 ]
                             })
@@ -29466,7 +29528,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         }));
 
         const filaGraficosAcciones = crearElemento('div', {
-            style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:1rem; margin-top:1.5rem;',
+            style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:1.25rem; margin-top:1.5rem;',
             hijos: [
                 crearPanel({
                     titulo: 'Resolución de Acciones',
@@ -29475,7 +29537,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                     cuerpo: [
                         datosAnilloAcciones.length > 0
                             ? dibujarAnillo(datosAnilloAcciones, {
-                                alto: 220,
+                                alto: 260,
                                 etiquetaDelTotal: 'Cerradas',
                                 formatearValor: () => `${Math.round(at.kpis.porcentajeCerradas)}%`
                             })
@@ -29490,7 +29552,10 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         datosBarrasResponsables.length > 0
                             ? dibujarBarrasHorizontales(datosBarrasResponsables, {
                                 formatearValor: (v) => `${formatearNumero(v)} acc.`,
-                                destacarPrimero: true
+                                destacarPrimero: true,
+                                altoDeBarra: 28,
+                                separacion: 10,
+                                anchoEtiqueta: 220
                             })
                             : crearElemento('p', { clase: 'texto-tenue', texto: 'Sin intervenciones registradas.' })
                     ]
@@ -29503,7 +29568,10 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         datosBarrasProblemas.length > 0
                             ? dibujarBarrasHorizontales(datosBarrasProblemas, {
                                 formatearValor: (v) => `${formatearNumero(v)} casos`,
-                                destacarPrimero: true
+                                destacarPrimero: true,
+                                altoDeBarra: 28,
+                                separacion: 10,
+                                anchoEtiqueta: 230
                             })
                             : crearElemento('p', { clase: 'texto-tenue', texto: 'Sin defectos registrados.' })
                     ]
