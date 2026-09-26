@@ -15150,16 +15150,14 @@ function calcularCalidad({
         });
     }
 
-    // --- Volumen insuficiente (hasta 12 puntos) ---
-    // No es un problema de los datos sino del analisis: con muy pocas filas,
-    // las estadisticas no son confiables aunque el archivo este impecable.
-    if (totalFilas < 30) {
-        const descuento = totalFilas < 10 ? 12 : 6;
-        puntaje -= descuento;
+    // --- Muestra concisa u operativa ---
+    // Tener pocos registros (ej: 10 a 25 registros en un reporte diario o tabla operativa)
+    // no es un problema de calidad ni de veracidad de los datos. No se penaliza el puntaje.
+    if (totalFilas < 15 && totalFilas > 0) {
         descuentos.push({
-            concepto: 'Pocos registros',
-            detalle: `Solo ${totalFilas} fila(s): las conclusiones estadisticas seran debiles`,
-            puntos: descuento
+            concepto: 'Muestra operativa concisa',
+            detalle: `${totalFilas} registros: los datos se leyeron íntegros y corresponden al ciclo evaluado`,
+            puntos: 0
         });
     }
 
@@ -17231,7 +17229,7 @@ const almacen = {
 
 
 /** Cantidad de filas iniciales donde se busca el encabezado. */
-const FILAS_A_INSPECCIONAR = 25;
+const FILAS_A_INSPECCIONAR = 40;
 
 /**
  * Evalua si una fila parece ser la de encabezados.
@@ -17251,7 +17249,13 @@ function puntuarComoEncabezado(fila) {
     const celdasConContenido = fila.filter((celda) => !estaVacio(celda));
     if (celdasConContenido.length < 2) return 0;
 
-    const proporcionLlena = celdasConContenido.length / fila.length;
+    // Ignoramos celdas vacias al final de la fila (arrastre habitual de hojas Excel con rangos anchos)
+    let ultimoIndiceConContenido = fila.length - 1;
+    while (ultimoIndiceConContenido >= 0 && estaVacio(fila[ultimoIndiceConContenido])) {
+        ultimoIndiceConContenido -= 1;
+    }
+    const largoEfectivo = ultimoIndiceConContenido + 1;
+    const proporcionLlena = largoEfectivo > 0 ? celdasConContenido.length / largoEfectivo : 0;
 
     const celdasDeTexto = celdasConContenido.filter(
         (celda) => typeof celda === 'string' && !/^-?\d+([.,]\d+)?$/.test(String(celda).trim())
@@ -18384,6 +18388,66 @@ function elegirHoja(libro) {
 }
 
 /**
+ * Evalua si una fila de celdas corresponde a la cabecera de la tabla de paradas/vacíos.
+ *
+ * @param {Array} row - Fila del libro.
+ * @returns {boolean}
+ */
+function esEncabezadoParadas(row) {
+    if (!Array.isArray(row)) return false;
+    // Si contiene hora, minutos numéricos o código de motivo, es fila de datos
+    if (row.some((c) => typeof c === 'string' && /^\d{1,2}:\d{2}/.test(c.trim()))) return false;
+    if (row.some((c) => typeof c === 'number')) return false;
+    if (row.some((c) => typeof c === 'string' && /^[PVO]-\d{2,4}$/i.test(c.trim()))) return false;
+
+    let tieneColHoraOTurno = false;
+    let tieneColMotivoOCod = false;
+    let tieneColMinutos = false;
+    let celdasDeTextoCorto = 0;
+
+    row.forEach((c) => {
+        if (c === null || c === undefined || c === '') return;
+        const norm = normalizarTexto(c);
+        if (typeof c === 'string' && c.length < 50) celdasDeTextoCorto += 1;
+        if (norm === 'turno' || norm === 'hora' || norm === 'horario') tieneColHoraOTurno = true;
+        if (norm.includes('cod') || norm.includes('motivo') || norm.includes('causa') || norm.includes('descripcion') || norm.includes('equipo')) tieneColMotivoOCod = true;
+        if (norm.includes('parada') || norm.includes('min') || /\bvacios?\b/.test(norm) || norm.includes('duracion') || norm.includes('perdida')) tieneColMinutos = true;
+    });
+
+    return celdasDeTextoCorto >= 3 && tieneColMotivoOCod && tieneColMinutos;
+}
+
+/**
+ * Evalua si una fila de celdas corresponde a la cabecera de la tabla de acciones correctivas.
+ *
+ * @param {Array} row - Fila del libro.
+ * @returns {boolean}
+ */
+function esEncabezadoAcciones(row) {
+    if (!Array.isArray(row)) return false;
+    // Si contiene estado de acción o timestamps numéricos/texto, es fila de datos
+    if (row.some((c) => ['cerrado', 'cerrada', 'en proceso', 'pendiente'].includes(normalizarTexto(c)))) return false;
+    if (row.some((c) => typeof c === 'string' && /^\d{1,2}:\d{2}/.test(c.trim()))) return false;
+    if (row.some((c) => typeof c === 'number')) return false;
+
+    let tieneColProblema = false;
+    let tieneColAccion = false;
+    let tieneColResp = false;
+    let celdasDeTextoCorto = 0;
+
+    row.forEach((c) => {
+        if (c === null || c === undefined || c === '') return;
+        const norm = normalizarTexto(c);
+        if (typeof c === 'string' && c.length < 60) celdasDeTextoCorto += 1;
+        if (norm.includes('problema') || norm.includes('defecto') || norm.includes('falla') || norm.includes('anomalia')) tieneColProblema = true;
+        if (/\bacciones?\b/.test(norm) || norm.includes('medida') || norm.includes('correctiv') || norm.includes('preventiv') || norm.includes('intervencion')) tieneColAccion = true;
+        if (norm.includes('responsable') || norm.includes('estado') || norm.includes('status')) tieneColResp = true;
+    });
+
+    return celdasDeTextoCorto >= 2 && tieneColProblema && (tieneColAccion || tieneColResp);
+}
+
+/**
  * Detecta si el libro Excel corresponde a un reporte operativo de turnos de planta.
  *
  * @param {object} libro - Objeto workbook de SheetJS.
@@ -18394,8 +18458,8 @@ function esLibroDeReporteTurnos(libro) {
 
     const tieneHojaTurno = libro.SheetNames.some((nombre) => {
         const n = normalizarTexto(nombre);
-        return n.includes('registro diario') || n.includes('registro turnos') ||
-               (n.includes('turno') && (n.includes('manana') || n.includes('tarde') || n.includes('noche')));
+        return n.includes('turno') || n.includes('turnos') || n.includes('registro') || n.includes('parte diario') ||
+               (n.includes('reporte') && (n.includes('planta') || n.includes('produccion') || n.includes('parada') || n.includes('operativ')));
     });
 
     for (const nombre of libro.SheetNames) {
@@ -18405,13 +18469,16 @@ function esLibroDeReporteTurnos(libro) {
         const matriz = XLSX.utils.sheet_to_json(hoja, { header: 1, defval: '' });
         let tieneParada = false;
         let tieneVacio = false;
-        for (let i = 0; i < Math.min(35, matriz.length); i++) {
+        let tieneTurno = false;
+        for (let i = 0; i < Math.min(45, matriz.length); i++) {
             const fila = matriz[i];
             if (!Array.isArray(fila)) continue;
+            if (esEncabezadoParadas(fila) || esEncabezadoAcciones(fila)) return true;
             const filaStr = fila.map((c) => normalizarTexto(c)).join(' ');
             if (filaStr.includes('parada') && (filaStr.includes('min') || filaStr.includes('equipo') || filaStr.includes('duracion'))) tieneParada = true;
-            if (filaStr.includes('vacio') || filaStr.includes('horno')) tieneVacio = true;
-            if (tieneParada && tieneVacio) return true;
+            if (/\bvacios?\b/.test(filaStr) || filaStr.includes('horno')) tieneVacio = true;
+            if (filaStr.includes('turno')) tieneTurno = true;
+            if ((tieneParada && tieneVacio) || (tieneParada && tieneTurno)) return true;
         }
     }
 
@@ -18428,7 +18495,7 @@ function esLibroDeReporteTurnos(libro) {
 function procesarLibroDeReporteTurnos(libro) {
     const XLSX = globalThis.XLSX;
     const catalogo = {};
-    const sheetCat = libro.SheetNames.find((s) => normalizarTexto(s).includes('catalog'));
+    const sheetCat = libro.SheetNames.find((s) => normalizarTexto(s).includes('catalog') || normalizarTexto(s).includes('codigo'));
     if (sheetCat && libro.Sheets[sheetCat]) {
         const dataCat = XLSX.utils.sheet_to_json(libro.Sheets[sheetCat], { header: 1, defval: '' });
         let idxCod = -1;
@@ -18437,8 +18504,8 @@ function procesarLibroDeReporteTurnos(libro) {
         dataCat.forEach((row) => {
             if (!Array.isArray(row)) return;
             const rNorm = row.map((c) => normalizarTexto(c));
-            if (rNorm.some((c) => c.includes('codig'))) {
-                idxCod = rNorm.findIndex((c) => c.includes('codig'));
+            if (rNorm.some((c) => c.includes('codig') || c === 'cod')) {
+                idxCod = rNorm.findIndex((c) => c.includes('codig') || c === 'cod');
                 idxDesc = rNorm.findIndex((c) => c.includes('descrip') || c.includes('motivo'));
                 idxTipo = rNorm.findIndex((c) => c.includes('tipo') || c.includes('categ'));
             } else if (idxCod >= 0 && row[idxCod]) {
@@ -18455,42 +18522,50 @@ function procesarLibroDeReporteTurnos(libro) {
     const paradas = [];
     const acciones = [];
     let hojaNombre = '';
-
-    const hojasConTurno = libro.SheetNames.filter((s) => {
-        const norm = normalizarTexto(s);
-        return norm.includes('turno') || norm.includes('manana') || norm.includes('tarde') || norm.includes('noche');
-    });
+    const hojasIgnorar = ['dashboard', 'kpi', 'resumen', 'grafico', 'informe ejecutivo'];
 
     const hojasAProcesar = [];
+
+    // 1. Buscar primero hoja única consolidada de turnos
     const hojaUnica = libro.SheetNames.find((s) => {
         const norm = normalizarTexto(s);
-        return norm.includes('registro diario') || norm.includes('registro turnos');
+        if (norm.includes('catalog') || norm.includes('codigo')) return false;
+        if (hojasIgnorar.some((ign) => norm.includes(ign))) return false;
+        return norm.includes('registro') || norm.includes('reporte') || norm.includes('control') || norm.includes('planilla');
     });
 
     if (hojaUnica && libro.Sheets[hojaUnica]) {
         hojasAProcesar.push({ name: hojaUnica, ws: libro.Sheets[hojaUnica], defaultTurno: null });
         hojaNombre = hojaUnica;
-    } else if (hojasConTurno.length > 0) {
-        hojasConTurno.forEach((s) => {
-            let defT = 'Mañana';
-            const sNorm = normalizarTexto(s);
-            if (sNorm.includes('tarde')) defT = 'Tarde';
-            else if (sNorm.includes('noche')) defT = 'Noche';
-            hojasAProcesar.push({ name: s, ws: libro.Sheets[s], defaultTurno: defT });
+    } else {
+        // 2. Si no hay consolidada, buscar hojas por turno individual
+        const hojasConTurno = libro.SheetNames.filter((s) => {
+            const norm = normalizarTexto(s);
+            if (norm.includes('catalog') || norm.includes('codigo')) return false;
+            if (hojasIgnorar.some((ign) => norm.includes(ign))) return false;
+            return norm.includes('turno') || norm.includes('manana') || norm.includes('tarde') || norm.includes('noche');
         });
-        hojaNombre = hojasConTurno.join(', ');
+
+        if (hojasConTurno.length > 0) {
+            hojasConTurno.forEach((s) => {
+                let defT = 'Mañana';
+                const sNorm = normalizarTexto(s);
+                if (sNorm.includes('tarde') || sNorm.includes('segundo')) defT = 'Tarde';
+                else if (sNorm.includes('noche') || sNorm.includes('tercer')) defT = 'Noche';
+                hojasAProcesar.push({ name: s, ws: libro.Sheets[s], defaultTurno: defT });
+            });
+            hojaNombre = hojasConTurno.join(', ');
+        }
     }
 
     if (hojasAProcesar.length === 0) {
         for (const s of libro.SheetNames) {
-            if (normalizarTexto(s).includes('catalog')) continue;
+            const norm = normalizarTexto(s);
+            if (norm.includes('catalog') || hojasIgnorar.some((ign) => norm.includes(ign))) continue;
             const ws = libro.Sheets[s];
             if (!ws) continue;
             const m = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-            const tieneDatos = m.some((row) => Array.isArray(row) && row.some((c) => {
-                const cn = normalizarTexto(c);
-                return cn.includes('parada') || cn.includes('turno') || cn.includes('vacio');
-            }));
+            const tieneDatos = m.some((row) => esEncabezadoParadas(row) || esEncabezadoAcciones(row));
             if (tieneDatos) {
                 hojasAProcesar.push({ name: s, ws, defaultTurno: null });
             }
@@ -18514,6 +18589,7 @@ function procesarLibroDeReporteTurnos(libro) {
             const norm = normalizarTexto(rowStr);
             if (!norm) return;
 
+            // Detección de banner o título de Turno (ej: "TURNO MAÑANA", "TURNO TARDE", "TURNO NOCHE")
             const celdasConDato = row.filter((c) => !estaVacio(c)).length;
             if (celdasConDato <= 3 && norm.includes('turno')) {
                 if (norm.includes('manana') || norm.includes('primer')) { turnoActual = 'Mañana'; modo = 'ninguno'; return; }
@@ -18521,41 +18597,42 @@ function procesarLibroDeReporteTurnos(libro) {
                 if (norm.includes('noche') || norm.includes('tercer')) { turnoActual = 'Noche'; modo = 'ninguno'; return; }
             }
 
-            // Cabecera de paradas
-            if (row.some((c) => normalizarTexto(c).includes('parada') && (normalizarTexto(c).includes('min') || normalizarTexto(c).includes('equipo')))) {
+            // Detección precisa de Cabecera de paradas
+            if (esEncabezadoParadas(row)) {
                 modo = 'paradas';
                 headersMap = {};
                 row.forEach((c, idx) => {
                     const cn = normalizarTexto(c);
-                    if (cn.includes('turno')) headersMap.turno = idx;
+                    if (cn === 'turno') headersMap.turno = idx;
                     else if (cn.includes('hora')) headersMap.hora = idx;
                     else if (cn.includes('cod')) headersMap.codigo = idx;
-                    else if (cn.includes('motivo') || cn.includes('descrip')) headersMap.motivo = idx;
-                    else if (cn.includes('parada')) headersMap.minParada = idx;
-                    else if (cn.includes('observ') || cn.includes('causa')) headersMap.obs = idx;
-                    else if (cn.includes('vacio') || cn.includes('horno')) headersMap.minVacios = idx;
-                    else if (cn.includes('total')) headersMap.totalMin = idx;
+                    else if (cn.includes('motivo') || cn.includes('descrip') || cn.includes('causa') || cn.includes('falla')) headersMap.motivo = idx;
+                    else if (cn.includes('parada') || cn.includes('duracion')) headersMap.minParada = idx;
+                    else if (/\bvacios?\b/.test(cn) || cn.includes('horno')) headersMap.minVacios = idx;
+                    else if (cn.includes('total') && (cn.includes('min') || cn.includes('perdida'))) headersMap.totalMin = idx;
+                    else if (cn.includes('observ') || cn.includes('evento')) headersMap.obs = idx;
                 });
                 return;
             }
 
-            // Cabecera de acciones correctivas
-            if (row.some((c) => normalizarTexto(c).includes('problema') || normalizarTexto(c).includes('accion') || normalizarTexto(c).includes('responsable'))) {
+            // Detección precisa de Cabecera de acciones correctivas
+            if (esEncabezadoAcciones(row)) {
                 modo = 'acciones';
                 headersMap = {};
                 row.forEach((c, idx) => {
                     const cn = normalizarTexto(c);
                     if (cn.includes('hora')) headersMap.hora = idx;
-                    else if (cn.includes('problema') || cn.includes('defecto')) headersMap.problema = idx;
-                    else if (cn.includes('accion')) headersMap.accion = idx;
-                    else if (cn.includes('responsable')) headersMap.responsable = idx;
-                    else if (cn.includes('estado')) headersMap.estado = idx;
+                    else if (cn.includes('problema') || cn.includes('defecto') || cn.includes('anomalia')) headersMap.problema = idx;
+                    else if (/\bacciones?\b/.test(cn) || cn.includes('medida') || cn.includes('correctiv') || cn.includes('preventiv') || cn.includes('intervencion')) headersMap.accion = idx;
+                    else if (cn.includes('responsable') || cn.includes('operador') || cn.includes('asignado')) headersMap.responsable = idx;
+                    else if (cn.includes('estado') || cn.includes('status')) headersMap.estado = idx;
                     else if (cn.includes('observ') || cn.includes('seguimiento')) headersMap.obs = idx;
                 });
                 return;
             }
 
-            if (norm.includes('totales') || norm.includes('total paradas') || (norm.includes('total ') && !norm.includes('total min'))) {
+            // Fila de subtotales
+            if (norm.includes('totales') || (norm.includes('total ') && !norm.includes('total min') && !norm.includes('total perdida'))) {
                 modo = 'ninguno';
                 return;
             }
@@ -18572,10 +18649,11 @@ function procesarLibroDeReporteTurnos(libro) {
                 const codigo = headersMap.codigo !== undefined ? String(row[headersMap.codigo]).trim() : '';
                 let motivo = headersMap.motivo !== undefined ? String(row[headersMap.motivo]).trim() : '';
                 if (!motivo && catalogo[codigo]) motivo = catalogo[codigo].descripcion;
+
                 const minParada = headersMap.minParada !== undefined ? parsearMinutos(row[headersMap.minParada]) : 0;
                 const minVacios = headersMap.minVacios !== undefined ? parsearMinutos(row[headersMap.minVacios]) : 0;
                 const totalMin = (headersMap.totalMin !== undefined && parsearMinutos(row[headersMap.totalMin])) || (minParada + minVacios);
-                const obs = headersMap.obs !== undefined ? String(row[headersMap.obs]).trim() : '';
+                const obs = headersMap.obs !== undefined ? String(row[headersMap.obs]).replace(/\r\n/g, ' ').replace(/\n/g, ' ').trim() : '';
 
                 if (codigo || minParada > 0 || minVacios > 0 || motivo) {
                     paradas.push({
@@ -18602,18 +18680,18 @@ function procesarLibroDeReporteTurnos(libro) {
                 const accion = headersMap.accion !== undefined ? String(row[headersMap.accion]).trim() : '';
                 let resp = headersMap.responsable !== undefined ? String(row[headersMap.responsable]).trim() : '';
                 let est = headersMap.estado !== undefined ? String(row[headersMap.estado]).trim() : '';
-                let obs = headersMap.obs !== undefined ? String(row[headersMap.obs]).trim() : '';
+                let obs = headersMap.obs !== undefined ? String(row[headersMap.obs]).replace(/\r\n/g, ' ').replace(/\n/g, ' ').trim() : '';
 
-                // Busqueda adaptativa de responsable y estado
+                // Búsqueda adaptativa de responsable y estado
                 if (!resp || !est) {
-                    for (let c = 3; c < row.length; c++) {
-                        const val = String(row[c]).trim();
+                    for (let c = 2; c < row.length; c++) {
+                        const val = String(row[c] || '').trim();
                         const valNorm = normalizarTexto(val);
                         if (['cerrado', 'cerrada', 'en proceso', 'pendiente'].includes(valNorm)) {
                             est = val;
-                        } else if (val && !resp && !['mantenimiento', 'operador', 'calidad', 'instrumentacion'].includes(normalizarTexto(resp))) {
+                        } else if (val && !resp && c !== headersMap.problema && c !== headersMap.accion) {
                             resp = val;
-                        } else if (val && !obs) {
+                        } else if (val && !obs && c !== headersMap.problema && c !== headersMap.accion && c !== headersMap.responsable && c !== headersMap.estado) {
                             obs = val;
                         }
                     }
