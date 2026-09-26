@@ -28919,42 +28919,45 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
     const fragmentos = [];
 
     // =======================================================================
-    // 1. CABECERA EJECUTIVA Y BOTONES DE ACCION
+    // 1. CABECERA EJECUTIVA Y BOTONES DE ACCION (ESTILO PORTADA INFORME EJECUTIVO)
     // =======================================================================
+    const momento = estado.cargadoEn || new Date();
     const cabecera = crearElemento('div', {
-        clase: 'banda-contexto',
+        clase: 'panel',
+        style: 'padding: 1.5rem 2rem; border-top: 4px solid #0d9488; margin-bottom: 1.5rem; background: var(--fondo-panel);',
         hijos: [
             crearElemento('div', {
-                clase: 'banda-contexto-info',
-                style: 'width:100%;',
+                style: 'display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--texto-tenue); font-weight:700; margin-bottom:0.75rem;',
                 hijos: [
-                    crearElemento('div', {
-                        clase: 'texto-pequeno texto-tenue',
-                        texto: 'CONTROL OPERATIVO DE MANUFACTURA CERÁMICA · 24 HORAS'
-                    }),
-                    crearElemento('h2', {
-                        style: 'margin:2px 0 10px; font-size:1.45rem; color:var(--texto-fuerte); font-weight:800;',
-                        texto: 'Informe Ejecutivo de Reporte de Turnos'
-                    }),
-                    crearElemento('div', {
-                        style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:6px 20px; font-size:0.85rem; background:var(--fondo-hundido); padding:10px 14px; border-radius:var(--redondeo-chico); border:1px solid var(--borde-suave); margin-top:6px;'
-                    }, [
-                        { etiqueta: 'Fecha de Evaluación:', valor: formatearFecha(estado.cargadoEn || new Date(), 'largo') },
-                        { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_25-09-2026.xlsx' },
-                        { etiqueta: 'Ciclo Operativo:', valor: '24 Horas (3 Turnos: Mañana, Tarde y Noche)' },
-                        { etiqueta: 'Meta de Planta:', valor: `> ${formatearPorcentaje(at.kpis.metaPlanta)} Disponibilidad` },
-                        { etiqueta: 'Total Eventos Registrados:', valor: `${at.kpis.granTotalEventos} incidencias (${at.kpis.granTotalParadas} min paradas, ${at.kpis.granTotalVacios} min vacíos)` },
-                        { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} pendientes` : ''})` }
-                    ].map(f => crearElemento('div', {
-                        style: 'display:flex; justify-content:space-between; gap:8px; border-bottom:1px dotted var(--borde-suave); padding-bottom:2px;'
-                    }, [
-                        crearElemento('span', { clase: 'texto-suave', texto: f.etiqueta }),
-                        crearElemento('strong', { style: 'color:var(--texto-fuerte);', texto: f.valor })
-                    ])))
+                    crearElemento('span', { texto: 'SYNOPTIK · Control de Operaciones Industriales' }),
+                    crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
                 ]
             }),
+            crearElemento('h1', {
+                style: 'font-size:1.85rem; font-weight:800; color:var(--texto-fuerte); margin:0 0 0.4rem; line-height:1.2; font-family:Georgia, "Times New Roman", serif;',
+                texto: 'Informe Ejecutivo de Reporte de Turnos'
+            }),
+            crearElemento('p', {
+                style: 'font-size:1.05rem; color:var(--texto-suave); margin:0 0 1.25rem; line-height:1.5;',
+                texto: 'Evaluación de Disponibilidad, Paradas de Equipos, Vacíos de Horno y Acciones Correctivas en Planta de Pisos y Revestimientos Cerámicos (24 Horas).'
+            }),
             crearElemento('div', {
-                style: 'display:flex; gap:0.5rem; flex-wrap:wrap;',
+                style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:8px 30px; font-size:0.9rem; padding:1rem 0; border-top:2px solid var(--borde-marcado); border-bottom:1px solid var(--borde-suave);'
+            }, [
+                { etiqueta: 'Fecha de Evaluación:', valor: formatearFecha(momento, 'largo') },
+                { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_25-09-2026.xlsx' },
+                { etiqueta: 'Ciclo Operativo:', valor: '24 Horas (3 Turnos: Mañana, Tarde y Noche)' },
+                { etiqueta: 'Meta de Planta:', valor: `> ${formatearPorcentaje(at.kpis.metaPlanta)} Disponibilidad` },
+                { etiqueta: 'Total Eventos Registrados:', valor: `${at.kpis.granTotalEventos} incidencias (${at.kpis.granTotalParadas} min paradas, ${at.kpis.granTotalVacios} min vacíos)` },
+                { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} pendientes` : ''})` }
+            ].map(f => crearElemento('div', {
+                style: 'display:flex; justify-content:space-between; gap:12px; padding-bottom:5px; border-bottom:1px dotted var(--borde-suave);'
+            }, [
+                crearElemento('span', { style: 'color:var(--texto-suave); font-weight:600; white-space:nowrap;', texto: f.etiqueta }),
+                crearElemento('strong', { style: 'color:var(--texto-fuerte); font-weight:700; text-align:right;', texto: f.valor })
+            ]))),
+            crearElemento('div', {
+                style: 'display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1rem; flex-wrap:wrap;',
                 hijos: [
                     crearElemento('button', {
                         tipo: 'button',
@@ -29100,8 +29103,20 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         ];
 
         const kpiGrid = crearRejillaIndicadores(listaIndicadores);
-        kpiGrid.style.marginTop = '1rem';
-        fragmentos.push(kpiGrid);
+        kpiGrid.style.marginTop = '0.75rem';
+
+        const seccion1 = crearElemento('section', { style: 'margin-top: 1.5rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '1. Resumen y Calificación de Planta (24 Horas)'
+            }),
+            crearElemento('p', {
+                style: 'font-size:0.95rem; color:var(--texto-normal); line-height:1.6; margin-bottom:1rem;',
+                texto: `Durante el ciclo evaluado de 24 horas continuas, la planta registró una disponibilidad global del ${formatearPorcentaje(at.kpis.disponibilidadGlobal)}, ${at.kpis.cumpleMetaGlobal ? 'alcanzando la meta corporativa fijada en el' : 'situándose por debajo del objetivo de planta fijado en el'} ${formatearPorcentaje(at.kpis.metaPlanta)}. Las pérdidas operativas totales sumaron ${at.kpis.granTotalPerdidas} minutos distribuidos entre ${at.kpis.granTotalParadas} minutos por paradas de máquina y ${at.kpis.granTotalVacios} minutos por vacíos en horno.`
+            }),
+            kpiGrid
+        ]);
+        fragmentos.push(seccion1);
 
         // Tarjetas Comparativas de los 3 Turnos
         const tarjetasTurnos = NOMBRES_TURNOS.map((nombreT) => {
@@ -29232,7 +29247,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             style: 'display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;',
             hijos: tarjetasTurnos
         });
-        fragmentos.push(seccionTurnos);
 
         // Tabla Consolidada Comparativa de Turnos (Estilo Informe Ejecutivo)
         const filasTablaTurnos = NOMBRES_TURNOS.map((nt) => {
@@ -29282,7 +29296,16 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             cuerpo: [envolverTabla(tablaConsolidadaTurnos)]
         });
         panelTablaTurnos.style.marginTop = '1.25rem';
-        fragmentos.push(panelTablaTurnos);
+
+        const seccion2 = crearElemento('section', { style: 'margin-top: 2rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '2. Consolidado Operativo por Turnos'
+            }),
+            panelTablaTurnos,
+            seccionTurnos
+        ]);
+        fragmentos.push(seccion2);
 
         // Bloque Gráficos de Paradas
         const datosBarrasTurnos = NOMBRES_TURNOS.map((nt) => ({
@@ -29372,8 +29395,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 })
             ]
         });
-        fragmentos.push(filaGraficosParadas);
-
         // Tabla Consolidada de Paradas con Buscador
         const contenedorParadas = crearElemento('div', { style: 'margin-top: 1.5rem;' });
         const panelParadas = crearPanel({
@@ -29427,7 +29448,20 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             ]
         });
         contenedorParadas.appendChild(panelParadas);
-        fragmentos.push(contenedorParadas);
+
+        const seccion3 = crearElemento('section', { style: 'margin-top: 2rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '3. Diagnóstico de Causa Raíz: Paradas de Equipos y Vacíos de Horno'
+            }),
+            crearElemento('p', {
+                style: 'font-size:0.95rem; color:var(--texto-normal); line-height:1.6; margin-bottom:1rem;',
+                texto: `Diagnóstico pormenorizado de tiempos perdidos por paradas de máquinas y vacíos de cocción en horno continuo. La causa con mayor impacto en planta fue "${at.rankingParadas[0]?.motivo || 'N/D'}" con ${at.rankingParadas[0]?.minutos || 0} min acumulados (${formatearPorcentaje(at.rankingParadas[0]?.porcentaje || 0)} del tiempo total inactivo).`
+            }),
+            filaGraficosParadas,
+            contenedorParadas
+        ]);
+        fragmentos.push(seccion3);
 
         function renderizarTablaParadas() {
             const cont = contenedorParadas.querySelector('#contenedor-tabla-paradas-consolidada');
@@ -29671,7 +29705,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 })
             ]
         });
-        fragmentos.push(filaGraficosAcciones);
 
         // Cuadro de Honor de Operarios y Personal
         const tablaResponsables = crearElemento('table', {
@@ -29752,7 +29785,20 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
 
         const contenedorPanelResponsables = crearElemento('div', { style: 'margin-top: 1.5rem;' });
         contenedorPanelResponsables.appendChild(panelResponsables);
-        fragmentos.push(contenedorPanelResponsables);
+
+        const seccion4 = crearElemento('section', { style: 'margin-top: 2rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '4. Gestión de Acciones Correctivas y Desempeño del Personal'
+            }),
+            crearElemento('p', {
+                style: 'font-size:0.95rem; color:var(--texto-normal); line-height:1.6; margin-bottom:1rem;',
+                texto: `Se ejecutaron un total de ${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas al 100%, ${at.kpis.accionesEnProceso} en proceso y ${at.kpis.accionesPendientes} pendientes), alcanzando una tasa de eficacia del ${formatearPorcentaje(at.kpis.porcentajeCerradas)}. El personal con mayor cantidad de intervenciones operativas fue "${at.responsableLider.nombre}" con ${at.responsableLider.total} intervenciones lideradas.`
+            }),
+            filaGraficosAcciones,
+            contenedorPanelResponsables
+        ]);
+        fragmentos.push(seccion4);
 
         // Tabla Consolidada de Acciones con Buscador y Filtros
         const contenedorAcciones = crearElemento('div', { style: 'margin-top: 1.5rem;' });
@@ -29837,7 +29883,19 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             ]
         });
         contenedorAcciones.appendChild(panelAcciones);
-        fragmentos.push(contenedorAcciones);
+
+        const seccion5 = crearElemento('section', { style: 'margin-top: 2rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '5. Planilla Completa de Acciones Implementadas en Turnos'
+            }),
+            crearElemento('p', {
+                style: 'font-size:0.9rem; color:var(--texto-suave); margin-bottom:0.75rem;',
+                texto: 'Registro pormenorizado de hora de intervención, defecto observado, medida correctiva aplicada, responsable asignado y estado final de cierre.'
+            }),
+            contenedorAcciones
+        ]);
+        fragmentos.push(seccion5);
 
         function renderizarTablaAcciones() {
             const cont = contenedorAcciones.querySelector('#contenedor-tabla-acciones-consolidada');
@@ -29962,7 +30020,15 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 })
             ]
         });
-        fragmentos.push(panelConclusiones);
+
+        const seccion6 = crearElemento('section', { style: 'margin-top: 2rem;' }, [
+            crearElemento('h2', {
+                style: 'font-size:1.3rem; font-weight:800; color:var(--texto-fuerte); margin-bottom:0.4rem; border-bottom:2px solid var(--borde-marcado); padding-bottom:0.35rem;',
+                texto: '6. Conclusiones y Plan de Acción Operativo'
+            }),
+            panelConclusiones
+        ]);
+        fragmentos.push(seccion6);
 
         // Iniciar tablas interactivas consolidadas
         setTimeout(() => {
