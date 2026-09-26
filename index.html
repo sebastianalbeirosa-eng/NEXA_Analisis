@@ -396,19 +396,19 @@ td.numero,
 .marca-fila-nombre {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
 }
 
-/* Tipografía de SynoptiK: cuerpo en serif clásico con 'S' normal y la 'K' final en cuadro */
+/* Tipografía de SynoptiK: cuerpo en serif clásico con 'S' normal y la 'K' final en cuadro prominente */
 .marca-nombre {
     font-family: 'Georgia', 'Merriweather', 'Baskerville', 'Times New Roman', serif;
-    font-size: 1.85rem;
+    font-size: 2.35rem;
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     user-select: none;
 }
 
@@ -416,54 +416,53 @@ td.numero,
     color: var(--texto-fuerte);
 }
 
-/* Cuadro de la letra 'K' al final del nombre, realzado con acento celeste */
+/* Cuadro de la letra 'K' al final del nombre, isotipo prominente en paleta azul/celeste */
 .syn-k-caja {
-    width: 38px;
-    height: 38px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
-    border-radius: 8px;
-    background: var(--fondo-panel);
-    border: 1.5px solid var(--acento-borde);
-    color: var(--texto-fuerte);
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.12), var(--sombra-suave);
-    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+    transition: transform var(--transicion), box-shadow var(--transicion);
     cursor: default;
+    margin-left: 3px;
 }
 
 .syn-k-caja:hover {
-    transform: translateY(-1px) scale(1.03);
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-    border-color: var(--acento);
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.25) inset;
 }
 
 .icono-synoptik {
-    width: 27px;
-    height: 27px;
+    width: 32px;
+    height: 32px;
     display: block;
 }
 
 .tema-oscuro .syn-k-caja {
-    background: var(--fondo-elevado);
-    border-color: rgba(56, 189, 248, 0.35);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.18), var(--sombra-suave);
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
 .tema-oscuro .syn-k-caja:hover {
-    border-color: var(--acento);
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
 }
 
 .tema-oscuro .icono-synoptik path {
-    stroke: var(--acento);
+    stroke: #7dd3fc;
 }
 
 /* Línea divisoria vertical fina */
 .marca-separador {
     width: 1px;
-    height: 28px;
+    height: 34px;
     background: var(--borde-marcado);
     display: inline-block;
     flex-shrink: 0;
@@ -475,8 +474,8 @@ td.numero,
     display: flex;
     flex-direction: column;
     justify-content: center;
-    line-height: 1.15;
-    font-size: 0.74rem;
+    line-height: 1.2;
+    font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: var(--texto-suave);
@@ -2191,36 +2190,41 @@ td.numero,
 }
 
 .bienvenida-contenido {
-    max-width: 620px;
+    max-width: 860px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--espacio-5);
+    gap: var(--espacio-6);
     text-align: center;
 }
 
 .bienvenida-titulo {
-    font-size: 1.375rem;
-    letter-spacing: -0.01em;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    color: var(--texto-fuerte);
 }
 
 .bienvenida-bajada {
-    font-size: var(--tamano-comodo);
+    font-size: 1.18rem;
+    line-height: 1.65;
     color: var(--texto-suave);
-    max-width: 56ch;
-    margin: 0 auto;
+    max-width: 65ch;
+    margin: 0.5rem auto 0;
 }
 
 .zona-arrastre {
     border: 2px dashed var(--borde-marcado);
     border-radius: var(--redondeo-grande);
-    padding: var(--espacio-8) var(--espacio-5);
+    padding: var(--espacio-8) var(--espacio-6);
     background: var(--fondo-panel);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espacio-2);
+    gap: var(--espacio-3);
+    transition: border-color var(--transicion), background var(--transicion), transform var(--transicion);
 }
 
 .zona-arrastre:hover {
@@ -2237,8 +2241,8 @@ td.numero,
 }
 
 .zona-arrastre-icono {
-    width: 42px;
-    height: 42px;
+    width: 52px;
+    height: 52px;
     border-radius: var(--redondeo-grande);
     background: var(--acento-claro);
     color: var(--acento);
@@ -2248,13 +2252,13 @@ td.numero,
 }
 
 .zona-arrastre-titulo {
-    font-size: var(--tamano-comodo);
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--texto-fuerte);
 }
 
 .zona-arrastre-ayuda {
-    font-size: var(--tamano-pequeno);
+    font-size: var(--tamano-comodo);
     color: var(--texto-suave);
 }
 
@@ -5361,18 +5365,18 @@ html.tema-oscuro .barra-lateral {
 .hoja-informe .grafico-referencia { stroke: #c02736; }
 .hoja-informe .grafico-referencia-etiqueta { fill: #c02736; }
 
-.hoja-informe .grafico-color-1 .grafico-barra { fill: var(--dato-1, #2563eb) !important; }
-.hoja-informe .grafico-color-1 .grafico-linea { stroke: var(--dato-1, #2563eb) !important; }
-.hoja-informe .grafico-color-1 .grafico-area  { fill: var(--dato-1, #2563eb) !important; opacity: 0.12; }
-.hoja-informe .grafico-color-2 .grafico-barra { fill: var(--dato-2, #059669) !important; }
-.hoja-informe .grafico-color-2 .grafico-linea { stroke: var(--dato-2, #059669) !important; }
-.hoja-informe .grafico-color-2 .grafico-area  { fill: var(--dato-2, #059669) !important; opacity: 0.12; }
-.hoja-informe .grafico-color-3 .grafico-barra { fill: var(--dato-3, #d97706) !important; }
-.hoja-informe .grafico-color-4 .grafico-barra { fill: var(--dato-4, #dc2626) !important; }
-.hoja-informe .grafico-color-5 .grafico-barra { fill: var(--dato-5, #7c3aed) !important; }
-.hoja-informe .grafico-color-6 .grafico-barra { fill: var(--dato-6, #0891b2) !important; }
-.hoja-informe .grafico-color-7 .grafico-barra { fill: var(--dato-7, #db2777) !important; }
-.hoja-informe .grafico-color-8 .grafico-barra { fill: var(--dato-8, #4f46e5) !important; }
+.hoja-informe .grafico-color-1 .grafico-barra { fill: var(--dato-1, #0284c7) !important; }
+.hoja-informe .grafico-color-1 .grafico-linea { stroke: var(--dato-1, #0284c7) !important; }
+.hoja-informe .grafico-color-1 .grafico-area  { fill: var(--dato-1, #0284c7) !important; opacity: 0.12; }
+.hoja-informe .grafico-color-2 .grafico-barra { fill: var(--dato-2, #2563eb) !important; }
+.hoja-informe .grafico-color-2 .grafico-linea { stroke: var(--dato-2, #2563eb) !important; }
+.hoja-informe .grafico-color-2 .grafico-area  { fill: var(--dato-2, #2563eb) !important; opacity: 0.12; }
+.hoja-informe .grafico-color-3 .grafico-barra { fill: var(--dato-3, #6366f1) !important; }
+.hoja-informe .grafico-color-4 .grafico-barra { fill: var(--dato-4, #8b5cf6) !important; }
+.hoja-informe .grafico-color-5 .grafico-barra { fill: var(--dato-5, #06b6d4) !important; }
+.hoja-informe .grafico-color-6 .grafico-barra { fill: var(--dato-6, #ec4899) !important; }
+.hoja-informe .grafico-color-7 .grafico-barra { fill: var(--dato-7, #f97316) !important; }
+.hoja-informe .grafico-color-8 .grafico-barra { fill: var(--dato-8, #64748b) !important; }
 
 /* Donut / Anillo en el informe */
 .hoja-informe .grafico-anillo {
@@ -5382,14 +5386,14 @@ html.tema-oscuro .barra-lateral {
     margin: 10px auto !important;
     display: block !important;
 }
-.hoja-informe .grafico-serie-1 { fill: var(--dato-1, #2563eb) !important; }
-.hoja-informe .grafico-serie-2 { fill: var(--dato-2, #059669) !important; }
-.hoja-informe .grafico-serie-3 { fill: var(--dato-3, #d97706) !important; }
-.hoja-informe .grafico-serie-4 { fill: var(--dato-4, #dc2626) !important; }
-.hoja-informe .grafico-serie-5 { fill: var(--dato-5, #7c3aed) !important; }
-.hoja-informe .grafico-serie-6 { fill: var(--dato-6, #0891b2) !important; }
-.hoja-informe .grafico-serie-7 { fill: var(--dato-7, #db2777) !important; }
-.hoja-informe .grafico-serie-8 { fill: var(--dato-8, #4f46e5) !important; }
+.hoja-informe .grafico-serie-1 { fill: var(--dato-1, #0284c7) !important; }
+.hoja-informe .grafico-serie-2 { fill: var(--dato-2, #2563eb) !important; }
+.hoja-informe .grafico-serie-3 { fill: var(--dato-3, #6366f1) !important; }
+.hoja-informe .grafico-serie-4 { fill: var(--dato-4, #8b5cf6) !important; }
+.hoja-informe .grafico-serie-5 { fill: var(--dato-5, #06b6d4) !important; }
+.hoja-informe .grafico-serie-6 { fill: var(--dato-6, #ec4899) !important; }
+.hoja-informe .grafico-serie-7 { fill: var(--dato-7, #f97316) !important; }
+.hoja-informe .grafico-serie-8 { fill: var(--dato-8, #64748b) !important; }
 
 /* Mapa en el informe */
 .hoja-informe .mapa-continente {
@@ -6237,7 +6241,7 @@ html.tema-oscuro .barra-lateral {
         <div class="marca">
             <div class="marca-fila-nombre">
                 <div class="marca-nombre" title="SynoptiK">
-                    <span class="syn-base">Synopti</span><span class="syn-k-caja" aria-label="K"><svg class="icono-synoptik" viewBox="0 0 38 38" width="27" height="27" fill="none"><line x1="7" y1="5" x2="7" y2="33" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="7" y1="21" x2="22" y2="33" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M7 21 H13 V15 H19 V9 H26" stroke="var(--acento)" stroke-width="4" stroke-linecap="round" stroke-linejoin="miter"/></svg></span>
+                    <span class="syn-base">Synopti</span><span class="syn-k-caja" aria-label="K"><svg class="icono-synoptik" viewBox="0 0 38 38" width="32" height="32" fill="none"><line x1="7" y1="5" x2="7" y2="33" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><line x1="7" y1="21" x2="23" y2="33" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><path d="M7 21 H13 V15 H19 V9 H26" stroke="#7dd3fc" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="miter"/></svg></span>
                 </div>
                 <span class="marca-separador" aria-hidden="true"></span>
                 <div class="marca-tagline">
@@ -6377,7 +6381,7 @@ html.tema-oscuro .barra-lateral {
             <div class="pantalla-bienvenida" id="pantalla-bienvenida">
                 <div class="bienvenida-contenido aparecer">
                     <div>
-                        <h1 class="bienvenida-titulo">Carga un archivo y synoptiK lo analiza solo</h1>
+                        <h1 class="bienvenida-titulo">Cargá un archivo y <span style="font-family:'Georgia','Merriweather',serif; letter-spacing:-0.015em; display:inline-flex; align-items:center; gap:6px;">Synopti<span class="syn-k-caja" style="width:38px; height:38px; border-radius:8px; display:inline-flex; vertical-align:middle; box-shadow:0 3px 12px rgba(2,132,199,0.35);"><svg class="icono-synoptik" viewBox="0 0 38 38" width="25" height="25" fill="none"><line x1="7" y1="5" x2="7" y2="33" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><line x1="7" y1="21" x2="23" y2="33" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/><path d="M7 21 H13 V15 H19 V9 H26" stroke="#7dd3fc" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="miter"/></svg></span></span> lo analiza solo</h1>
                         <p class="bienvenida-bajada">
                             Detecta de que rubro son tus datos, identifica que columna es una
                             categoria y cual es una magnitud, y responde donde estan los maximos,
@@ -24328,7 +24332,7 @@ const COORDENADAS_CIUDADES = {
     'seattle': { x: 120, y: 75, dx: 14, dy: -4, anchor: 'start', estado: 'WA', color: '#8b5cf6' },
     'portland (or)': { x: 110, y: 120, dx: -12, dy: -4, anchor: 'end', estado: 'OR', color: '#f59e0b' },
     'portland (me)': { x: 810, y: 105, dx: 14, dy: -4, anchor: 'start', estado: 'ME', color: '#f97316' },
-    'dallas': { x: 450, y: 330, dx: 14, dy: -2, anchor: 'start', estado: 'TX', color: '#10b981' },
+    'dallas': { x: 450, y: 330, dx: 14, dy: -2, anchor: 'start', estado: 'TX', color: '#0ea5e9' },
     'austin': { x: 425, y: 390, dx: 0, dy: 24, anchor: 'middle', estado: 'TX', color: '#ec4899' },
     'atlanta': { x: 630, y: 315, dx: 14, dy: 4, anchor: 'start', estado: 'GA', color: '#6366f1' },
     'new york city': { x: 745, y: 175, dx: 14, dy: -4, anchor: 'start', estado: 'NY', color: '#0284c7' },
@@ -24340,7 +24344,7 @@ const COORDENADAS_ESTADOS = {
     'CA': { x: 108, y: 260, color: '#3b82f6' },
     'WA': { x: 120, y: 75, color: '#8b5cf6' },
     'OR': { x: 110, y: 120, color: '#f59e0b' },
-    'TX': { x: 440, y: 360, color: '#10b981' },
+    'TX': { x: 440, y: 360, color: '#0ea5e9' },
     'NY': { x: 745, y: 175, color: '#0284c7' },
     'MA': { x: 785, y: 140, color: '#2563eb' },
     'GA': { x: 630, y: 315, color: '#6366f1' },
@@ -25066,7 +25070,7 @@ function dibujarMapaGeograficoVentas(ciudades = [], estados = [], regiones = [])
                 <text class="mapa-leyenda-item" x="36" y="37" font-size="9" fill="#475569">&lt;$2M</text>
                 <circle cx="86" cy="34" r="11" fill="#06b6d4" fill-opacity="0.85" />
                 <text class="mapa-leyenda-item" x="103" y="37" font-size="9" fill="#475569">$4M</text>
-                <circle cx="152" cy="34" r="16" fill="#10b981" fill-opacity="0.85" />
+                <circle cx="152" cy="34" r="16" fill="#1d4ed8" fill-opacity="0.85" />
                 <text class="mapa-leyenda-item" x="174" y="37" font-size="9" fill="#475569">$8M+</text>
             </g>
         </svg>
@@ -25689,7 +25693,7 @@ function construirPortada(estado, analisis, alcance) {
 
     return crearElemento('div', { clase: 'informe-portada' }, [
         crearElemento('div', { clase: 'informe-portada-marca' }, [
-            crearElemento('span', { texto: 'synoptiK · Intelligent Data Analytics' }),
+            crearElemento('span', { texto: 'SynoptiK · Intelligent Data Analytics' }),
             crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
         ]),
         crearElemento('h1', { texto: 'Informe ejecutivo de analisis de datos' }),
@@ -27267,7 +27271,7 @@ function construirPortadaVentas(estado, alcance, av) {
 
     return crearElemento('div', { clase: 'informe-portada' }, [
         crearElemento('div', { clase: 'informe-portada-marca' }, [
-            crearElemento('span', { texto: 'synoptiK · Intelligent Data Analytics' }),
+            crearElemento('span', { texto: 'SynoptiK · Intelligent Data Analytics' }),
             crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
         ]),
         crearElemento('h1', {
@@ -27931,14 +27935,14 @@ function exportarInformeHTML(estado) {
         :root {
             --letra-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --letra-numeros: "SF Mono", Menlo, Consolas, Monaco, monospace;
-            --dato-1: #2563eb;
-            --dato-2: #059669;
-            --dato-3: #d97706;
-            --dato-4: #dc2626;
-            --dato-5: #7c3aed;
-            --dato-6: #0891b2;
-            --dato-7: #db2777;
-            --dato-8: #4f46e5;
+            --dato-1: #0284c7;
+            --dato-2: #2563eb;
+            --dato-3: #6366f1;
+            --dato-4: #8b5cf6;
+            --dato-5: #06b6d4;
+            --dato-6: #ec4899;
+            --dato-7: #f97316;
+            --dato-8: #64748b;
             --fondo-panel: #ffffff;
             --texto-tenue: #94a3b8;
         }
@@ -28452,14 +28456,14 @@ function exportarInformeHTML(estado) {
             transition: opacity 0.2s ease;
         }
         .grafico-porcion:hover { opacity: 0.88; }
-        .grafico-serie-1 { fill: var(--dato-1, #2563eb) !important; }
-        .grafico-serie-2 { fill: var(--dato-2, #059669) !important; }
-        .grafico-serie-3 { fill: var(--dato-3, #d97706) !important; }
-        .grafico-serie-4 { fill: var(--dato-4, #dc2626) !important; }
-        .grafico-serie-5 { fill: var(--dato-5, #7c3aed) !important; }
-        .grafico-serie-6 { fill: var(--dato-6, #0891b2) !important; }
-        .grafico-serie-7 { fill: var(--dato-7, #db2777) !important; }
-        .grafico-serie-8 { fill: var(--dato-8, #4f46e5) !important; }
+        .grafico-serie-1 { fill: var(--dato-1, #0284c7) !important; }
+        .grafico-serie-2 { fill: var(--dato-2, #2563eb) !important; }
+        .grafico-serie-3 { fill: var(--dato-3, #6366f1) !important; }
+        .grafico-serie-4 { fill: var(--dato-4, #8b5cf6) !important; }
+        .grafico-serie-5 { fill: var(--dato-5, #06b6d4) !important; }
+        .grafico-serie-6 { fill: var(--dato-6, #ec4899) !important; }
+        .grafico-serie-7 { fill: var(--dato-7, #f97316) !important; }
+        .grafico-serie-8 { fill: var(--dato-8, #64748b) !important; }
 
         /* Leyenda de Categorías para el Gráfico Donut */
         .anillo-leyenda {
@@ -28484,14 +28488,14 @@ function exportarInformeHTML(estado) {
             border-radius: 3px;
             flex-shrink: 0;
         }
-        .anillo-leyenda-color.grafico-serie-1 { background: var(--dato-1, #2563eb); }
-        .anillo-leyenda-color.grafico-serie-2 { background: var(--dato-2, #059669); }
-        .anillo-leyenda-color.grafico-serie-3 { background: var(--dato-3, #d97706); }
-        .anillo-leyenda-color.grafico-serie-4 { background: var(--dato-4, #dc2626); }
-        .anillo-leyenda-color.grafico-serie-5 { background: var(--dato-5, #7c3aed); }
-        .anillo-leyenda-color.grafico-serie-6 { background: var(--dato-6, #0891b2); }
-        .anillo-leyenda-color.grafico-serie-7 { background: var(--dato-7, #db2777); }
-        .anillo-leyenda-color.grafico-serie-8 { background: var(--dato-8, #4f46e5); }
+        .anillo-leyenda-color.grafico-serie-1 { background: var(--dato-1, #0284c7); }
+        .anillo-leyenda-color.grafico-serie-2 { background: var(--dato-2, #2563eb); }
+        .anillo-leyenda-color.grafico-serie-3 { background: var(--dato-3, #6366f1); }
+        .anillo-leyenda-color.grafico-serie-4 { background: var(--dato-4, #8b5cf6); }
+        .anillo-leyenda-color.grafico-serie-5 { background: var(--dato-5, #06b6d4); }
+        .anillo-leyenda-color.grafico-serie-6 { background: var(--dato-6, #ec4899); }
+        .anillo-leyenda-color.grafico-serie-7 { background: var(--dato-7, #f97316); }
+        .anillo-leyenda-color.grafico-serie-8 { background: var(--dato-8, #64748b); }
         .anillo-leyenda-etiqueta { color: #334155; font-weight: 500; }
         .anillo-leyenda-valor { font-family: var(--letra-numeros); font-weight: 700; color: #0f172a; margin-left: 2px; }
 
@@ -28502,10 +28506,10 @@ function exportarInformeHTML(estado) {
             height: auto;
             overflow: visible;
         }
-        .grafico-barra { fill: var(--dato-1, #2563eb); }
-        .grafico-linea { fill: none; stroke: var(--dato-1, #2563eb); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-        .grafico-area { fill: var(--dato-1, #2563eb); opacity: 0.12; }
-        .grafico-punto { fill: var(--dato-1, #2563eb); stroke: #ffffff; stroke-width: 2; }
+        .grafico-barra { fill: var(--dato-1, #0284c7); }
+        .grafico-linea { fill: none; stroke: var(--dato-1, #0284c7); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .grafico-area { fill: var(--dato-1, #0284c7); opacity: 0.12; }
+        .grafico-punto { fill: var(--dato-1, #0284c7); stroke: #ffffff; stroke-width: 2; }
         .grafico-rejilla { stroke: #e2e8f0; stroke-dasharray: 2 3; }
         .grafico-eje-linea { stroke: #94a3b8; }
         .grafico-etiqueta { fill: #64748b; font-size: 10px; font-family: var(--letra-base); }
@@ -28513,45 +28517,45 @@ function exportarInformeHTML(estado) {
         .grafico-referencia { stroke: #dc2626; stroke-dasharray: 4 3; stroke-width: 1.5; }
         .grafico-referencia-etiqueta { fill: #dc2626; font-size: 9.5px; font-weight: 600; }
 
-        .grafico-color-1 .grafico-barra { fill: var(--dato-1, #2563eb) !important; }
-        .grafico-color-1 .grafico-linea { stroke: var(--dato-1, #2563eb) !important; }
-        .grafico-color-1 .grafico-area  { fill: var(--dato-1, #2563eb) !important; opacity: 0.12; }
-        .grafico-color-1 .grafico-punto { fill: var(--dato-1, #2563eb) !important; stroke: #ffffff !important; }
+        .grafico-color-1 .grafico-barra { fill: var(--dato-1, #0284c7) !important; }
+        .grafico-color-1 .grafico-linea { stroke: var(--dato-1, #0284c7) !important; }
+        .grafico-color-1 .grafico-area  { fill: var(--dato-1, #0284c7) !important; opacity: 0.12; }
+        .grafico-color-1 .grafico-punto { fill: var(--dato-1, #0284c7) !important; stroke: #ffffff !important; }
 
-        .grafico-color-2 .grafico-barra { fill: var(--dato-2, #059669) !important; }
-        .grafico-color-2 .grafico-linea { stroke: var(--dato-2, #059669) !important; }
-        .grafico-color-2 .grafico-area  { fill: var(--dato-2, #059669) !important; opacity: 0.12; }
-        .grafico-color-2 .grafico-punto { fill: var(--dato-2, #059669) !important; stroke: #ffffff !important; }
+        .grafico-color-2 .grafico-barra { fill: var(--dato-2, #2563eb) !important; }
+        .grafico-color-2 .grafico-linea { stroke: var(--dato-2, #2563eb) !important; }
+        .grafico-color-2 .grafico-area  { fill: var(--dato-2, #2563eb) !important; opacity: 0.12; }
+        .grafico-color-2 .grafico-punto { fill: var(--dato-2, #2563eb) !important; stroke: #ffffff !important; }
 
-        .grafico-color-3 .grafico-barra { fill: var(--dato-3, #d97706) !important; }
-        .grafico-color-3 .grafico-linea { stroke: var(--dato-3, #d97706) !important; }
-        .grafico-color-3 .grafico-area  { fill: var(--dato-3, #d97706) !important; opacity: 0.12; }
-        .grafico-color-3 .grafico-punto { fill: var(--dato-3, #d97706) !important; stroke: #ffffff !important; }
+        .grafico-color-3 .grafico-barra { fill: var(--dato-3, #6366f1) !important; }
+        .grafico-color-3 .grafico-linea { stroke: var(--dato-3, #6366f1) !important; }
+        .grafico-color-3 .grafico-area  { fill: var(--dato-3, #6366f1) !important; opacity: 0.12; }
+        .grafico-color-3 .grafico-punto { fill: var(--dato-3, #6366f1) !important; stroke: #ffffff !important; }
 
-        .grafico-color-4 .grafico-barra { fill: var(--dato-4, #dc2626) !important; }
-        .grafico-color-4 .grafico-linea { stroke: var(--dato-4, #dc2626) !important; }
-        .grafico-color-4 .grafico-area  { fill: var(--dato-4, #dc2626) !important; opacity: 0.12; }
-        .grafico-color-4 .grafico-punto { fill: var(--dato-4, #dc2626) !important; stroke: #ffffff !important; }
+        .grafico-color-4 .grafico-barra { fill: var(--dato-4, #8b5cf6) !important; }
+        .grafico-color-4 .grafico-linea { stroke: var(--dato-4, #8b5cf6) !important; }
+        .grafico-color-4 .grafico-area  { fill: var(--dato-4, #8b5cf6) !important; opacity: 0.12; }
+        .grafico-color-4 .grafico-punto { fill: var(--dato-4, #8b5cf6) !important; stroke: #ffffff !important; }
 
-        .grafico-color-5 .grafico-barra { fill: var(--dato-5, #7c3aed) !important; }
-        .grafico-color-5 .grafico-linea { stroke: var(--dato-5, #7c3aed) !important; }
-        .grafico-color-5 .grafico-area  { fill: var(--dato-5, #7c3aed) !important; opacity: 0.12; }
-        .grafico-color-5 .grafico-punto { fill: var(--dato-5, #7c3aed) !important; stroke: #ffffff !important; }
+        .grafico-color-5 .grafico-barra { fill: var(--dato-5, #06b6d4) !important; }
+        .grafico-color-5 .grafico-linea { stroke: var(--dato-5, #06b6d4) !important; }
+        .grafico-color-5 .grafico-area  { fill: var(--dato-5, #06b6d4) !important; opacity: 0.12; }
+        .grafico-color-5 .grafico-punto { fill: var(--dato-5, #06b6d4) !important; stroke: #ffffff !important; }
 
-        .grafico-color-6 .grafico-barra { fill: var(--dato-6, #0891b2) !important; }
-        .grafico-color-6 .grafico-linea { stroke: var(--dato-6, #0891b2) !important; }
-        .grafico-color-6 .grafico-area  { fill: var(--dato-6, #0891b2) !important; opacity: 0.12; }
-        .grafico-color-6 .grafico-punto { fill: var(--dato-6, #0891b2) !important; stroke: #ffffff !important; }
+        .grafico-color-6 .grafico-barra { fill: var(--dato-6, #ec4899) !important; }
+        .grafico-color-6 .grafico-linea { stroke: var(--dato-6, #ec4899) !important; }
+        .grafico-color-6 .grafico-area  { fill: var(--dato-6, #ec4899) !important; opacity: 0.12; }
+        .grafico-color-6 .grafico-punto { fill: var(--dato-6, #ec4899) !important; stroke: #ffffff !important; }
 
-        .grafico-color-7 .grafico-barra { fill: var(--dato-7, #db2777) !important; }
-        .grafico-color-7 .grafico-linea { stroke: var(--dato-7, #db2777) !important; }
-        .grafico-color-7 .grafico-area  { fill: var(--dato-7, #db2777) !important; opacity: 0.12; }
-        .grafico-color-7 .grafico-punto { fill: var(--dato-7, #db2777) !important; stroke: #ffffff !important; }
+        .grafico-color-7 .grafico-barra { fill: var(--dato-7, #f97316) !important; }
+        .grafico-color-7 .grafico-linea { stroke: var(--dato-7, #f97316) !important; }
+        .grafico-color-7 .grafico-area  { fill: var(--dato-7, #f97316) !important; opacity: 0.12; }
+        .grafico-color-7 .grafico-punto { fill: var(--dato-7, #f97316) !important; stroke: #ffffff !important; }
 
-        .grafico-color-8 .grafico-barra { fill: var(--dato-8, #4f46e5) !important; }
-        .grafico-color-8 .grafico-linea { stroke: var(--dato-8, #4f46e5) !important; }
-        .grafico-color-8 .grafico-area  { fill: var(--dato-8, #4f46e5) !important; opacity: 0.12; }
-        .grafico-color-8 .grafico-punto { fill: var(--dato-8, #4f46e5) !important; stroke: #ffffff !important; }
+        .grafico-color-8 .grafico-barra { fill: var(--dato-8, #64748b) !important; }
+        .grafico-color-8 .grafico-linea { stroke: var(--dato-8, #64748b) !important; }
+        .grafico-color-8 .grafico-area  { fill: var(--dato-8, #64748b) !important; opacity: 0.12; }
+        .grafico-color-8 .grafico-punto { fill: var(--dato-8, #64748b) !important; stroke: #ffffff !important; }
 
         /* Reglas de impresion en PDF / Papel */
         @page {
