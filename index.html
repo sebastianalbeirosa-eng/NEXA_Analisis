@@ -12,14 +12,14 @@
         onclick del marcado y cualquier script inyectado desde los datos.
 
         Es lo que hace imposible por diseno un ataque a traves de un archivo
-        CSV malicioso, y el motivo por el que en NEXA todos los eventos se
+        CSV malicioso, y el motivo por el que en synoptiK todos los eventos se
         conectan con addEventListener desde app.js.
 
         'self' incluye el protocolo app:// que sirve la aplicacion de escritorio.
     -->
     
 
-    <title>NEXA - Intelligent Data Analytics</title>
+    <title>synoptiK - Intelligent Data Analytics</title>
 
 
 
@@ -27,7 +27,7 @@
     <style>
 /* ===== css/estilos.css ===== */
 /* ==========================================================================
-   NEXA - estilos.css
+   synoptiK - estilos.css
    Base del sistema visual: variables de diseno, reinicio, tipografia y
    estructura general (encabezado, barra lateral, area de trabajo).
 
@@ -400,98 +400,103 @@ td.numero,
 }
 
 .marca-logo {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     flex-shrink: 0;
-    border-radius: var(--redondeo-grande);
-    /* Degradado sutil: le da presencia al logo sin recurrir a una imagen.
-       Es el mismo degradado del icono de la aplicacion, para que el logo de la
-       pantalla y el del escritorio se reconozcan como lo mismo. */
-    background: linear-gradient(140deg, var(--acento) 0%, #6f4ff5 100%);
-    color: #ffffff;
+    border-radius: var(--redondeo-medio);
+    background: var(--fondo-elevado);
+    border: 1px solid var(--borde);
+    color: var(--texto-fuerte);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 3px 12px rgba(61, 90, 254, 0.38);
+    box-shadow: var(--sombra-chica);
+    transition: transform var(--transicion), box-shadow var(--transicion);
 }
 
-.marca-logo .icono {
-    width: 26px;
-    height: 26px;
-    stroke-width: 2.2;
+.marca-logo:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--sombra-media);
+}
+
+.icono-synoptik {
+    width: 32px;
+    height: 32px;
+    display: block;
+}
+
+.tema-oscuro .icono-synoptik path {
+    stroke: #14b8a6;
 }
 
 .marca-texto {
-    /* En columna, no en linea: el nombre manda y el subtitulo lo acompana */
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-width: 0;
-    gap: 1px;
 }
 
 .marca-fila-nombre {
     display: flex;
     align-items: center;
-    gap: var(--espacio-2);
+    gap: 12px;
 }
 
-/* El nombre de la marca es, con diferencia, el elemento tipografico mas fuerte
-   de la interfaz: grande, muy pesado y con las letras separadas, que es lo que
-   le da aire de logotipo a una palabra corta escrita en mayusculas.
-
-   Es deliberadamente mas grande que cualquier titulo de seccion: la marca tiene
-   que leerse antes que el contenido, y en una aplicacion de escritorio es lo
-   que la identifica de un vistazo. */
+/* Tipografía de synoptiK: cuerpo en serif clásico y la 'K' final en palo seco teal */
 .marca-nombre {
-    font-size: 1.875rem;
-    font-weight: 800;
-    letter-spacing: 0.13em;
-    line-height: 1;
-    color: var(--texto-fuerte);
-    text-transform: uppercase;
-    /* Compensa el espaciado extra de la ultima letra para que el bloque
-       quede visualmente centrado */
-    margin-right: -0.13em;
-}
-
-/* Insignia de edicion al lado del nombre */
-.marca-edicion {
-    font-size: 0.625rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 7px;
-    border-radius: var(--redondeo-chico);
-    background: var(--acento-claro);
-    color: var(--acento-texto);
-    border: 1px solid var(--acento-borde);
-    line-height: 1;
-    flex-shrink: 0;
-    /* Alineada con la base del nombre, no con su centro */
-    align-self: flex-end;
-    margin-bottom: 3px;
-}
-
-/* El subtitulo acompana al nombre con el mismo tratamiento de logotipo:
-   mayusculas, espaciado amplio y color de acento. Deja de ser un texto de
-   relleno y pasa a formar parte de la marca. */
-.marca-descripcion {
-    font-size: 0.75rem;
+    font-family: 'Georgia', 'Merriweather', 'Baskerville', 'Times New Roman', serif;
+    font-size: 1.85rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--acento);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2;
-    margin-top: 3px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: baseline;
+    user-select: none;
 }
 
-/* En ventanas angostas el subtitulo estorba: se oculta y queda el nombre */
-@media (max-width: 1000px) {
-    .marca-descripcion {
+.syn-base {
+    color: var(--texto-fuerte);
+}
+
+.syn-k {
+    font-family: var(--letra-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    color: #0d9488;
+    font-weight: 800;
+    font-size: 1.95rem;
+    margin-left: 0.5px;
+}
+
+.tema-oscuro .syn-k {
+    color: #14b8a6;
+}
+
+/* Línea divisoria vertical fina */
+.marca-separador {
+    width: 1px;
+    height: 28px;
+    background: var(--borde-marcado, rgba(255, 255, 255, 0.2));
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Tagline en dos líneas: Intelligent Data / Analytics */
+.marca-tagline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--texto-suave);
+    font-family: var(--letra-base);
+    text-transform: none;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .marca-separador,
+    .marca-tagline {
         display: none;
     }
 }
@@ -1120,7 +1125,7 @@ td.numero,
 
 /* ===== css/componentes.css ===== */
 /* ==========================================================================
-   NEXA - componentes.css
+   synoptiK - componentes.css
    Piezas visuales reutilizables: paneles, tarjetas de indicadores, tablas,
    mapas de calor, insignias, tarjetas de hallazgos, ventanas modales y
    estados de carga.
@@ -4542,7 +4547,7 @@ html.tema-oscuro .barra-lateral {
 
 /* ===== css/informe.css ===== */
 /* ==========================================================================
-   NEXA - informe.css
+   synoptiK - informe.css
    Estilos del INFORME EJECUTIVO: un documento pensado para gerencia o
    jefatura, no una captura del tablero.
 
@@ -6090,15 +6095,22 @@ html.tema-oscuro .barra-lateral {
     -->
     <header class="encabezado no-imprimir">
         <div class="marca">
-            <div class="marca-logo" aria-hidden="true">
-                <svg class="icono icono-grande"><use href="#ico-grafico"/></svg>
+            <div class="marca-logo" aria-hidden="true" title="synoptiK">
+                <svg class="icono-synoptik" viewBox="0 0 38 38" width="36" height="36" fill="none">
+                    <line x1="7" y1="5" x2="7" y2="33" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+                    <line x1="7" y1="21" x2="22" y2="33" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+                    <path d="M7 21 H13 V15 H19 V9 H26" stroke="#0d9488" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="miter"/>
+                </svg>
             </div>
             <div class="marca-texto">
                 <div class="marca-fila-nombre">
-                    <span class="marca-nombre">NEXA</span>
-                    <span class="marca-edicion">Enterprise</span>
+                    <span class="marca-nombre"><span class="syn-base">synopti</span><span class="syn-k">K</span></span>
+                    <span class="marca-separador" aria-hidden="true"></span>
+                    <div class="marca-tagline">
+                        <span>Intelligent Data</span>
+                        <span>Analytics</span>
+                    </div>
                 </div>
-                <span class="marca-descripcion">Intelligent Data Analytics</span>
             </div>
         </div>
 
@@ -6232,7 +6244,7 @@ html.tema-oscuro .barra-lateral {
             <div class="pantalla-bienvenida" id="pantalla-bienvenida">
                 <div class="bienvenida-contenido aparecer">
                     <div>
-                        <h1 class="bienvenida-titulo">Carga un archivo y NEXA lo analiza solo</h1>
+                        <h1 class="bienvenida-titulo">Carga un archivo y synoptiK lo analiza solo</h1>
                         <p class="bienvenida-bajada">
                             Detecta de que rubro son tus datos, identifica que columna es una
                             categoria y cual es una magnitud, y responde donde estan los maximos,
@@ -6395,7 +6407,7 @@ html.tema-oscuro .barra-lateral {
         internet.
 
         Si el archivo no existe (porque nunca se corrio "npm install"), el
-        navegador registra un 404 en la consola y nada mas: NEXA sigue
+        navegador registra un 404 en la consola y nada mas: synoptiK sigue
         funcionando con CSV y JSON. No se usa un atributo onerror para
         detectarlo porque la politica de seguridad declarada arriba bloquea
         el codigo inline, y con razon. La deteccion se hace desde el modulo
@@ -7182,7 +7194,7 @@ function compararValores(valorA, valorB, tipo = 'texto', ascendente = true) {
  *
  * POR QUE NO USAMOS innerHTML CON DATOS DEL USUARIO
  * -------------------------------------------------
- * Los datos vienen de archivos que NEXA no controla. Si una celda del CSV
+ * Los datos vienen de archivos que SYNOPTIK no controla. Si una celda del CSV
  * contiene <img src=x onerror=alert(1)> y la insertamos con innerHTML, ese
  * codigo se ejecuta. Con textContent (que es lo que usa esta funcion) el
  * contenido se muestra como texto literal y no puede ejecutarse nada.
@@ -7413,7 +7425,7 @@ function retrasar(funcion, espera = 220) {
  * @returns {string} Identificador unico.
  */
 let contadorDeIdentificadores = 0;
-function generarIdentificador(prefijo = 'nexa') {
+function generarIdentificador(prefijo = 'synoptik') {
     contadorDeIdentificadores += 1;
     return `${prefijo}-${contadorDeIdentificadores}-${Math.random().toString(36).slice(2, 7)}`;
 }
@@ -7596,7 +7608,7 @@ function calcularMedia(numeros) {
 /**
  * Calcula la mediana (el valor que parte la muestra en dos mitades iguales).
  *
- * CORRECCION IMPORTANTE respecto de la version anterior de NEXA, que hacia
+ * CORRECCION IMPORTANTE respecto de la version anterior, que hacia
  * simplemente valores[Math.floor(n/2)]. Eso esta mal cuando la cantidad de
  * valores es par: la mediana de [10, 20, 30, 40] es 25, el promedio de los dos
  * centrales, y no 30 como devolvia esa formula.
@@ -7648,7 +7660,7 @@ function calcularPercentilDeOrdenados(ordenados, percentil) {
  *
  * Se usa el metodo conocido como R-7, que es el mismo que aplica Excel en su
  * funcion PERCENTIL.INC. Elegirlo no es un detalle menor: si un usuario
- * verifica los numeros de NEXA contra su planilla, tienen que coincidir. Un
+ * verifica los numeros de SYNOPTIK contra su planilla, tienen que coincidir. Un
  * metodo distinto daria valores levemente diferentes y generaria desconfianza
  * en toda la herramienta.
  *
@@ -7808,7 +7820,7 @@ function calcularAsimetria(numeros, media, desvio) {
  *
  * POR QUE NO SE USA EL CRITERIO DE 3 DESVIOS
  * ------------------------------------------
- * La version anterior de NEXA anunciaba en pantalla "valores extremos (>3σ)".
+ * La version anterior anunciaba en pantalla "valores extremos (>3σ)".
  * Ese criterio tiene un problema de fondo: el desvio estandar se calcula CON
  * los propios valores atipicos adentro, asi que los atipicos inflan la medida
  * que deberia detectarlos. El efecto se llama enmascaramiento.
@@ -8324,7 +8336,7 @@ function calcularTendencia(valores) {
  * js/analisis/agrupador.js
  * ---------------------------------------------------------------------------
  * Motor de agrupacion. Es la pieza que faltaba por completo en la version
- * anterior de NEXA, y la razon por la que aquella no podia responder ninguna
+ * anterior, y la razon por la que aquella no podia responder ninguna
  * pregunta de negocio.
  *
  * LA OPERACION FUNDAMENTAL DEL ANALISIS DE DATOS
@@ -10545,7 +10557,7 @@ function generarDirectivasSupervisores({ kpis, rankingParadas, rankingVacios, tu
  * Genera el texto del informe ejecutivo conciso en Markdown.
  *
  * @param {object} at - Analisis completo devuelto por ejecutarAnalisisCompletoTurnos.
- * @param {object} [estado] - Estado general de NEXA.
+ * @param {object} [estado] - Estado general de SYNOPTIK.
  * @returns {string} Informe en formato Markdown.
  */
 function generarTextoInformeTurnos(at, estado = {}) {
@@ -10557,7 +10569,7 @@ function generarTextoInformeTurnos(at, estado = {}) {
     md += `**Industria de Pisos y Revestimientos Cerámicos | Operación 24 Horas**\n\n`;
     md += `*Fecha de Evaluación:* ${fechaInforme}  \n`;
     md += `*Archivo Origen:* ${estado.nombreArchivo || 'Reporte de Planta'}  \n`;
-    md += `*Sistema:* NEXA Manufacturing Intelligence  \n\n`;
+    md += `*Sistema:* SYNOPTIK Manufacturing Intelligence  \n\n`;
     md += `---\n\n`;
 
     // 1. Resumen Ejecutivo
@@ -11788,7 +11800,7 @@ function ejecutarAnalisisCompletoVentas(filas, mapeoColumnas = {}) {
  * exportar o copiar al portapapeles.
  *
  * @param {object} resultadosVentas - Salida de ejecutarAnalisisCompletoVentas.
- * @param {object} estado - Estado de NEXA.
+ * @param {object} estado - Estado de SYNOPTIK.
  * @returns {string} Texto formateado en Markdown.
  */
 function generarTextoInformeAcademico(resultadosVentas, estado = {}) {
@@ -11810,7 +11822,7 @@ function generarTextoInformeAcademico(resultadosVentas, estado = {}) {
     return `# INFORME INTEGRAL DE INTELIGENCIA COMERCIAL Y ANÁLISIS DE DEMANDA
 **Informe Ejecutivo de Análisis y Visualización de Datos**  
 *Fecha de emisión:* ${fechaHoy}  
-*Herramienta:* NEXA Intelligent Analytics  
+*Herramienta:* SYNOPTIK Intelligent Analytics  
 *Desarrollador:* Guillermo S. Albeiro | DMBE Systems  
 
 ---
@@ -11966,7 +11978,7 @@ ${(apo?.ranking ?? apo?.rankingTicket ?? []).slice(0, 10).map((ct, idx) => `| ${
  *
  *   perfilador.js  ->  mira la ESTRUCTURA. Funciona con cualquier dataset del
  *                      planeta, incluso de un rubro que nunca vimos. Es lo que
- *                      garantiza que NEXA nunca se quede muda.
+ *                      garantiza que SYNOPTIK nunca se quede muda.
  *
  *   detectorRubro  ->  mira el VOCABULARIO. Reconoce de que negocio hablan los
  *                      datos para poner los nombres correctos y priorizar los
@@ -11994,7 +12006,7 @@ ${(apo?.ranking ?? apo?.rankingTicket ?? []).slice(0, 10).map((ct, idx) => `| ${
 // ===========================================================================
 
 /**
- * Definicion de los rubros que NEXA reconoce.
+ * Definicion de los rubros que SYNOPTIK reconoce.
  *
  * Cada rubro declara:
  *  - etiqueta / descripcion: como se presenta en la interfaz
@@ -13994,7 +14006,7 @@ function armarPuntosClave({ analisis, lecturas, configuracion }) {
 /**
  * js/analisis/perfilador.js
  * ---------------------------------------------------------------------------
- * El perfilador es el cerebro de NEXA. Mira cada columna y decide dos cosas:
+ * El perfilador es el cerebro de SYNOPTIK. Mira cada columna y decide dos cosas:
  *
  *   1. QUE TIPO DE DATO contiene   -> numero, texto, fecha o booleano
  *   2. QUE PAPEL CUMPLE            -> identificador, metrica, dimension, fecha
@@ -15756,7 +15768,7 @@ function construirIndicadores({
  *
  * Sin esto, el almacen tendria que importar las diez vistas y llamarlas una
  * por una. Cada vista nueva obligaria a modificar el almacen, y ese acoplamiento
- * es justamente lo que volvia inmanejable la version anterior de NEXA, donde
+ * es justamente lo que volvia inmanejable la version anterior, donde
  * una funcion llamaba directamente a las otras nueve.
  *
  * COMO SE USA
@@ -15952,7 +15964,7 @@ const mensajero = new Mensajero();
  *
  * IDEA CENTRAL
  * ------------
- * Los filtros de NEXA no recortan solamente la tabla: recortan el DATASET DE
+ * Los filtros de SYNOPTIK no recortan solamente la tabla: recortan el DATASET DE
  * TRABAJO. Todo lo que se calcula despues (indicadores, rankings, mapas de
  * calor, correlaciones, hallazgos y el informe ejecutivo) se calcula sobre el
  * resultado filtrado.
@@ -16615,7 +16627,7 @@ function sugerirValores(datos, columna, maximo = 30) {
  *
  * POR QUE EXISTE
  * --------------
- * La version anterior de NEXA tenia doce variables globales sueltas
+ * La version anterior tenia doce variables globales sueltas
  * (globalData, rawDataOriginal, filteredData, datasetColumns, columnTypes...)
  * que cualquier funcion podia modificar en cualquier momento. Con eso es
  * imposible saber quien cambio que, y aparecen errores como el de
@@ -17970,7 +17982,7 @@ function leerCsv(texto, opciones = {}) {
  *       "total": 184300
  *     }
  *
- * La version anterior de NEXA pasaba estos objetos tal cual a la tabla, y la
+ * La version anterior pasaba estos objetos tal cual a la tabla, y la
  * columna "cliente" mostraba "[object Object]": el dato estaba ahi pero era
  * inservible.
  *
@@ -18303,14 +18315,14 @@ function construirFilasDesdeArreglo(arreglo, avisos = []) {
  *
  * DEPENDENCIA OPCIONAL
  * --------------------
- * Es el unico modulo de NEXA que necesita una libreria externa: SheetJS. Un
+ * Es el unico modulo de SYNOPTIK que necesita una libreria externa: SheetJS. Un
  * archivo .xlsx es en realidad un ZIP con varios XML adentro, y un .xls es un
  * formato binario propietario; escribir esos dos lectores desde cero no es
  * razonable.
  *
  * La libreria se carga desde "librerias/" (copiada por preparar-librerias.js),
  * asi la aplicacion sigue funcionando sin internet. Si no esta disponible,
- * este modulo avisa con un mensaje claro y NEXA continua funcionando con CSV
+ * este modulo avisa con un mensaje claro y SYNOPTIK continua funcionando con CSV
  * y JSON: nunca se rompe la aplicacion entera por una dependencia opcional.
  *
  * PROBLEMA REAL QUE RESUELVE ESTE LECTOR
@@ -18352,7 +18364,7 @@ function hayLectorDeExcel() {
 function mensajeFaltaLibreria() {
     return 'Para leer archivos Excel hace falta la libreria SheetJS, que no esta ' +
         'instalada. Ejecuta "npm install" en la carpeta del proyecto (con conexion ' +
-        'a internet) y volve a abrir NEXA. Mientras tanto podes analizar archivos ' +
+        'a internet) y volve a abrir SYNOPTIK. Mientras tanto podes analizar archivos ' +
         'CSV y JSON con total normalidad, o guardar tu planilla como CSV desde Excel.';
 }
 
@@ -18917,7 +18929,7 @@ function numeroAColumnaExcel(indice) {
  * @param {string} nombreHoja - Nombre de la hoja.
  * @returns {boolean} true si se pudo exportar.
  */
-function exportarAExcel(filas, columnas, nombreArchivo, nombreHoja = 'Datos NEXA') {
+function exportarAExcel(filas, columnas, nombreArchivo, nombreHoja = 'Datos SYNOPTIK') {
     if (!hayLectorDeExcel()) return false;
 
     const XLSX = globalThis.XLSX;
@@ -18992,7 +19004,7 @@ const FORMATOS_ACEPTADOS = Object.freeze({
 });
 
 /**
- * Determina si un archivo tiene una extension soportada por NEXA.
+ * Determina si un archivo tiene una extension soportada por SYNOPTIK.
  *
  * @param {string} nombreArchivo - Nombre o ruta del archivo.
  * @returns {boolean} true si es soportado.
@@ -19052,7 +19064,7 @@ async function leerContenidoCrudo(archivo, informarProgreso = () => {}) {
     } else {
         throw new Error(
             `El formato ".${extension}" no esta soportado. ` +
-            `NEXA lee archivos ${FORMATOS_ACEPTADOS.descripcion}.`
+            `SYNOPTIK lee archivos ${FORMATOS_ACEPTADOS.descripcion}.`
         );
     }
 
@@ -19112,7 +19124,7 @@ async function leerArchivosMultiples(listaArchivos, informarProgreso = () => {})
     if (archivosCompatibles.length === 0) {
         throw new Error(
             'No se encontraron archivos compatibles en la seleccion. ' +
-            `NEXA acepta archivos ${FORMATOS_ACEPTADOS.descripcion}.`
+            `SYNOPTIK acepta archivos ${FORMATOS_ACEPTADOS.descripcion}.`
         );
     }
 
@@ -19456,7 +19468,7 @@ function normalizarDataset(filas, columnasDeclaradas = []) {
  *
  * PARA QUE SIRVEN
  * ---------------
- * 1. Permiten probar NEXA sin tener un archivo a mano.
+ * 1. Permiten probar SYNOPTIK sin tener un archivo a mano.
  * 2. Sirven de demostracion: cada uno esta armado para que la deteccion de
  *    rubro acierte y los analisis muestren algo interesante.
  *
@@ -20110,7 +20122,7 @@ function generarEjemplo(clave) {
         filas: resultado.filas,
         columnas: Object.keys(resultado.filas[0]),
         avisos: [
-            'Este es un dataset de ejemplo generado por NEXA. Incluye a proposito algunos ' +
+            'Este es un dataset de ejemplo generado por SYNOPTIK. Incluye a proposito algunos ' +
             'defectos tipicos de los archivos reales (valores faltantes, filas duplicadas, ' +
             'categorias escritas de varias formas y valores atipicos) para que se pueda ver ' +
             'como los detecta el analisis.'
@@ -21324,7 +21336,7 @@ function crearResumenAlcance(alcance) {
  *
  * POR QUE NO SE USA UNA LIBRERIA
  * ------------------------------
- * La version anterior de NEXA cargaba Chart.js desde un CDN. Para una
+ * La version anterior cargaba Chart.js desde un CDN. Para una
  * aplicacion de escritorio eso tiene tres problemas concretos:
  *
  *   1. Sin internet la aplicacion se abre sin graficos.
@@ -25307,7 +25319,7 @@ function mostrarInforme(contexto) {
     try {
         hoja = construirHoja(contexto);
     } catch (error) {
-        console.error('[NEXA] Error al construir la hoja del informe:', error);
+        console.error('[SYNOPTIK] Error al construir la hoja del informe:', error);
         hoja = crearElemento('div', { clase: 'hoja-informe', estilo: { padding: '40px' } }, [
             crearElemento('div', { clase: 'aviso-linea', datos: { nivel: 'critico' } }, [
                 crearIcono('alerta'),
@@ -25520,7 +25532,7 @@ function construirPortada(estado, analisis, alcance) {
 
     return crearElemento('div', { clase: 'informe-portada' }, [
         crearElemento('div', { clase: 'informe-portada-marca' }, [
-            crearElemento('span', { texto: 'NEXA \u00b7 Analisis Inteligente de Datos' }),
+            crearElemento('span', { texto: 'synoptiK · Intelligent Data Analytics' }),
             crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
         ]),
         crearElemento('h1', { texto: 'Informe ejecutivo de analisis de datos' }),
@@ -26330,7 +26342,7 @@ function construirAnexo(estado, analisis, alcance) {
         {
             termino: 'Metrica y dimension',
             explicacion:
-                'NEXA clasifica cada columna automaticamente mirando la estructura de sus ' +
+                'SYNOPTIK clasifica cada columna automaticamente mirando la estructura de sus ' +
                 'valores. Una "metrica" es una magnitud que tiene sentido totalizar (importes, ' +
                 'duraciones, cantidades). Una "dimension" es una categoria con la que agrupar ' +
                 '(producto, sucursal, motivo). Esa clasificacion es la que permite responder ' +
@@ -26462,7 +26474,7 @@ function construirPie(estado) {
     return crearElemento('div', { clase: 'informe-pie' }, [
         crearElemento('span', {
             texto:
-                `Informe generado automaticamente por NEXA 2.0 a partir del archivo ` +
+                `Informe generado automáticamente por SYNOPTIK a partir del archivo ` +
                 `"${estado.nombreArchivo}".`
         }),
         crearElemento('span', {
@@ -26594,7 +26606,7 @@ function construirDesglosePorDimension({ estado, analisis, datos }) {
  * Construye la hoja del informe ejecutivo de turnos (conciso, claro y enfocado en planta).
  *
  * @param {object} parametros
- * @param {object} parametros.estado - Estado global de NEXA.
+ * @param {object} parametros.estado - Estado global de SYNOPTIK.
  * @param {object} parametros.alcance - Alcance de datos.
  * @param {Array<object>} parametros.datos - Filas de paradas/vacíos.
  * @param {object} [parametros.reporteTurnos] - Metadatos de turnos si fueron extraídos.
@@ -26612,7 +26624,7 @@ function construirHojaTurnos({ estado, alcance, datos, reporteTurnos }) {
     const momento = estado.cargadoEn || new Date();
     const portada = crearElemento('div', { clase: 'informe-portada' }, [
         crearElemento('div', { clase: 'informe-portada-marca' }, [
-            crearElemento('span', { texto: 'NEXA · Control de Operaciones Industriales' }),
+            crearElemento('span', { texto: 'SYNOPTIK · Control de Operaciones Industriales' }),
             crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
         ]),
         crearElemento('h1', {
@@ -27017,7 +27029,7 @@ function construirHojaTurnos({ estado, alcance, datos, reporteTurnos }) {
 
     // 7. Pie de informe
     const pie = crearElemento('div', { clase: 'informe-pie' }, [
-        crearElemento('span', { texto: `Informe generado por NEXA Manufacturing Intelligence · ${estado.nombreArchivo || 'Reporte de Planta'}` }),
+        crearElemento('span', { texto: `Informe generado por SYNOPTIK Manufacturing Intelligence · ${estado.nombreArchivo || 'Reporte de Planta'}` }),
         crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
     ]);
     partes.push(pie);
@@ -27092,7 +27104,7 @@ function construirPortadaVentas(estado, alcance, av) {
 
     return crearElemento('div', { clase: 'informe-portada' }, [
         crearElemento('div', { clase: 'informe-portada-marca' }, [
-            crearElemento('span', { texto: 'NEXA · Intelligent Data Analytics' }),
+            crearElemento('span', { texto: 'synoptiK · Intelligent Data Analytics' }),
             crearElemento('span', { texto: '© DMBE Systems by Sebastian Albeiro' })
         ]),
         crearElemento('h1', {
@@ -27751,7 +27763,7 @@ function exportarInformeHTML(estado) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXA - Informe Ejecutivo - ${nombreArchivo}</title>
+    <title>SYNOPTIK - Informe Ejecutivo - ${nombreArchivo}</title>
     <style>
         :root {
             --letra-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -28502,7 +28514,7 @@ function exportarInformeHTML(estado) {
     const url = URL.createObjectURL(blob);
     const enlace = document.createElement('a');
     enlace.href = url;
-    enlace.download = `NEXA_Informe_${nombreArchivo}.html`;
+    enlace.download = `SYNOPTIK_Informe_${nombreArchivo}.html`;
     document.body.appendChild(enlace);
     enlace.click();
     document.body.removeChild(enlace);
@@ -28780,8 +28792,8 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
                                         texto: `Turno ${nombreTurno}`
                                     }),
                                     crearInsignia({ texto: turnoObj.horario, nivel: 'neutro' }),
-                                    esMejor ? crearInsignia({ texto: '🏆 Mejor Turno', nivel: 'correcto' }) : null,
-                                    esMasAfectado ? crearInsignia({ texto: '⚠️ Mayor Parada', nivel: 'critico' }) : null,
+                                    esMejor ? crearInsignia({ texto: 'Mejor Turno', nivel: 'correcto' }) : null,
+                                    esMasAfectado ? crearInsignia({ texto: 'Mayor Parada', nivel: 'critico' }) : null,
                                     crearInsignia({
                                         texto: turnoObj.estadoCalificacion,
                                         nivel: turnoObj.nivelColor === 'verde' ? 'correcto' : turnoObj.nivelColor === 'amarillo' ? 'aviso' : 'critico'
@@ -28818,28 +28830,24 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
             etiqueta: 'Disponibilidad Turno',
             valorMostrado: formatearPorcentaje(turnoObj.disponibilidad),
             detalle: `Meta de planta: > ${formatearPorcentaje(at.kpis.metaPlanta)}`,
-            icono: 'medidor',
             estado: turnoObj.disponibilidad >= at.kpis.metaPlanta ? 'correcto' : 'critico'
         },
         {
             etiqueta: 'Paradas de Máquina',
             valorMostrado: `${turnoObj.minutosParada} min`,
             detalle: `${turnoObj.eventos.filter(e => e.minutosParada > 0).length} interrupciones`,
-            icono: 'alerta',
             estado: turnoObj.minutosParada <= 40 ? 'correcto' : 'critico'
         },
         {
             etiqueta: 'Vacíos de Horno',
             valorMostrado: `${turnoObj.minutosVacios} min`,
             detalle: 'Impacto térmico en rodillos',
-            icono: 'fuego',
             estado: turnoObj.minutosVacios <= 20 ? 'correcto' : 'aviso'
         },
         {
             etiqueta: 'Pérdida Total Turno',
             valorMostrado: `${turnoObj.perdidaTotal} min`,
             detalle: `De 480 min totales de guardia`,
-            icono: 'reloj',
             estado: turnoObj.perdidaTotal <= 60 ? 'correcto' : 'critico'
         },
         {
@@ -28848,7 +28856,6 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
             detalle: turnoObj.acciones.length > 0
                 ? `${Math.round((turnoObj.acciones.filter(a => a.estado === 'Cerrado').length / turnoObj.acciones.length) * 100)}% de resolución`
                 : 'Sin acciones requeridas',
-            icono: 'lista',
             estado: turnoObj.acciones.every(a => a.estado === 'Cerrado') ? 'correcto' : 'aviso'
         }
     ]);
@@ -28858,7 +28865,6 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
     const panelParadas = crearPanel({
         titulo: `Planilla 1: Paradas de Equipos y Vacíos de Horno — Turno ${nombreTurno}`,
         subtitulo: `Detalle cronológico de interrupciones, causas de detención y vacíos en cocción (${turnoObj.horario})`,
-        icono: 'alerta',
         cuerpo: [crearTablaParadasTurno(turnoObj.eventos, nombreTurno, turnoObj.disponibilidad)]
     });
     contenedor.appendChild(panelParadas);
@@ -28867,7 +28873,6 @@ function crearBloqueTurno(nombreTurno, turnoObj, at, alCambiarPestaña) {
     const panelAcciones = crearPanel({
         titulo: `Planilla 2: Acciones Correctivas y Preventivas — Turno ${nombreTurno}`,
         subtitulo: `Registro sistemático de defectos detectados, medidas operativas ejecutadas y responsables (${turnoObj.horario})`,
-        icono: 'trofeo',
         cuerpo: [crearTablaAccionesTurno(turnoObj.acciones, nombreTurno)]
     });
     contenedor.appendChild(panelAcciones);
@@ -28935,11 +28940,11 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:6px 20px; font-size:0.85rem; background:var(--fondo-hundido); padding:10px 14px; border-radius:var(--redondeo-chico); border:1px solid var(--borde-suave); margin-top:6px;'
                     }, [
                         { etiqueta: 'Fecha de Evaluación:', valor: formatearFecha(estado.cargadoEn || new Date(), 'largo') },
-                        { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre.xlsx' },
+                        { etiqueta: 'Archivo Analizado:', valor: estado.nombreArchivo || 'Reporte_Septiembre_25-09-2026.xlsx' },
                         { etiqueta: 'Ciclo Operativo:', valor: '24 Horas (3 Turnos: Mañana, Tarde y Noche)' },
                         { etiqueta: 'Meta de Planta:', valor: `> ${formatearPorcentaje(at.kpis.metaPlanta)} Disponibilidad` },
                         { etiqueta: 'Total Eventos Registrados:', valor: `${at.kpis.granTotalEventos} incidencias (${at.kpis.granTotalParadas} min paradas, ${at.kpis.granTotalVacios} min vacíos)` },
-                        { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''})` }
+                        { etiqueta: 'Total Acciones Tratadas:', valor: `${at.kpis.totalAcciones} medidas (${at.kpis.accionesCerradas} cerradas${at.kpis.accionesEnProceso > 0 ? `, ${at.kpis.accionesEnProceso} en proceso` : ''}${at.kpis.accionesPendientes > 0 ? `, ${at.kpis.accionesPendientes} pendientes` : ''})` }
                     ].map(f => crearElemento('div', {
                         style: 'display:flex; justify-content:space-between; gap:8px; border-bottom:1px dotted var(--borde-suave); padding-bottom:2px;'
                     }, [
@@ -28955,7 +28960,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         tipo: 'button',
                         clase: 'boton boton-primario',
                         hijos: [
-                            crearIcono('imprimir'),
                             crearElemento('span', { texto: 'Ver informe ejecutivo' })
                         ],
                         eventos: {
@@ -28966,7 +28970,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                         tipo: 'button',
                         clase: 'boton boton-secundario',
                         hijos: [
-                            crearIcono('copiar'),
                             crearElemento('span', { texto: 'Copiar reporte (Markdown)' })
                         ],
                         eventos: {
@@ -28990,11 +28993,11 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
     // 2. SELECTOR DE VISTAS Y PESTAÑAS (Consolidado 24 hs vs Turno Mañana / Tarde / Noche)
     // =======================================================================
     const pestañas = [
-        { id: 'consolidado', etiqueta: '📊 Vista Consolidada (24 Horas)', icono: 'medidor' },
-        { id: 'Mañana', etiqueta: `🌅 Turno Mañana (${at.turnos['Mañana'].eventos.length} paradas · ${at.turnos['Mañana'].acciones.length} acc.)`, icono: 'reloj' },
-        { id: 'Tarde', etiqueta: `☀️ Turno Tarde (${at.turnos['Tarde'].eventos.length} paradas · ${at.turnos['Tarde'].acciones.length} acc.)`, icono: 'reloj' },
-        { id: 'Noche', etiqueta: `🌙 Turno Noche (${at.turnos['Noche'].eventos.length} paradas · ${at.turnos['Noche'].acciones.length} acc.)`, icono: 'reloj' },
-        { id: 'secuencial', etiqueta: '📋 Planillas de Turnos (Vista Completa)', icono: 'lista' }
+        { id: 'consolidado', etiqueta: 'Vista Consolidada (24 Horas)' },
+        { id: 'Mañana', etiqueta: `Turno Mañana (${at.turnos['Mañana'].eventos.length} paradas · ${at.turnos['Mañana'].acciones.length} acc.)` },
+        { id: 'Tarde', etiqueta: `Turno Tarde (${at.turnos['Tarde'].eventos.length} paradas · ${at.turnos['Tarde'].acciones.length} acc.)` },
+        { id: 'Noche', etiqueta: `Turno Noche (${at.turnos['Noche'].eventos.length} paradas · ${at.turnos['Noche'].acciones.length} acc.)` },
+        { id: 'secuencial', etiqueta: 'Planillas de Turnos (Vista Completa)' }
     ];
 
     const barraPestañas = crearElemento('div', {
@@ -29062,42 +29065,36 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 etiqueta: 'Disponibilidad Global Planta',
                 valorMostrado: formatearPorcentaje(at.kpis.disponibilidadGlobal),
                 detalle: textoDifMeta,
-                icono: 'medidor',
                 estado: at.kpis.cumpleMetaGlobal ? 'correcto' : 'critico'
             },
             {
                 etiqueta: 'Paradas de Equipos',
                 valorMostrado: `${formatearNumero(at.kpis.granTotalParadas)} min`,
                 detalle: `${at.kpis.granTotalEventos} paradas registradas`,
-                icono: 'alerta',
                 estado: at.kpis.granTotalParadas <= 120 ? 'correcto' : 'critico'
             },
             {
                 etiqueta: 'Vacíos de Horno',
                 valorMostrado: `${formatearNumero(at.kpis.granTotalVacios)} min`,
-                detalle: 'Pérdida térmica y metros² en cocción',
-                icono: 'fuego',
+                detalle: 'Pérdida cocción',
                 estado: at.kpis.granTotalVacios <= 60 ? 'correcto' : 'aviso'
             },
             {
                 etiqueta: 'Mejor Turno',
                 valorMostrado: `Turno ${at.mejorTurno.nombre}`,
                 detalle: `${formatearPorcentaje(at.mejorTurno.disponibilidad)} Disp. operativa`,
-                icono: 'trofeo',
                 estado: 'correcto'
             },
             {
                 etiqueta: 'Turno Más Afectado',
                 valorMostrado: `Turno ${at.turnoMayorParadas.nombre}`,
                 detalle: `${formatearNumero(at.turnoMayorParadas.minutos)} min parados acumulados`,
-                icono: 'alerta',
                 estado: 'critico'
             },
             {
-                etiqueta: 'Acciones Correctivas',
+                etiqueta: 'Eficacia Acciones',
                 valorMostrado: `${at.kpis.accionesCerradas} / ${at.kpis.totalAcciones}`,
                 detalle: `${formatearPorcentaje(at.kpis.porcentajeCerradas)} cerradas`,
-                icono: 'lista',
                 estado: at.kpis.porcentajeCerradas >= 80 ? 'correcto' : 'aviso'
             }
         ];
@@ -29134,8 +29131,8 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                                                 style: 'margin:0; font-size:1.15rem; font-weight:700;',
                                                 texto: `Turno ${t.nombre}`
                                             }),
-                                            esMejor ? crearInsignia({ texto: '🏆 Mejor Turno', nivel: 'correcto' }) : null,
-                                            esMasAfectado ? crearInsignia({ texto: '⚠️ Mayor Parada', nivel: 'critico' }) : null
+                                            esMejor ? crearInsignia({ texto: 'Mejor Turno', nivel: 'correcto' }) : null,
+                                            esMasAfectado ? crearInsignia({ texto: 'Mayor Parada', nivel: 'critico' }) : null
                                         ].filter(Boolean)
                                     }),
                                     crearElemento('div', {
@@ -29237,6 +29234,56 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         });
         fragmentos.push(seccionTurnos);
 
+        // Tabla Consolidada Comparativa de Turnos (Estilo Informe Ejecutivo)
+        const filasTablaTurnos = NOMBRES_TURNOS.map((nt) => {
+            const t = at.turnos[nt];
+            return crearElemento('tr', {}, [
+                crearElemento('td', { html: `<strong>Turno ${t.nombre}</strong>` }),
+                crearElemento('td', { texto: t.horario }),
+                crearElemento('td', { style: 'text-align:right;', texto: `${t.minutosParada} min` }),
+                crearElemento('td', { style: 'text-align:right;', texto: `${t.minutosVacios} min` }),
+                crearElemento('td', { style: 'text-align:right; font-weight:600;', texto: `${t.perdidaTotal} min` }),
+                crearElemento('td', { style: 'text-align:right; font-weight:700;', texto: formatearPorcentaje(t.disponibilidad) }),
+                crearElemento('td', { style: 'text-align:center;', texto: String(t.cantidadEventos) }),
+                crearElemento('td', { style: 'text-align:center;', html: `<span style="font-weight:700; color:${t.nivelColor === 'verde' ? '#16a34a' : t.nivelColor === 'amarillo' ? '#d97706' : '#dc2626'};">${t.estadoCalificacion}</span>` })
+            ]);
+        });
+
+        filasTablaTurnos.push(crearElemento('tr', { style: 'background:var(--fondo-elevado); font-weight:700; border-top:2px solid var(--borde-marcado);' }, [
+            crearElemento('td', { html: '<strong>TOTAL PLANTA (24 hs)</strong>' }),
+            crearElemento('td', { texto: '06:00 - 06:00' }),
+            crearElemento('td', { style: 'text-align:right;', texto: `${at.kpis.granTotalParadas} min` }),
+            crearElemento('td', { style: 'text-align:right;', texto: `${at.kpis.granTotalVacios} min` }),
+            crearElemento('td', { style: 'text-align:right;', texto: `${at.kpis.granTotalPerdidas} min` }),
+            crearElemento('td', { style: 'text-align:right;', texto: formatearPorcentaje(at.kpis.disponibilidadGlobal) }),
+            crearElemento('td', { style: 'text-align:center;', texto: String(at.kpis.granTotalEventos) }),
+            crearElemento('td', { style: 'text-align:center;', html: `<span style="color:${at.kpis.cumpleMetaGlobal ? '#16a34a' : '#dc2626'}; font-weight:700;">${at.kpis.cumpleMetaGlobal ? 'CUMPLE META' : 'DESVÍO'}</span>` })
+        ]));
+
+        const tablaConsolidadaTurnos = crearElemento('table', { clase: 'tabla', style: 'width:100%; font-size:0.9rem;' }, [
+            crearElemento('thead', {}, [
+                crearElemento('tr', {}, [
+                    crearElemento('th', { texto: 'Turno' }),
+                    crearElemento('th', { texto: 'Horario' }),
+                    crearElemento('th', { texto: 'Min. Parada', style: 'text-align:right;' }),
+                    crearElemento('th', { texto: 'Min. Vacíos', style: 'text-align:right;' }),
+                    crearElemento('th', { texto: 'Total Pérdida', style: 'text-align:right;' }),
+                    crearElemento('th', { texto: '% Disp.', style: 'text-align:right;' }),
+                    crearElemento('th', { texto: 'Eventos', style: 'text-align:center;' }),
+                    crearElemento('th', { texto: 'Evaluación', style: 'text-align:center;' })
+                ])
+            ]),
+            crearElemento('tbody', {}, filasTablaTurnos)
+        ]);
+
+        const panelTablaTurnos = crearPanel({
+            titulo: 'Consolidado Operativo por Turnos (24 Horas)',
+            subtitulo: 'Balance comparativo de disponibilidad, tiempos de parada, vacíos en horno y eventos por turno',
+            cuerpo: [envolverTabla(tablaConsolidadaTurnos)]
+        });
+        panelTablaTurnos.style.marginTop = '1.25rem';
+        fragmentos.push(panelTablaTurnos);
+
         // Bloque Gráficos de Paradas
         const datosBarrasTurnos = NOMBRES_TURNOS.map((nt) => ({
             etiqueta: `Turno ${nt}`,
@@ -29264,7 +29311,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 crearPanel({
                     titulo: 'Pérdidas Operativas por Turno',
                     subtitulo: 'Minutos de parada de equipos acumulados por turno',
-                    icono: 'medidor',
                     cuerpo: [
                         dibujarBarrasVerticales(datosBarrasTurnos, {
                             formatearValor: (v) => `${formatearNumero(v)} min`,
@@ -29275,7 +29321,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 crearPanel({
                     titulo: 'Top Causas de Parada de Máquina',
                     subtitulo: 'Motivos de parada que concentran la mayor inactividad',
-                    icono: 'alerta',
                     cuerpo: [
                         datosParetoParadas.length > 0
                             ? dibujarBarrasHorizontales(datosParetoParadas, {
@@ -29290,7 +29335,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                             ? crearElemento('div', {
                                 style: 'margin-top: 10px; padding: 8px 10px; background: var(--fondo-hundido); border-radius: var(--redondeo-chico); border-left: 3px solid var(--color-primario, #3b82f6); font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px;',
                                 hijos: [
-                                    crearElemento('div', { style: 'font-weight: 700; color: var(--texto-fuerte); margin-bottom: 2px;', texto: 'Observaciones reales reportadas en planta:' }),
+                                    crearElemento('div', { style: 'font-weight: 700; color: var(--texto-fuerte); margin-bottom: 2px;', texto: 'Causa raíz / Observaciones en planta:' }),
                                     ...at.rankingParadas.slice(0, 3).filter(c => c.observaciones && c.observaciones.length > 0).map(c => crearElemento('div', {
                                         html: `<strong>${c.codigo ? `[${c.codigo}] ` : ''}${c.motivo}:</strong> <span class="texto-suave">${c.observaciones.join(' · ')}</span>`
                                     }))
@@ -29302,7 +29347,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 crearPanel({
                     titulo: 'Top Causas de Vacíos de Horno',
                     subtitulo: 'Interrupciones en la alimentación continua de cocción',
-                    icono: 'fuego',
                     cuerpo: [
                         datosVaciosHorno.length > 0
                             ? dibujarBarrasHorizontales(datosVaciosHorno, {
@@ -29317,7 +29361,7 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                             ? crearElemento('div', {
                                 style: 'margin-top: 10px; padding: 8px 10px; background: var(--fondo-hundido); border-radius: var(--redondeo-chico); border-left: 3px solid var(--color-aviso, #f59e0b); font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px;',
                                 hijos: [
-                                    crearElemento('div', { style: 'font-weight: 700; color: var(--texto-fuerte); margin-bottom: 2px;', texto: 'Observaciones de vacíos de horno:' }),
+                                    crearElemento('div', { style: 'font-weight: 700; color: var(--texto-fuerte); margin-bottom: 2px;', texto: 'Causa raíz / Observaciones de vacíos de horno:' }),
                                     ...at.rankingVacios.slice(0, 3).filter(v => v.observaciones && v.observaciones.length > 0).map(v => crearElemento('div', {
                                         html: `<strong>${v.codigo ? `[${v.codigo}] ` : ''}${v.motivo}:</strong> <span class="texto-suave">${v.observaciones.join(' · ')}</span>`
                                     }))
@@ -29335,7 +29379,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         const panelParadas = crearPanel({
             titulo: 'Planilla Consolidada: Paradas de Equipos y Vacíos de Horno (24 Horas)',
             subtitulo: 'Detalle interactivo de incidencias, códigos de falla y cálculo de disponibilidad operativa',
-            icono: 'lista',
             cuerpo: [
                 crearElemento('div', {
                     style: 'display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.75rem;',
@@ -29527,27 +29570,78 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
             texto: `${p.total} casos (${p.responsables.join(', ') || 'Planta'})`
         }));
 
+        const crearDonutEficacia = () => {
+            if (at.kpis.totalAcciones === 0) return crearElemento('p', { clase: 'texto-tenue', texto: 'Sin acciones registradas.' });
+            const lado = 170;
+            const centro = lado / 2;
+            const rExt = 66;
+            const rInt = 45;
+            const tot = at.kpis.totalAcciones;
+            let angulo = -Math.PI / 2;
+
+            const paths = datosAnilloAcciones.map((t) => {
+                const porc = t.valor / tot;
+                const delta = porc * Math.PI * 2;
+                const hasta = angulo + delta;
+
+                if (delta >= Math.PI * 2 - 0.001) {
+                    angulo = hasta;
+                    return `
+                        <circle cx="${centro}" cy="${centro}" r="${rExt}" fill="${t.color}" />
+                        <circle cx="${centro}" cy="${centro}" r="${rInt}" fill="var(--fondo-panel, #ffffff)" />
+                    `;
+                }
+
+                const x1 = (centro + rExt * Math.cos(angulo)).toFixed(2);
+                const y1 = (centro + rExt * Math.sin(angulo)).toFixed(2);
+                const x2 = (centro + rExt * Math.cos(hasta)).toFixed(2);
+                const y2 = (centro + rExt * Math.sin(hasta)).toFixed(2);
+                const x3 = (centro + rInt * Math.cos(hasta)).toFixed(2);
+                const y3 = (centro + rInt * Math.sin(hasta)).toFixed(2);
+                const x4 = (centro + rInt * Math.cos(angulo)).toFixed(2);
+                const y4 = (centro + rInt * Math.sin(angulo)).toFixed(2);
+                const arcoGrande = delta > Math.PI ? 1 : 0;
+
+                const d = `M ${x1} ${y1} A ${rExt} ${rExt} 0 ${arcoGrande} 1 ${x2} ${y2} L ${x3} ${y3} A ${rInt} ${rInt} 0 ${arcoGrande} 0 ${x4} ${y4} Z`;
+                angulo = hasta;
+                return `<path d="${d}" fill="${t.color}" stroke="var(--fondo-panel, #ffffff)" stroke-width="2" />`;
+            }).join('');
+
+            const pct = `${Math.round(at.kpis.porcentajeCerradas)}%`;
+            const svgStr = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:6px 0;">
+                    <svg viewBox="0 0 ${lado} ${lado}" width="${lado}" height="${lado}" style="display:block; margin:0 auto; max-width:100%;">
+                        ${paths}
+                        <circle cx="${centro}" cy="${centro}" r="${rInt - 0.5}" fill="var(--fondo-panel, #ffffff)" />
+                        <text x="${centro}" y="${centro + 6}" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24px" font-weight="800" fill="var(--texto-fuerte, #0f172a)">${pct}</text>
+                        <text x="${centro}" y="${centro + 20}" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9px" font-weight="700" fill="#16a34a" letter-spacing="0.5px">CERRADAS</text>
+                    </svg>
+                    <div style="margin-top:12px; width:100%;">
+                        <div style="display:flex; justify-content:space-around; font-size:12px; font-weight:700; margin-bottom:4px;">
+                            <span style="color:#16a34a;">🟢 ${at.kpis.accionesCerradas} Cerradas</span>
+                            <span style="color:#b45309;">🟡 ${at.kpis.accionesEnProceso} En Proc.</span>
+                            <span style="color:#dc2626;">🔴 ${at.kpis.accionesPendientes} Pend.</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--texto-tenue); font-weight:500; text-align:center;">Total: ${at.kpis.totalAcciones} medidas implementadas</div>
+                    </div>
+                </div>
+            `;
+            const div = document.createElement('div');
+            div.innerHTML = svgStr.trim();
+            return div.firstElementChild;
+        };
+
         const filaGraficosAcciones = crearElemento('div', {
             style: 'display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:1.25rem; margin-top:1.5rem;',
             hijos: [
                 crearPanel({
                     titulo: 'Resolución de Acciones',
                     subtitulo: `Distribución de medidas por estado (${at.kpis.totalAcciones} total)`,
-                    icono: 'trofeo',
-                    cuerpo: [
-                        datosAnilloAcciones.length > 0
-                            ? dibujarAnillo(datosAnilloAcciones, {
-                                alto: 260,
-                                etiquetaDelTotal: 'Cerradas',
-                                formatearValor: () => `${Math.round(at.kpis.porcentajeCerradas)}%`
-                            })
-                            : crearElemento('p', { clase: 'texto-tenue', texto: 'Sin acciones registradas.' })
-                    ]
+                    cuerpo: [crearDonutEficacia()]
                 }),
                 crearPanel({
                     titulo: 'Ranking de Intervenciones por Personal',
                     subtitulo: 'Cantidad de acciones ejecutadas por operario o sector',
-                    icono: 'personas',
                     cuerpo: [
                         datosBarrasResponsables.length > 0
                             ? dibujarBarrasHorizontales(datosBarrasResponsables, {
@@ -29563,7 +29657,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
                 crearPanel({
                     titulo: 'Defectos y Problemas de Calidad',
                     subtitulo: 'Problemas que motivaron medidas correctivas inmediatas',
-                    icono: 'alerta',
                     cuerpo: [
                         datosBarrasProblemas.length > 0
                             ? dibujarBarrasHorizontales(datosBarrasProblemas, {
@@ -29654,7 +29747,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         const panelResponsables = crearPanel({
             titulo: 'Cuadro de Honor y Desempeño Operativo del Personal',
             subtitulo: 'Efectividad y cantidad de intervenciones por cada operario y sector técnico',
-            icono: 'personas',
             cuerpo: [envolverTabla(tablaResponsables)]
         });
 
@@ -29667,7 +29759,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         const panelAcciones = crearPanel({
             titulo: 'Planilla Consolidada: Acciones Correctivas y Preventivas (24 Horas)',
             subtitulo: 'Registro exhaustivo de hora, defecto/problema, medida adoptada, operario responsable y estado',
-            icono: 'trofeo',
             cuerpo: [
                 crearElemento('div', {
                     style: 'display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.75rem;',
@@ -29842,7 +29933,6 @@ function dibujarVistaTurnos(contenedor, { estado, datosFiltrados, datos }) {
         const panelConclusiones = crearPanel({
             titulo: 'Conclusiones Operativas y Recomendaciones de Planta',
             subtitulo: 'Hallazgos clave detectados automáticamente para jefatura de producción',
-            icono: 'alerta',
             cuerpo: [
                 crearElemento('ul', {
                     style: 'display:flex; flex-direction:column; gap:0.75rem; padding-left:1.25rem; margin:0;',
@@ -30004,7 +30094,7 @@ function crearBandaContexto(estado, analisis) {
 
     const descripcion = rubro.esGeneral
         ? rubro.explicacion
-        : `NEXA reconocio vocabulario de ${rubro.etiqueta.toLowerCase()} y ajusto el analisis ` +
+        : `SYNOPTIK reconocio vocabulario de ${rubro.etiqueta.toLowerCase()} y ajusto el analisis ` +
           `para enfocarse en el ${rubro.enfoque}. ${rubro.definidoPorUsuario ? '' : 'Si no es correcto, cambialo en el selector.'}`;
 
     return crearElemento('div', { clase: 'banda-contexto' }, [
@@ -30150,7 +30240,7 @@ function dibujarHallazgos(contenedor, { analisis, alcance }) {
     partes.push(crearTituloSeccion({
         titulo: 'Hallazgos del analisis',
         descripcion:
-            'Todo lo que NEXA detecto revisando los datos, ordenado por importancia. ' +
+            'Todo lo que SYNOPTIK detecto revisando los datos, ordenado por importancia. ' +
             'Cada hallazgo incluye las cifras que lo respaldan y, cuando corresponde, ' +
             'que conviene hacer al respecto.',
         icono: 'alerta',
@@ -31976,7 +32066,7 @@ function dibujarTemporal(contenedor, { analisis, alcance, datosFiltrados }) {
             cuerpo: [crearEstadoVacio({
                 titulo: 'Este dataset no tiene fechas reconocibles',
                 ayuda: 'Para analizar la evolucion temporal hace falta al menos una columna ' +
-                       'con fechas. Si tenes una columna de fechas que NEXA no detecto, ' +
+                       'con fechas. Si tenes una columna de fechas que SYNOPTIK no detecto, ' +
                        'revisa que el formato sea consistente (por ejemplo 15/03/2026 o ' +
                        '2026-03-15 en todas las filas).',
                 icono: 'reloj'
@@ -32706,7 +32796,7 @@ function crearPanelHallazgos(correlaciones) {
 /**
  * js/vistas/vistaCampos.js
  * ---------------------------------------------------------------------------
- * Seccion de inspeccion de campos: que interpreto NEXA de cada columna.
+ * Seccion de inspeccion de campos: que interpreto SYNOPTIK de cada columna.
  *
  * Es la pantalla que hace AUDITABLE la deteccion automatica. Todo el analisis se
  * apoya en los papeles semanticos que asigno el perfilador, asi que el usuario
@@ -32734,7 +32824,7 @@ function dibujarCampos(contenedor, { estado, analisis, alcance }) {
     partes.push(crearTituloSeccion({
         titulo: 'Inspeccion de campos',
         descripcion:
-            'Que entendio NEXA de cada columna y por que. Todo el analisis se apoya en esta ' +
+            'Que entendio SYNOPTIK de cada columna y por que. Todo el analisis se apoya en esta ' +
             'clasificacion, asi que conviene revisarla si algun resultado no cierra.',
         icono: 'lista'
     }));
@@ -32796,7 +32886,7 @@ function crearPanelExplicacion(analisis) {
     ];
 
     return crearPanel({
-        titulo: 'Como clasifico NEXA tus columnas',
+        titulo: 'Como clasifico SYNOPTIK tus columnas',
         subtitulo:
             'La clasificacion se hace mirando la ESTRUCTURA de los datos, no los nombres. ' +
             'Por eso funciona con datasets de cualquier rubro.',
@@ -32819,7 +32909,7 @@ function crearTablaDeCampos(estado, analisis) {
         {
             etiqueta: 'Papel detectado',
             clave: 'rol',
-            ayuda: 'Pasa el mouse por encima de la insignia para ver por que NEXA la clasifico asi'
+            ayuda: 'Pasa el mouse por encima de la insignia para ver por que SYNOPTIK la clasifico asi'
         },
         { etiqueta: 'Con dato', clave: 'completitud', numerica: true },
         { etiqueta: 'Valores distintos', clave: 'distintos', numerica: true },
@@ -33036,7 +33126,7 @@ function crearPanelProblemas(analisis) {
  *
  * 2. LOS FILTROS AFECTAN TODO EL ANALISIS, no solo esta tabla. Al aplicar un
  *    filtro se recalculan los indicadores, los rankings, las correlaciones y
- *    el informe. Es lo que convierte a NEXA en una herramienta de analisis y
+ *    el informe. Es lo que convierte a SYNOPTIK en una herramienta de analisis y
  *    no en un visor de planillas.
  *
  * 3. RESALTADO DE COINCIDENCIAS sin innerHTML. El texto de las celdas viene de
@@ -34292,7 +34382,7 @@ function crearPanelRestaurar(estado) {
             crearAviso({
                 nivel: 'informativo',
                 texto:
-                    'NEXA conserva siempre una copia intacta de lo que se leyo del archivo. ' +
+                    'SYNOPTIK conserva siempre una copia intacta de lo que se leyo del archivo. ' +
                     `El original tiene ${formatearNumero(estado.datosOriginales.length)} registros y ` +
                     `ahora se trabaja con ${formatearNumero(estado.datos.length)}. ` +
                     (seModificaron
@@ -34531,7 +34621,7 @@ function crearAvisoDelProveedor(proveedor) {
         return crearAviso({
             nivel: 'informativo',
             texto:
-                'Todos los numeros de esta lectura los calculo el motor de NEXA sobre tu ' +
+                'Todos los numeros de esta lectura los calculo el motor de SYNOPTIK sobre tu ' +
                 'archivo: son los mismos que estan en el tablero y en el informe. Nada sale ' +
                 'de esta computadora. Las preguntas escritas entienden lo directo.'
         });
@@ -34694,7 +34784,7 @@ function crearBienvenida(preguntasSugeridas) {
             clase: 'cajon-bienvenida-texto',
             texto:
                 'Pregunta lo que quieras sobre el archivo cargado. Yo no calculo: le pido los ' +
-                'numeros al motor de NEXA y te muestro de donde salio cada uno.'
+                'numeros al motor de SYNOPTIK y te muestro de donde salio cada uno.'
         })
     ];
 
@@ -34891,7 +34981,7 @@ function crearZonaDeEscritura({ hayDatos, consultando, proveedor }) {
 /**
  * js/ia/herramientas.js
  * ---------------------------------------------------------------------------
- * Catalogo de calculos que el modelo de lenguaje puede pedirle a NEXA.
+ * Catalogo de calculos que el modelo de lenguaje puede pedirle a SYNOPTIK.
  *
  * POR QUE EL MODELO PIDE CALCULOS EN LUGAR DE RECIBIR LOS DATOS
  * -----------------------------------------------------------
@@ -34905,7 +34995,7 @@ function crearZonaDeEscritura({ hayDatos, consultando, proveedor }) {
  * posibles es imposible: con diez columnas son cientos de combinaciones.
  *
  * Entonces se invierte el flujo. El modelo no recibe datos: recibe un catalogo
- * de herramientas y pide las que necesita. NEXA calcula y le devuelve numeros
+ * de herramientas y pide las que necesita. SYNOPTIK calcula y le devuelve numeros
  * exactos. El modelo solo interpreta y redacta.
  *
  * Tres consecuencias, y las tres importan:
@@ -34953,7 +35043,7 @@ const MAXIMO_REGISTROS_DEVUELTOS = 20;
 // ===========================================================================
 
 /**
- * Convierte las condiciones que pide el modelo en filtros de NEXA.
+ * Convierte las condiciones que pide el modelo en filtros de SYNOPTIK.
  *
  * El modelo escribe algo como [{ columna: 'Grupo', operador: 'igual', valor: 'PP1' }]
  * y aca se traduce a los filtros que ya sabe aplicar el nucleo. Se reutiliza el
@@ -36155,7 +36245,7 @@ function armarContexto(estado, datos, opciones = {}) {
 /**
  * js/ia/instrucciones.js
  * ---------------------------------------------------------------------------
- * Las ordenes que recibe el asistente de IA de NEXA.
+ * Las ordenes que recibe el asistente de IA de SYNOPTIK.
  *
  * Este archivo esta separado del cableado a proposito. El prompt es lo que mas
  * se va a ajustar con el uso: cada vez que el asistente conteste algo raro, la
@@ -36190,7 +36280,7 @@ function armarContexto(estado, datos, opciones = {}) {
 // ===========================================================================
 
 const IDENTIDAD = `
-Sos el asistente analitico de NEXA, una aplicacion de analisis de datos que se
+Sos el asistente analitico de SYNOPTIK, una aplicacion de analisis de datos que se
 usa en plantas industriales, centros de salud, comercios y areas de recursos
 humanos.
 
@@ -36198,8 +36288,8 @@ Tu trabajo es responder preguntas sobre EL ARCHIVO QUE EL USUARIO TIENE CARGADO
 EN ESTE MOMENTO. No hay base de datos ni historial: existe este archivo y nada
 mas.
 
-VOS NO CALCULAS. Cuando necesitas un numero, se lo pedis a NEXA con una
-herramienta y NEXA te devuelve el resultado exacto, calculado por su motor de
+VOS NO CALCULAS. Cuando necesitas un numero, se lo pedis a SYNOPTIK con una
+herramienta y SYNOPTIK te devuelve el resultado exacto, calculado por su motor de
 analisis. Tu trabajo es decidir que calculos hacen falta, pedirlos, y explicar
 el resultado en palabras claras.
 
@@ -36333,7 +36423,7 @@ SI NO PODES RESPONDER CON LO QUE HAY:
 // ===========================================================================
 
 /**
- * Lo que NEXA sabe hacer por su cuenta, para poder mandar al usuario ahi.
+ * Lo que SYNOPTIK sabe hacer por su cuenta, para poder mandar al usuario ahi.
  *
  * POR QUE HACE FALTA
  * ------------------
@@ -36353,7 +36443,7 @@ SI NO PODES RESPONDER CON LO QUE HAY:
  * de dejar a alguien esperando.
  */
 const LO_QUE_HACE_LA_APLICACION = `
-QUE PUEDE HACER NEXA Y QUE PODES HACER VOS:
+QUE PUEDE HACER SYNOPTIK Y QUE PODES HACER VOS:
 
 VOS solo podes hacer dos cosas: pedir calculos y escribir texto. No podes generar
 archivos, ni imprimir, ni descargar, ni cambiar la pantalla, ni aplicar filtros.
@@ -36720,7 +36810,7 @@ function sugerirPreguntas({ perfil, rubro } = {}) {
  *   1. Se le manda la pregunta al modelo.
  *   2. El modelo contesta con TEXTO (ya sabe la respuesta) o con LLAMADAS a
  *      herramientas (necesita datos).
- *   3. Si pidio herramientas, NEXA las ejecuta contra el dataset en memoria y le
+ *   3. Si pidio herramientas, SYNOPTIK las ejecuta contra el dataset en memoria y le
  *      devuelve los resultados.
  *   4. Se repite desde 2 hasta que conteste con texto.
  *
@@ -36969,7 +37059,7 @@ async function consultarConIA({
          * herramienta una firma cifrada de su razonamiento y EXIGEN que se les
          * devuelva tal cual. Reconstruir el pedido con el nombre y los argumentos
          * que entendimos da algo parecido al original al que le falta justamente
-         * eso, y la API lo rechaza. Como toda pregunta en NEXA tiene una segunda
+         * eso, y la API lo rechaza. Como toda pregunta en SYNOPTIK tiene una segunda
          * vuelta, sin esto no funcionaria ninguna.
          *
          * Se deja generico y no atado a Gemini porque el problema no es de
@@ -37127,9 +37217,9 @@ function explicarFalloDelProveedor(proveedor, error) {
         return `${base} No se pudo hacer el pedido, asi que no llego a haber respuesta: ` +
                'esto NO es un problema de la clave. ' +
                (porElServidor
-                   ? 'Verifica que el servidor de NEXA siga levantado.'
+                   ? 'Verifica que el servidor de SYNOPTIK siga levantado.'
                    : 'Puede ser que no haya internet, que un cortafuegos lo bloquee, o que ' +
-                     'estes abriendo NEXA con doble clic desde el disco: en ese caso el ' +
+                     'estes abriendo SYNOPTIK con doble clic desde el disco: en ese caso el ' +
                      'navegador manda un origen vacio y el servicio lo rechaza. Servi la ' +
                      'aplicacion desde una direccion http y volvé a probar.');
     }
@@ -37147,7 +37237,7 @@ function explicarFalloDelProveedor(proveedor, error) {
      * donde quedo corriendo el servidor, que es donde aparece el motivo.
      */
     if (proveedor.clave === 'gemini-servidor') {
-        return `${base} El pedido lo hace el servidor de NEXA, asi que el detalle esta en la ` +
+        return `${base} El pedido lo hace el servidor de SYNOPTIK, asi que el detalle esta en la ` +
                'terminal donde lo dejaste corriendo. Revisa que siga levantado.';
     }
 
@@ -37987,7 +38077,7 @@ function crearProveedorDemostracion({ perfil = null } = {}) {
 
         descripcion:
             'Responde con reglas, no con inteligencia artificial. Los numeros son reales, ' +
-            'calculados por el motor de NEXA, pero entiende solo preguntas directas. ' +
+            'calculados por el motor de SYNOPTIK, pero entiende solo preguntas directas. ' +
             'Sirve para probar el asistente sin configurar nada.',
 
         async conversar({ mensajes }) {
@@ -38093,19 +38183,19 @@ function crearProveedorDemostracion({ perfil = null } = {}) {
  *
  * QUE HACE
  * --------
- * Traduce. El bucle de conversacion de NEXA habla en castellano y con sus
+ * Traduce. El bucle de conversacion de SYNOPTIK habla en castellano y con sus
  * propias palabras ("papel", "llamadas", "resultados"); Gemini habla en su
  * formato ("role", "functionCall", "functionResponse"). Este archivo es el unico
  * lugar del proyecto que conoce el formato de Google: si manana se cambia de
  * modelo, se toca aca y nada mas.
  *
- * SIRVE PARA LAS DOS VERSIONES DE NEXA
- * ------------------------------------
+ * SIRVE PARA LAS DOS VERSIONES DE SYNOPTIK
+ * ----------------------------------------
  * Es el mismo archivo en los dos casos, y lo unico que cambia es a donde apunta:
  *
  *   ESCRITORIO -> apunta a Google y lleva la clave. La clave vive en la PC del
  *                 usuario, que es la unica que la usa.
- *   WEB        -> apunta a /api/ia, el servidor de NEXA, y NO lleva clave. El
+ *   WEB        -> apunta a /api/ia, el servidor de SYNOPTIK, y NO lleva clave. El
  *                 servidor le agrega la suya y reenvia. El navegador nunca ve la
  *                 clave, que en la web es la unica forma de que no se la roben:
  *                 todo lo que llega al navegador es publico.
@@ -38120,7 +38210,7 @@ function crearProveedorDemostracion({ perfil = null } = {}) {
  * los llevo a pedirla. Hay que devolversela tal cual en la vuelta siguiente. Si
  * no, la API responde 4xx y corta.
  *
- * Para NEXA eso no seria un detalle: seria fatal. Todo el diseno se apoya en que
+ * Para SYNOPTIK eso no seria un detalle: seria fatal. Todo el diseno se apoya en que
  * el modelo pida calculos y despues redacte, o sea que TODA pregunta tiene una
  * segunda vuelta. Sin las firmas, no funcionaria ni una.
  *
@@ -38142,7 +38232,7 @@ const PUNTO_DE_ENTRADA_GOOGLE =
  *
  * Se elige un Flash y no un Pro porque el trabajo del modelo aca es liviano:
  * decidir que herramienta pedir y redactar un parrafo. Los numeros los calcula
- * NEXA. Pagar un modelo grande para eso es tirar plata y sumar segundos de
+ * SYNOPTIK. Pagar un modelo grande para eso es tirar plata y sumar segundos de
  * espera.
  *
  * Se elige un nombre concreto y no un alias tipo "latest" a proposito: un alias
@@ -38156,11 +38246,11 @@ const MODELO_POR_OMISION = 'gemini-3.5-flash';
 const RUTA_DEL_SERVIDOR = '/api/ia';
 
 // ===========================================================================
-// TRADUCCION DE IDA:  NEXA  ->  GEMINI
+// TRADUCCION DE IDA:  SYNOPTIK  ->  GEMINI
 // ===========================================================================
 
 /**
- * Convierte los mensajes de NEXA al formato de Gemini.
+ * Convierte los mensajes de SYNOPTIK al formato de Gemini.
  *
  * @param {Array<object>} mensajes - Mensajes de la conversacion.
  * @returns {Array<object>} Contenidos en formato Gemini.
@@ -38198,7 +38288,7 @@ function traducirMensajes(mensajes = []) {
             return;
         }
 
-        // --- Los resultados que calculo NEXA ---
+        // --- Los resultados que calculo SYNOPTIK ---
         if (mensaje.papel === 'herramienta' && Array.isArray(mensaje.resultados)) {
             /**
              * Los resultados van con papel "user" y no "function".
@@ -38247,7 +38337,7 @@ function armarPedido({ instrucciones, mensajes, herramientas }) {
     }
 
     /**
-     * El catalogo de NEXA ya esta escrito con la forma que pide Gemini.
+     * El catalogo de SYNOPTIK ya esta escrito con la forma que pide Gemini.
      *
      * No es casualidad: cuando se escribio el catalogo se eligio ese formato
      * (name, description, parameters con type en mayusculas) justamente para no
@@ -38271,11 +38361,11 @@ function armarPedido({ instrucciones, mensajes, herramientas }) {
 }
 
 // ===========================================================================
-// TRADUCCION DE VUELTA:  GEMINI  ->  NEXA
+// TRADUCCION DE VUELTA:  GEMINI  ->  SYNOPTIK
 // ===========================================================================
 
 /**
- * Lee la respuesta de Gemini y la devuelve en el formato de NEXA.
+ * Lee la respuesta de Gemini y la devuelve en el formato de SYNOPTIK.
  *
  * @param {object} json - Respuesta cruda de la API.
  * @returns {object} { texto } o { llamadas, crudo }.
@@ -38422,7 +38512,7 @@ function explicarErrorDeGoogle(estado, cuerpo, modelo) {
          * es la respuesta al limite diario. Con el limite por minuto eso es un
          * consejo carisimo para un problema que se resuelve esperando medio minuto.
          *
-         * Y el por minuto es el que se salta primero, porque cada pregunta en NEXA
+         * Y el por minuto es el que se salta primero, porque cada pregunta en SYNOPTIK
          * son varias consultas seguidas: el modelo pide calculos y despues redacta.
          * Tres preguntas rapidas pueden ser diez consultas en un minuto.
          */
@@ -38564,7 +38654,7 @@ function crearProveedorGemini({
         modelo,
 
         descripcion: porElServidor
-            ? 'Modelo de Google. La clave la guarda el servidor de NEXA, nunca el navegador. ' +
+            ? 'Modelo de Google. La clave la guarda el servidor de SYNOPTIK, nunca el navegador. ' +
               'Viajan los nombres de las columnas y los resultados de los calculos; el ' +
               'archivo se queda en tu maquina.'
             : 'Modelo de Google, con tu clave. Viajan los nombres de las columnas y los ' +
@@ -38664,7 +38754,7 @@ async function listarModelos({ clave = '', porElServidor = false, buscar = null 
  *
  * Pero una cabecera propia obliga al navegador a hacer una consulta previa
  * (preflight) antes del pedido de verdad, para preguntar si esa cabecera esta
- * permitida desde este origen. Y ahi aparece el problema real: al abrir NEXA con
+ * permitida desde este origen. Y ahi aparece el problema real: al abrir SYNOPTIK con
  * doble clic, el origen que manda el navegador es VACIO, y un servicio que rechace
  * el origen vacio en esa consulta previa tira todo abajo con un error que no dice
  * nada ("Failed to fetch"), sin haber llegado a mandar la pregunta.
@@ -39112,13 +39202,13 @@ function recomendarSobrePrivacidad(deteccion, proveedor) {
  * POR QUE NO ES UNA PANTALLA OBLIGATORIA AL ARRANCAR
  * -------------------------------------------------
  * Porque obligar a configurar antes de poder probar nada es la forma mas rapida
- * de que alguien cierre la aplicacion y no vuelva. NEXA arranca en modo
+ * de que alguien cierre la aplicacion y no vuelva. SYNOPTIK arranca en modo
  * demostracion, que funciona sin clave y sin internet, y esta pantalla esta ahi
  * para cuando el usuario quiera mas.
  *
  * QUE MUESTRA EN CADA VERSION
  * ---------------------------
- * Las dos versiones de NEXA tienen situaciones distintas y la pantalla se adapta,
+ * Las dos versiones de SYNOPTIK tienen situaciones distintas y la pantalla se adapta,
  * en lugar de mostrar opciones que no se pueden usar:
  *
  *   WEB: la clave la tiene el servidor. La pantalla NO pide clave, porque pedirla
@@ -39199,7 +39289,7 @@ function crearContenidoDeConfiguracion({
         insignia: 'sin configurar nada',
         descripcion:
             'Interpreta la pregunta con reglas, no con inteligencia artificial. Los numeros ' +
-            'son reales, calculados por el motor de NEXA. Entiende preguntas directas y nada ' +
+            'son reales, calculados por el motor de SYNOPTIK. Entiende preguntas directas y nada ' +
             'sale de esta computadora.',
         disponible: true
     }));
@@ -39213,8 +39303,8 @@ function crearContenidoDeConfiguracion({
             insignia: hayIAEnElServidor ? 'listo para usar' : 'no configurado en el servidor',
             descripcion: hayIAEnElServidor
                 ? 'Inteligencia artificial de verdad: entiende preguntas escritas como se ' +
-                  'te ocurran. La clave la guarda el servidor de NEXA, nunca el navegador.'
-                : 'El servidor de NEXA no tiene clave configurada. Quien lo administra tiene ' +
+                  'te ocurran. La clave la guarda el servidor de SYNOPTIK, nunca el navegador.'
+                : 'El servidor de SYNOPTIK no tiene clave configurada. Quien lo administra tiene ' +
                   'que arrancarlo con la variable GEMINI_API_KEY.',
             disponible: hayIAEnElServidor
         }));
@@ -39341,7 +39431,7 @@ function crearContenidoDeConfiguracion({
                 texto:
                     'Conviene un modelo Flash: el trabajo del modelo aca es decidir que ' +
                     'calculo pedir y redactar, no calcular. Los numeros los hace el motor de ' +
-                    'NEXA. Pagar un modelo grande para esto es tirar plata y sumar espera.'
+                    'SYNOPTIK. Pagar un modelo grande para esto es tirar plata y sumar espera.'
             })
         ]));
     }
@@ -39573,7 +39663,7 @@ function verificarLectorDeExcel() {
  * Conecta los mensajes del menu superior de Electron.
  */
 function conectarMenuDeEscritorio() {
-    const puente = globalThis.puenteNexa;
+    const puente = globalThis.puenteSynoptik;
     if (!puente) return;
 
     puente.escuchar('menu:abrir-archivo', () => abrirSelectorDeArchivo());
@@ -39990,7 +40080,7 @@ function dibujarSeccion(seccion) {
             textoBusqueda: almacen.obtenerTextoBusqueda()
         });
     } catch (error) {
-        console.error(`[NEXA] Error al dibujar la seccion "${seccion}":`, error);
+        console.error(`[SYNOPTIK] Error al dibujar la seccion "${seccion}":`, error);
         mostrarErrorDeSeccion(contenedor, seccion, error);
     }
 
@@ -40370,10 +40460,10 @@ function exportar() {
         return;
     }
 
-    const nombreArchivo = `NEXA_${nombreSinExtension(estado.nombreArchivo)}_analisis.xlsx`;
+    const nombreArchivo = `SYNOPTIK_${nombreSinExtension(estado.nombreArchivo)}_analisis.xlsx`;
 
     if (hayLectorDeExcel()) {
-        exportarAExcel(datos, columnas, nombreArchivo, 'Datos NEXA');
+        exportarAExcel(datos, columnas, nombreArchivo, 'Datos SYNOPTIK');
         return;
     }
 
@@ -40417,7 +40507,7 @@ function exportarComoCsv(datos, columnas, nombreOriginal) {
 
     const enlace = document.createElement('a');
     enlace.href = direccion;
-    enlace.download = `NEXA_${nombreSinExtension(nombreOriginal)}_analisis.csv`;
+    enlace.download = `SYNOPTIK_${nombreSinExtension(nombreOriginal)}_analisis.csv`;
     document.body.appendChild(enlace);
     enlace.click();
     document.body.removeChild(enlace);
@@ -40538,7 +40628,7 @@ const estadoDelCajon = {
 };
 
 /**
- * Lo que puede hacer el entorno donde esta corriendo NEXA.
+ * Lo que puede hacer el entorno donde esta corriendo SYNOPTIK.
  *
  * Se averigua una sola vez al arrancar. Hace falta ANTES de que el usuario
  * pregunte: sin esto, la aplicacion ofreceria el asistente con IA y recien al
@@ -40546,7 +40636,7 @@ const estadoDelCajon = {
  * espera, y se come un error que se podia haber evitado.
  */
 const capacidades = {
-    /** 'web' si hay un servidor de NEXA detras, 'escritorio' si no. */
+    /** 'web' si hay un servidor de SYNOPTIK detras, 'escritorio' si no. */
     version: 'escritorio',
 
     /** Si el servidor tiene clave configurada. */
@@ -40564,14 +40654,14 @@ const capacidades = {
  * unico con doble clic. En los dos casos la clave la tiene que poner el usuario.
  *
  * No se hace fallar la aplicacion si esto sale mal. Es informacion para decidir
- * que ofrecer, no algo sin lo cual NEXA no sirva.
+ * que ofrecer, no algo sin lo cual SYNOPTIK no sirva.
  */
 async function averiguarCapacidadesDelServidor() {
     /**
      * Si la pagina no se sirvio por http, no hay ningun servidor a quien
      * preguntarle. Se sale antes de intentarlo.
      *
-     * No es una optimizacion: es evitar un error. Al abrir NEXA con doble clic, la
+     * No es una optimizacion: es evitar un error. Al abrir SYNOPTIK con doble clic, la
      * pagina vive en "file://", y ahi el navegador trata cada archivo como un
      * origen distinto y ademas prohibe pedir archivos por red. El intento fallaba
      * igual y quedaba atrapado, pero antes de eso el navegador ya habia escrito en
@@ -41092,7 +41182,7 @@ async function preguntarEnElCajon() {
                 'Algo se rompio de mi lado al procesar esa pregunta, y no es culpa de como ' +
                 `la escribiste: ${error?.message ?? error}. ` +
                 'Podes volver a preguntar. Si se repite, contale este mensaje a quien ' +
-                'mantiene NEXA.',
+                'mantiene SYNOPTIK.',
             pasos: [],
             huboError: true
         });
@@ -42091,7 +42181,7 @@ function avisarQueNoArranco(error) {
 
     const titulo = document.createElement('h1');
     titulo.setAttribute('style', 'font-size:20px;margin:0 0 8px');
-    titulo.textContent = 'NEXA no pudo arrancar';
+    titulo.textContent = 'SYNOPTIK no pudo arrancar';
 
     const explicacion = document.createElement('p');
     explicacion.setAttribute('style', 'margin:0 0 16px;color:#5a6478');
@@ -42125,7 +42215,7 @@ function ponerEnMarcha() {
         iniciar();
     } catch (error) {
         // Se deja tambien en la consola, para quien sepa mirarla.
-        console.error('NEXA no pudo arrancar:', error);
+        console.error('SYNOPTIK no pudo arrancar:', error);
         avisarQueNoArranco(error);
     }
 }
